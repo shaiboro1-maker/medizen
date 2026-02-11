@@ -57,6 +57,11 @@ import Shop from './pages/Shop';
 import Webinars from './pages/Webinars';
 import Podcasts from './pages/Podcasts';
 import BulletinBoard from './pages/BulletinBoard';
+import MyAppointments from './pages/MyAppointments';
+import MyAccount from './pages/MyAccount';
+import MyFavorites from './pages/MyFavorites';
+import MyOrders from './pages/MyOrders';
+import TherapistRegister from './pages/TherapistRegister';
 import __Layout from './Layout.jsx';
 
 
@@ -71,6 +76,11 @@ export const PAGES = {
     "Webinars": Webinars,
     "Podcasts": Podcasts,
     "BulletinBoard": BulletinBoard,
+    "MyAppointments": MyAppointments,
+    "MyAccount": MyAccount,
+    "MyFavorites": MyFavorites,
+    "MyOrders": MyOrders,
+    "TherapistRegister": TherapistRegister,
 }
 
 export const pagesConfig = {
