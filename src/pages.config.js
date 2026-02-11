@@ -47,13 +47,34 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import Landing from './pages/Landing';
+import TherapistSearch from './pages/TherapistSearch';
+import TherapistProfile from './pages/TherapistProfile';
+import BookAppointment from './pages/BookAppointment';
+import Exercises from './pages/Exercises';
+import Recipes from './pages/Recipes';
+import Shop from './pages/Shop';
+import Webinars from './pages/Webinars';
+import Podcasts from './pages/Podcasts';
+import BulletinBoard from './pages/BulletinBoard';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "Landing": Landing,
+    "TherapistSearch": TherapistSearch,
+    "TherapistProfile": TherapistProfile,
+    "BookAppointment": BookAppointment,
+    "Exercises": Exercises,
+    "Recipes": Recipes,
+    "Shop": Shop,
+    "Webinars": Webinars,
+    "Podcasts": Podcasts,
+    "BulletinBoard": BulletinBoard,
 }
 
 export const pagesConfig = {
+    mainPage: "Landing",
     Pages: PAGES,
     Layout: __Layout,
 };
