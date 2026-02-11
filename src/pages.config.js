@@ -72,6 +72,13 @@ import TherapistProducts from './pages/TherapistProducts';
 import TherapistBulletin from './pages/TherapistBulletin';
 import TherapistWebinars from './pages/TherapistWebinars';
 import TherapistPodcasts from './pages/TherapistPodcasts';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminTherapists from './pages/AdminTherapists';
+import AdminContent from './pages/AdminContent';
+import AdminProducts from './pages/AdminProducts';
+import AdminOrders from './pages/AdminOrders';
+import AdminBulletin from './pages/AdminBulletin';
+import AdminWebinars from './pages/AdminWebinars';
 import __Layout from './Layout.jsx';
 
 
@@ -101,6 +108,13 @@ export const PAGES = {
     "TherapistBulletin": TherapistBulletin,
     "TherapistWebinars": TherapistWebinars,
     "TherapistPodcasts": TherapistPodcasts,
+    "AdminDashboard": AdminDashboard,
+    "AdminTherapists": AdminTherapists,
+    "AdminContent": AdminContent,
+    "AdminProducts": AdminProducts,
+    "AdminOrders": AdminOrders,
+    "AdminBulletin": AdminBulletin,
+    "AdminWebinars": AdminWebinars,
 }
 
 export const pagesConfig = {
