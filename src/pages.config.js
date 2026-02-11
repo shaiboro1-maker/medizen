@@ -62,6 +62,12 @@ import MyAccount from './pages/MyAccount';
 import MyFavorites from './pages/MyFavorites';
 import MyOrders from './pages/MyOrders';
 import TherapistRegister from './pages/TherapistRegister';
+import TherapistDashboard from './pages/TherapistDashboard';
+import TherapistAppointments from './pages/TherapistAppointments';
+import TherapistServices from './pages/TherapistServices';
+import TherapistAvailability from './pages/TherapistAvailability';
+import TherapistClients from './pages/TherapistClients';
+import TherapistContent from './pages/TherapistContent';
 import __Layout from './Layout.jsx';
 
 
@@ -81,6 +87,12 @@ export const PAGES = {
     "MyFavorites": MyFavorites,
     "MyOrders": MyOrders,
     "TherapistRegister": TherapistRegister,
+    "TherapistDashboard": TherapistDashboard,
+    "TherapistAppointments": TherapistAppointments,
+    "TherapistServices": TherapistServices,
+    "TherapistAvailability": TherapistAvailability,
+    "TherapistClients": TherapistClients,
+    "TherapistContent": TherapistContent,
 }
 
 export const pagesConfig = {
