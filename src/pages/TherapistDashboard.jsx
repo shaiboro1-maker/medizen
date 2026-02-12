@@ -48,7 +48,23 @@ export default function TherapistDashboard() {
       {user && <Recommendations userType="therapist" userId={user.email}/>}
 
       <div className="my-6">
-        <AppDownload variant="compact"/>
+        <div className="bg-gradient-to-br from-teal-50 to-emerald-50 border border-teal-200 rounded-2xl p-6">
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h3 className="font-bold text-lg text-gray-900 mb-2">💼 כרטיס ביקור דיגיטלי</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                הורד את האפליקציה שלך ותקבל מיני-סייט מקצועי ישירות בטלפון
+              </p>
+              <ul className="text-xs text-gray-600 space-y-1 mb-4">
+                <li>✓ ניהול תורים בקליק</li>
+                <li>✓ צ'אט עם לקוחות</li>
+                <li>✓ מיני-סייט מעוצב</li>
+                <li>✓ סטטיסטיקות בזמן אמת</li>
+              </ul>
+            </div>
+          </div>
+          <AppDownload variant="compact"/>
+        </div>
       </div>
 
       <h2 className="text-lg font-bold mb-4">תורים קרובים</h2>
