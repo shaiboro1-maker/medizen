@@ -3,15 +3,19 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Calendar, Users, DollarSign, TrendingUp, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Recommendations from "../components/Recommendations";
+import AppDownload from "../components/AppDownload";
 import moment from "moment";
 
 export default function TherapistDashboard() {
   const [therapist, setTherapist] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const init = async () => {
-      const user = await base44.auth.me();
-      const therapists = await base44.entities.Therapist.filter({ user_email: user.email });
+      const currentUser = await base44.auth.me();
+      setUser(currentUser);
+      const therapists = await base44.entities.Therapist.filter({ user_email: currentUser.email });
       if (therapists[0]) setTherapist(therapists[0]);
     };
     init();
@@ -39,6 +43,12 @@ export default function TherapistDashboard() {
         <StatCard icon={<DollarSign className="text-green-600"/>} label="הכנסות החודש" value={`₪${monthRevenue}`} bg="bg-green-50"/>
         <StatCard icon={<Users className="text-blue-600"/>} label="לקוחות" value={uniqueClients} bg="bg-blue-50"/>
         <StatCard icon={<TrendingUp className="text-purple-600"/>} label="סה״כ תורים" value={appointments.filter(a => a.status !== "cancelled").length} bg="bg-purple-50"/>
+      </div>
+
+      {user && <Recommendations userType="therapist" userId={user.email}/>}
+
+      <div className="my-6">
+        <AppDownload variant="compact"/>
       </div>
 
       <h2 className="text-lg font-bold mb-4">תורים קרובים</h2>

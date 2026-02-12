@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
+import AppDownload from "../components/AppDownload";
 
 const CATEGORIES = [
   { id: "acupuncture", label: "דיקור סיני" },
@@ -87,6 +88,10 @@ export default function TherapistRegister() {
     <div className="max-w-2xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-2">הרשמה כמטפל</h1>
       <p className="text-gray-500 mb-8">מלא את הפרטים ונחזור אליך לאחר אישור</p>
+
+      <div className="mb-6">
+        <AppDownload variant="compact"/>
+      </div>
 
       <div className="space-y-6 bg-white rounded-2xl border border-gray-100 p-6">
         <div className="space-y-2">

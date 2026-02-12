@@ -292,6 +292,14 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
         </div>
+        <div className="max-w-7xl mx-auto px-4 mt-8 pt-8 border-t border-gray-800 text-center">
+          <p className="text-gray-400 text-sm mb-2">הורד את האפליקציה שלנו</p>
+          <div className="flex justify-center gap-4">
+            <a href="#" className="text-sm text-gray-400 hover:text-white">App Store</a>
+            <span className="text-gray-600">|</span>
+            <a href="#" className="text-sm text-gray-400 hover:text-white">Google Play</a>
+          </div>
+        </div>
       </footer>
       
       {/* Spacer for mobile bottom nav */}

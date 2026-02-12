@@ -7,6 +7,7 @@ import { Search, Star, Calendar, ArrowLeft, Sparkles, Heart, ShoppingBag, BookOp
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
+import AppDownload from "../components/AppDownload";
 
 const CATEGORIES = [
   { id: "acupuncture", label: "דיקור סיני", emoji: "🪡" },
@@ -188,6 +189,9 @@ export default function Landing() {
           </Link>
         </div>
       </section>
+
+      {/* App Download */}
+      <AppDownload/>
     </div>
   );
 }

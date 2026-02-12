@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
 import { User, Calendar, Heart, ShoppingBag, LogOut, ChevronLeft } from "lucide-react";
+import Recommendations from "../components/Recommendations";
+import AppDownload from "../components/AppDownload";
 
 export default function MyAccount() {
   const [user, setUser] = useState(null);
@@ -29,7 +31,9 @@ export default function MyAccount() {
         <p className="text-gray-500">{user.email}</p>
       </div>
 
-      <div className="space-y-3">
+      <Recommendations userType="client" userId={user.email}/>
+
+      <div className="space-y-3 mt-6">
         {menuItems.map(item => (
           <Link
             key={item.to}
@@ -51,6 +55,10 @@ export default function MyAccount() {
           <LogOut size={20}/>
           <span className="font-medium">התנתקות</span>
         </button>
+      </div>
+
+      <div className="mt-6">
+        <AppDownload variant="compact"/>
       </div>
     </div>
   );
