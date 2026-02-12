@@ -82,6 +82,9 @@ import Webinars from './pages/Webinars';
 import TherapistCourses from './pages/TherapistCourses';
 import TherapistChat from './pages/TherapistChat';
 import TherapistCampaigns from './pages/TherapistCampaigns';
+import TherapistMiniSite from './pages/TherapistMiniSite';
+import MiniSite from './pages/MiniSite';
+import MyChat from './pages/MyChat';
 import __Layout from './Layout.jsx';
 
 
@@ -121,6 +124,9 @@ export const PAGES = {
     "TherapistCourses": TherapistCourses,
     "TherapistChat": TherapistChat,
     "TherapistCampaigns": TherapistCampaigns,
+    "TherapistMiniSite": TherapistMiniSite,
+    "MiniSite": MiniSite,
+    "MyChat": MyChat,
 }
 
 export const pagesConfig = {

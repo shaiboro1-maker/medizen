@@ -5,7 +5,7 @@ import { base44 } from "@/api/base44Client";
 import {
   Home, Search, Calendar, BookOpen, User, Menu, X, 
   LogOut, Shield, Heart, ShoppingBag, Mic, Video,
-  ClipboardList, ChevronDown
+  ClipboardList, ChevronDown, TrendingUp, Globe, MessageCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -54,8 +54,8 @@ export default function Layout({ children, currentPageName }) {
   const therapistPages = [
     "TherapistDashboard", "TherapistAppointments", "TherapistServices",
     "TherapistAvailability", "TherapistClients", "TherapistContent", 
-    "TherapistProducts", "TherapistBulletin", "TherapistWebinars",
-    "TherapistPodcasts", "TherapistProfile"
+    "TherapistProducts", "TherapistCourses", "TherapistBulletin", "TherapistWebinars",
+    "TherapistPodcasts", "TherapistProfile", "TherapistChat", "TherapistCampaigns", "TherapistMiniSite"
   ];
   const isTherapistPage = therapistPages.includes(currentPageName);
 
@@ -122,9 +122,13 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="TherapistClients" icon={<User size={18}/>} label="לקוחות" current={currentPageName}/>
               <AdminNavLink to="TherapistContent" icon={<BookOpen size={18}/>} label="תוכן" current={currentPageName}/>
               <AdminNavLink to="TherapistProducts" icon={<ShoppingBag size={18}/>} label="חנות" current={currentPageName}/>
+              <AdminNavLink to="TherapistCourses" icon={<Video size={18}/>} label="קורסים" current={currentPageName}/>
               <AdminNavLink to="TherapistBulletin" icon={<ClipboardList size={18}/>} label="לוח מודעות" current={currentPageName}/>
               <AdminNavLink to="TherapistWebinars" icon={<Video size={18}/>} label="וובינרים" current={currentPageName}/>
               <AdminNavLink to="TherapistPodcasts" icon={<Mic size={18}/>} label="פודקאסט" current={currentPageName}/>
+              <AdminNavLink to="TherapistChat" icon={<Mic size={18}/>} label="צ'אט" current={currentPageName}/>
+              <AdminNavLink to="TherapistCampaigns" icon={<TrendingUp size={18}/>} label="קמפיינים" current={currentPageName}/>
+              <AdminNavLink to="TherapistMiniSite" icon={<Globe size={18}/>} label="מיני-סייט" current={currentPageName}/>
             </nav>
             <div className="p-4 border-t">
               <Link to={createPageUrl("Landing")} className="text-sm text-gray-500 hover:text-teal-600">
@@ -193,6 +197,9 @@ export default function Layout({ children, currentPageName }) {
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate(createPageUrl("MyOrders"))}>
                     <ShoppingBag size={14} className="ml-2"/> הזמנות
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate(createPageUrl("MyChat"))}>
+                    <MessageCircle size={14} className="ml-2"/> צ'אט עם מטפלים
                   </DropdownMenuItem>
                   <DropdownMenuSeparator/>
                   {isTherapist && (
