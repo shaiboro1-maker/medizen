@@ -79,6 +79,9 @@ import TherapistSearch from './pages/TherapistSearch';
 import TherapistServices from './pages/TherapistServices';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
+import TherapistCourses from './pages/TherapistCourses';
+import TherapistChat from './pages/TherapistChat';
+import TherapistCampaigns from './pages/TherapistCampaigns';
 import __Layout from './Layout.jsx';
 
 
@@ -115,6 +118,9 @@ export const PAGES = {
     "TherapistServices": TherapistServices,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
+    "TherapistCourses": TherapistCourses,
+    "TherapistChat": TherapistChat,
+    "TherapistCampaigns": TherapistCampaigns,
 }
 
 export const pagesConfig = {
