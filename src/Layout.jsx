@@ -167,7 +167,6 @@ export default function Layout({ children, currentPageName }) {
             <NavLink to="Shop" label="חנות" current={currentPageName}/>
             <NavLink to="Webinars" label="וובינרים" current={currentPageName}/>
             <NavLink to="Podcasts" label="פודקאסטים" current={currentPageName}/>
-            <NavLink to="BulletinBoard" label="לוח מודעות" current={currentPageName}/>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -240,7 +239,6 @@ export default function Layout({ children, currentPageName }) {
             <MobileNavLink to="Shop" label="🛍 חנות" onClick={() => setMobileMenuOpen(false)}/>
             <MobileNavLink to="Webinars" label="🎥 וובינרים" onClick={() => setMobileMenuOpen(false)}/>
             <MobileNavLink to="Podcasts" label="🎙 פודקאסטים" onClick={() => setMobileMenuOpen(false)}/>
-            <MobileNavLink to="BulletinBoard" label="📌 לוח מודעות" onClick={() => setMobileMenuOpen(false)}/>
           </div>
         )}
       </header>
@@ -288,17 +286,11 @@ export default function Layout({ children, currentPageName }) {
             <h4 className="font-semibold mb-3">למטפלים</h4>
             <div className="space-y-2 text-sm text-gray-400">
               <Link to={createPageUrl("TherapistRegister")} className="block hover:text-white">הרשמה כמטפל</Link>
-              <Link to={createPageUrl("BulletinBoard")} className="block hover:text-white">לוח מודעות</Link>
             </div>
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-4 mt-8 pt-8 border-t border-gray-800 text-center">
-          <p className="text-gray-400 text-sm mb-2">הורד את האפליקציה שלנו</p>
-          <div className="flex justify-center gap-4">
-            <a href="#" className="text-sm text-gray-400 hover:text-white">App Store</a>
-            <span className="text-gray-600">|</span>
-            <a href="#" className="text-sm text-gray-400 hover:text-white">Google Play</a>
-          </div>
+          <p className="text-gray-400 text-sm">התקן את האפליקציה ישירות מהדפדפן</p>
         </div>
       </footer>
       
