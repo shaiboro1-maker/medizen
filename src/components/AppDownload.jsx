@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Smartphone, Download, Plus } from "lucide-react";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "../utils";
+import { Smartphone, Download, Plus, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function AppDownload({ variant = "default" }) {
@@ -71,10 +73,17 @@ export default function AppDownload({ variant = "default" }) {
           <h3 className="font-semibold text-sm mb-0.5">התקן את האפליקציה</h3>
           <p className="text-xs text-teal-50">גישה מהירה מהמסך הראשי</p>
         </div>
-        <Button onClick={handleInstall} size="sm" className="bg-white text-teal-700 hover:bg-teal-50 rounded-lg px-4 text-xs font-semibold">
-          <Plus size={14} className="ml-1"/>
-          התקן
-        </Button>
+        <div className="flex gap-2">
+          <Link to={createPageUrl("Support")}>
+            <Button size="sm" variant="ghost" className="text-white hover:bg-white/20 rounded-lg">
+              <HelpCircle size={16}/>
+            </Button>
+          </Link>
+          <Button onClick={handleInstall} size="sm" className="bg-white text-teal-700 hover:bg-teal-50 rounded-lg px-4 text-xs font-semibold">
+            <Plus size={14} className="ml-1"/>
+            התקן
+          </Button>
+        </div>
       </div>
     </div>
   );

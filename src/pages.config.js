@@ -90,6 +90,8 @@ import TherapistReminders from './pages/TherapistReminders';
 import TherapistIntegrations from './pages/TherapistIntegrations';
 import TherapistCoupons from './pages/TherapistCoupons';
 import TherapistNewsletter from './pages/TherapistNewsletter';
+import Accessibility from './pages/Accessibility';
+import Support from './pages/Support';
 import __Layout from './Layout.jsx';
 
 
@@ -137,6 +139,8 @@ export const PAGES = {
     "TherapistIntegrations": TherapistIntegrations,
     "TherapistCoupons": TherapistCoupons,
     "TherapistNewsletter": TherapistNewsletter,
+    "Accessibility": Accessibility,
+    "Support": Support,
 }
 
 export const pagesConfig = {

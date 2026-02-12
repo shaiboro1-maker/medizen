@@ -323,8 +323,15 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 mt-8 pt-8 border-t border-gray-800 text-center">
-          <p className="text-gray-400 text-sm">התקן את האפליקציה ישירות מהדפדפן</p>
+        <div className="max-w-7xl mx-auto px-4 mt-8 pt-8 border-t border-gray-800">
+          <div className="flex justify-between items-center">
+            <div className="space-x-6 space-x-reverse text-sm text-gray-400">
+              <Link to={createPageUrl("Accessibility")} className="hover:text-white">הצהרת נגישות</Link>
+              <Link to={createPageUrl("Support")} className="hover:text-white">תמיכה</Link>
+              <span>© 2026 Meridian Wellness</span>
+            </div>
+            <p className="text-gray-400 text-sm">התקן את האפליקציה ישירות מהדפדפן</p>
+          </div>
         </div>
       </footer>
       
