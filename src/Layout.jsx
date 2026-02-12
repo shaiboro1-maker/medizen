@@ -44,15 +44,20 @@ export default function Layout({ children, currentPageName }) {
       }
     };
     init();
-  }, []);
+
+    // Redirect to AppHome if installed as PWA and on landing page
+    if (currentPageName === "Landing" && window.matchMedia('(display-mode: standalone)').matches) {
+      navigate(createPageUrl("AppHome"));
+    }
+  }, [currentPageName, navigate]);
 
   const isAdmin = user?.role === "admin";
   const isTherapist = !!therapist && therapist.status === "approved";
   
-  const publicPages = ["Landing", "TherapistSearch", "TherapistProfile", "BookAppointment", "Exercises", "Recipes", "Shop", "Webinars", "Podcasts"];
+  const publicPages = ["Landing", "TherapistSearch", "TherapistProfile", "BookAppointment", "Exercises", "Recipes", "Shop", "Webinars", "Podcasts", "AppHome", "Music", "Diary"];
   const isPublicPage = publicPages.includes(currentPageName);
   
-  const rootPages = ["Landing", "TherapistSearch", "MyAccount", "AdminDashboard", "TherapistDashboard"];
+  const rootPages = ["Landing", "TherapistSearch", "MyAccount", "AdminDashboard", "TherapistDashboard", "AppHome"];
   const isRootPage = rootPages.includes(currentPageName);
 
   const adminPages = [
@@ -68,6 +73,7 @@ export default function Layout({ children, currentPageName }) {
     "TherapistPodcasts", "TherapistProfile", "TherapistChat", "TherapistCampaigns", "TherapistMiniSite"
   ];
   const isTherapistPage = therapistPages.includes(currentPageName);
+  const isAppHomePage = currentPageName === "AppHome";
 
   const handleBottomNavClick = (to) => {
     if (currentPageName === to) {
@@ -158,6 +164,11 @@ export default function Layout({ children, currentPageName }) {
         </div>
       </div>
     );
+  }
+
+  // AppHome - No layout, just content
+  if (isAppHomePage) {
+    return children;
   }
 
   // Public / Client layout

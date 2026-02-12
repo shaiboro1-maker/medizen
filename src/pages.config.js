@@ -99,6 +99,7 @@ import TherapistServices from './pages/TherapistServices';
 import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
+import AppHome from './pages/AppHome';
 import __Layout from './Layout.jsx';
 
 
@@ -155,6 +156,7 @@ export const PAGES = {
     "TherapistTeam": TherapistTeam,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
+    "AppHome": AppHome,
 }
 
 export const pagesConfig = {
