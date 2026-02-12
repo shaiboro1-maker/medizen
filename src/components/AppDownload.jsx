@@ -52,20 +52,19 @@ export default function AppDownload({ variant = "default" }) {
   }
 
   return (
-    <section className="bg-gradient-to-bl from-teal-700 via-emerald-600 to-teal-600 py-16 px-4">
-      <div className="max-w-5xl mx-auto text-center text-white">
-        <Smartphone size={64} className="mx-auto mb-6 opacity-90"/>
-        <h2 className="text-3xl md:text-4xl font-bold mb-4">
-          התקן את האפליקציה
-        </h2>
-        <p className="text-lg md:text-xl text-teal-50 mb-8 max-w-2xl mx-auto">
-          גישה מהירה ונוחה לכל השירותים מהמסך הראשי של הנייד - קביעת תורים, תרגילים, מתכונים ועוד
+    <section className="fixed top-20 left-4 right-4 md:left-auto md:right-8 md:max-w-md z-40 bg-gradient-to-l from-teal-600 to-emerald-600 rounded-2xl shadow-2xl p-5 text-white">
+      <div className="text-center">
+        <div className="flex items-center gap-3 mb-3">
+          <Smartphone size={32} className="opacity-90"/>
+          <h3 className="text-lg font-bold">התקן את האפליקציה</h3>
+        </div>
+        <p className="text-sm text-teal-50 mb-4">
+          גישה מהירה לכל השירותים מהמסך הראשי
         </p>
-        <Button onClick={handleInstall} size="lg" className="bg-white text-teal-700 hover:bg-teal-50 rounded-full px-8 py-6 text-lg font-semibold shadow-lg">
-          <Plus size={20} className="ml-2"/>
+        <Button onClick={handleInstall} className="w-full bg-white text-teal-700 hover:bg-teal-50 rounded-xl">
+          <Plus size={16} className="ml-2"/>
           {isInstallable ? 'התקן עכשיו' : 'הוסף למסך הבית'}
         </Button>
-        <p className="text-sm text-teal-100 mt-6">התקנה מהירה ישירות מהדפדפן</p>
       </div>
     </section>
   );
