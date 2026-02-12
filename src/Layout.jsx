@@ -44,27 +44,18 @@ export default function Layout({ children, currentPageName }) {
       }
     };
     init();
+  }, []);
 
-    // Redirect to appropriate app if installed as PWA
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      if (currentPageName === "Landing") {
-        // Check if user is a therapist
-        if (auth && user) {
-          const checkTherapist = async () => {
-            const therapists = await base44.entities.Therapist.filter({ user_email: user.email });
-            if (therapists.length > 0 && therapists[0].status === "approved") {
-              navigate(createPageUrl("TherapistApp"));
-            } else {
-              navigate(createPageUrl("AppHome"));
-            }
-          };
-          checkTherapist();
-        } else {
-          navigate(createPageUrl("AppHome"));
-        }
+  // Separate effect for PWA redirect
+  useEffect(() => {
+    if (window.matchMedia('(display-mode: standalone)').matches && currentPageName === "Landing") {
+      if (therapist && therapist.status === "approved") {
+        navigate(createPageUrl("TherapistApp"));
+      } else if (isAuthenticated) {
+        navigate(createPageUrl("AppHome"));
       }
     }
-  }, [currentPageName, navigate, user]);
+  }, [currentPageName, therapist, isAuthenticated, navigate]);
 
   const isAdmin = user?.role === "admin";
   const isTherapist = !!therapist && therapist.status === "approved";
