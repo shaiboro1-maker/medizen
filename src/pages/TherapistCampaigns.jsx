@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack:parameter>
-<parameter name="content">import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, TrendingUp, Eye, MousePointer, ShoppingCart, Play, Pause } from "lucide-react";
 import { Button } from "@/components/ui/button";
