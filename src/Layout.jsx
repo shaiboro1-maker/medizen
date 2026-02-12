@@ -137,6 +137,8 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="TherapistPodcasts" icon={<Mic size={18}/>} label="פודקאסט" current={currentPageName}/>
               <AdminNavLink to="TherapistChat" icon={<Mic size={18}/>} label="צ'אט" current={currentPageName}/>
               <AdminNavLink to="TherapistCampaigns" icon={<TrendingUp size={18}/>} label="קמפיינים" current={currentPageName}/>
+              <AdminNavLink to="TherapistCoupons" icon={<TrendingUp size={18}/>} label="קופונים" current={currentPageName}/>
+              <AdminNavLink to="TherapistNewsletter" icon={<TrendingUp size={18}/>} label="ניוזלטר" current={currentPageName}/>
               <AdminNavLink to="TherapistMiniSite" icon={<Globe size={18}/>} label="מיני-סייט" current={currentPageName}/>
               <AdminNavLink to="TherapistMiniSiteSettings" icon={<Globe size={18}/>} label="עיצוב מיני-סייט" current={currentPageName}/>
               <AdminNavLink to="TherapistReminders" icon={<Globe size={18}/>} label="תזכורות" current={currentPageName}/>

@@ -32,10 +32,33 @@ export default function MyAppointments() {
     enabled: !!user,
   });
 
+  const { data: therapists = [] } = useQuery({
+    queryKey: ["therapists"],
+    queryFn: () => base44.entities.Therapist.list(),
+    enabled: !!user,
+  });
+
+  const [showCancelDialog, setShowCancelDialog] = useState(null);
+
   const cancelMutation = useMutation({
     mutationFn: (id) => base44.entities.Appointment.update(id, { status: "cancelled" }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["myAppointments"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["myAppointments"] });
+      setShowCancelDialog(null);
+      alert("התור בוטל בהצלחה");
+    },
   });
+
+  const canCancelAppointment = (apt) => {
+    const therapist = therapists.find(t => t.id === apt.therapist_id);
+    if (!therapist?.cancellation_policy?.allow_cancellation) return false;
+    
+    const hoursBeforeAllowed = therapist.cancellation_policy?.hours_before || 24;
+    const appointmentTime = moment(`${apt.date} ${apt.time}`, "YYYY-MM-DD HH:mm");
+    const hoursUntilAppointment = appointmentTime.diff(moment(), "hours");
+    
+    return hoursUntilAppointment >= hoursBeforeAllowed;
+  };
 
   const upcoming = appointments.filter(a => ["pending", "confirmed"].includes(a.status) && moment(a.date).isSameOrAfter(moment(), "day"));
   const past = appointments.filter(a => a.status === "completed" || moment(a.date).isBefore(moment(), "day"));
@@ -83,10 +106,21 @@ export default function MyAppointments() {
                       </div>
                     </div>
                     {tab === "upcoming" && (
-                      <div className="mt-4 pt-4 border-t flex gap-3">
-                        <Button variant="outline" size="sm" onClick={() => cancelMutation.mutate(apt.id)} className="text-red-600 border-red-200 hover:bg-red-50">
-                          <X size={14} className="ml-1"/> ביטול תור
-                        </Button>
+                      <div className="mt-4 pt-4 border-t">
+                        {canCancelAppointment(apt) ? (
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => setShowCancelDialog(apt)} 
+                            className="text-red-600 border-red-200 hover:bg-red-50"
+                          >
+                            <X size={14} className="ml-1"/> ביטול תור
+                          </Button>
+                        ) : (
+                          <p className="text-xs text-gray-400">
+                            לא ניתן לבטל תור זה עקב מדיניות הביטול של המטפל
+                          </p>
+                        )}
                       </div>
                     )}
                   </div>
@@ -96,6 +130,41 @@ export default function MyAppointments() {
           </TabsContent>
         ))}
       </Tabs>
+
+      {/* Cancel Dialog */}
+      {showCancelDialog && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6">
+            <h3 className="font-bold text-lg mb-3">האם לבטל את התור?</h3>
+            <div className="mb-4 p-4 bg-gray-50 rounded-xl">
+              <p className="text-sm text-gray-600">{showCancelDialog.service_name}</p>
+              <p className="text-sm text-gray-600">אצל {showCancelDialog.therapist_name}</p>
+              <p className="text-sm text-gray-600 mt-1">
+                📅 {moment(showCancelDialog.date).format("DD/MM/YYYY")} • ⏰ {showCancelDialog.time}
+              </p>
+            </div>
+            <p className="text-sm text-gray-500 mb-4">
+              תקבל אישור ביטול באימייל. המטפל יקבל הודעה על הביטול.
+            </p>
+            <div className="flex gap-3">
+              <Button 
+                variant="outline" 
+                onClick={() => setShowCancelDialog(null)}
+                className="flex-1"
+              >
+                ביטול
+              </Button>
+              <Button 
+                onClick={() => cancelMutation.mutate(showCancelDialog.id)}
+                disabled={cancelMutation.isPending}
+                className="flex-1 bg-red-600 hover:bg-red-700"
+              >
+                {cancelMutation.isPending ? "מבטל..." : "אישור ביטול"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
     </PullToRefresh>
   );

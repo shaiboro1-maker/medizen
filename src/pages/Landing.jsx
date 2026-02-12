@@ -136,7 +136,9 @@ export default function Landing() {
       {featuredTherapists.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 pb-16">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">מטפלים מובילים</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center gap-2">
+              <Sparkles size={28} className="text-[#F59E0B]"/> מטפלים מומלצים
+            </h2>
             <Link to={createPageUrl("TherapistSearch")} className="text-teal-600 hover:text-teal-700 text-sm flex items-center gap-1">
               צפה בכולם <ArrowLeft size={14}/>
             </Link>

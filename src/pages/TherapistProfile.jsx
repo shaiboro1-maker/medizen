@@ -125,6 +125,7 @@ export default function TherapistProfile() {
       <Tabs defaultValue="services" className="space-y-6">
         <TabsList className="bg-gray-100 rounded-xl p-1">
           <TabsTrigger value="services">שירותים</TabsTrigger>
+          <TabsTrigger value="about">אודות</TabsTrigger>
           <TabsTrigger value="reviews">ביקורות ({reviews.length})</TabsTrigger>
         </TabsList>
 
@@ -154,6 +155,52 @@ export default function TherapistProfile() {
               ))}
             </div>
           )}
+        </TabsContent>
+
+        <TabsContent value="about">
+          <div className="space-y-6">
+            {/* Therapeutic Approach */}
+            {therapist.therapeutic_approach && (
+              <div className="bg-white rounded-2xl border border-gray-100 p-6">
+                <h3 className="font-bold text-lg mb-3">הגישה הטיפולית</h3>
+                <p className="text-gray-600 whitespace-pre-line">{therapist.therapeutic_approach}</p>
+              </div>
+            )}
+
+            {/* Certifications */}
+            {therapist.certifications?.length > 0 && (
+              <div className="bg-white rounded-2xl border border-gray-100 p-6">
+                <h3 className="font-bold text-lg mb-4">תעודות והסמכות</h3>
+                <div className="space-y-4">
+                  {therapist.certifications.map((cert, i) => (
+                    <div key={i} className="flex items-start gap-4 p-4 bg-teal-50 rounded-xl">
+                      <div className="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
+                        ✓
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900">{cert.name}</h4>
+                        <p className="text-sm text-gray-600">{cert.institution}</p>
+                        {cert.year && <p className="text-xs text-gray-400 mt-1">שנת סיום: {cert.year}</p>}
+                      </div>
+                      {cert.certificate_url && (
+                        <a href={cert.certificate_url} target="_blank" rel="noreferrer" className="text-teal-600 text-xs hover:underline">
+                          צפה בתעודה
+                        </a>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Experience */}
+            {therapist.years_experience && (
+              <div className="bg-white rounded-2xl border border-gray-100 p-6">
+                <h3 className="font-bold text-lg mb-3">ניסיון מקצועי</h3>
+                <p className="text-gray-600 text-2xl font-bold text-teal-700">{therapist.years_experience} שנות ניסיון</p>
+              </div>
+            )}
+          </div>
         </TabsContent>
 
         <TabsContent value="reviews">
