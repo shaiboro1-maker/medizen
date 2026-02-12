@@ -64,18 +64,7 @@ export default function Layout({ children, currentPageName }) {
 
   if (isAdminPage) {
     return (
-      <div dir="rtl" className="min-h-screen bg-[#F8FAFC] font-sans">
-        <style>{`
-          :root {
-            --primary: #0F766E;
-            --primary-light: #14B8A6;
-            --secondary: #3B82F6;
-            --accent: #F59E0B;
-            --background: #F8FAFC;
-            --success: #16A34A;
-            --error: #DC2626;
-          }
-        `}</style>
+      <div dir="rtl" className="min-h-screen font-sans" style={{ backgroundColor: 'var(--app-background)' }}>
         <div className="flex">
           <aside className="hidden lg:flex flex-col w-64 bg-white border-l shadow-sm min-h-screen fixed right-0 top-0 z-40">
             <div className="p-6 border-b">
@@ -106,18 +95,7 @@ export default function Layout({ children, currentPageName }) {
 
   if (isTherapistPage) {
     return (
-      <div dir="rtl" className="min-h-screen bg-[#F8FAFC] font-sans">
-        <style>{`
-          :root {
-            --primary: #0F766E;
-            --primary-light: #14B8A6;
-            --secondary: #3B82F6;
-            --accent: #F59E0B;
-            --background: #F8FAFC;
-            --success: #16A34A;
-            --error: #DC2626;
-          }
-        `}</style>
+      <div dir="rtl" className="min-h-screen font-sans" style={{ backgroundColor: 'var(--app-background)' }}>
         <div className="flex">
           <aside className="hidden lg:flex flex-col w-64 bg-white border-l shadow-sm min-h-screen fixed right-0 top-0 z-40">
             <div className="p-6 border-b">
@@ -158,24 +136,36 @@ export default function Layout({ children, currentPageName }) {
     );
   }
 
+  const [navHistory, setNavHistory] = useState({
+    Landing: [],
+    TherapistSearch: [],
+    MyAppointments: [],
+    Exercises: [],
+    MyAccount: []
+  });
+
+  const handleBottomNavClick = (to) => {
+    if (currentPageName === to) {
+      // Reset to root when active tab is re-clicked
+      navigate(createPageUrl(to), { replace: true });
+      setNavHistory(prev => ({ ...prev, [to]: [] }));
+    } else {
+      // Preserve navigation stack
+      setNavHistory(prev => ({ 
+        ...prev, 
+        [currentPageName]: [...(prev[currentPageName] || []), currentPageName]
+      }));
+      navigate(createPageUrl(to));
+    }
+  };
+
   // Public / Client layout
   return (
-    <div dir="rtl" className="min-h-screen bg-[#F8FAFC] font-sans">
-      <style>{`
-          :root {
-            --primary: #0F766E;
-            --primary-light: #14B8A6;
-            --secondary: #3B82F6;
-            --accent: #F59E0B;
-            --background: #F8FAFC;
-            --success: #16A34A;
-            --error: #DC2626;
-          }
-        `}</style>
+    <div dir="rtl" className="min-h-screen font-sans" style={{ backgroundColor: 'var(--app-background)', overscrollBehaviorY: 'none' }}>
       
       {/* Mobile Header */}
-      <header className="md:hidden sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
-        <div className="px-4 h-14 flex items-center justify-between">
+      <header className="md:hidden sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+        <div className="h-14 flex items-center justify-between" style={{ paddingLeft: 'env(safe-area-inset-left, 1rem)', paddingRight: 'env(safe-area-inset-right, 1rem)' }}>
           {!isRootPage ? (
             <button onClick={() => navigate(-1)} className="p-2">
               <ArrowRight size={24} className="text-gray-700"/>
@@ -262,7 +252,8 @@ export default function Layout({ children, currentPageName }) {
             ) : (
               <Button 
                 onClick={() => base44.auth.redirectToLogin()}
-                className="bg-[#0F766E] hover:bg-[#0d5c56] text-white rounded-full px-6 font-semibold"
+                className="text-white rounded-full px-6 font-semibold"
+                style={{ backgroundColor: 'var(--app-primary)' }}
               >
                 התחברות
               </Button>
@@ -287,18 +278,18 @@ export default function Layout({ children, currentPageName }) {
       </header>
 
       {/* Main Content */}
-      <main className="min-h-[calc(100vh-4rem)]">
+      <main className="min-h-[calc(100vh-4rem)]" style={{ paddingLeft: 'env(safe-area-inset-left)', paddingRight: 'env(safe-area-inset-right)', overscrollBehaviorY: 'none' }}>
         {children}
       </main>
 
       {/* Mobile Bottom Nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 px-2" style={{ paddingBottom: 'env(safe-area-inset-bottom)', overscrollBehavior: 'none', userSelect: 'none' }}>
         <div className="flex justify-around items-center h-16">
-          <BottomNavItem to="Landing" icon={<Home size={20}/>} label="בית" current={currentPageName}/>
-          <BottomNavItem to="TherapistSearch" icon={<Search size={20}/>} label="חיפוש" current={currentPageName}/>
-          <BottomNavItem to="MyAppointments" icon={<Calendar size={20}/>} label="תורים" current={currentPageName}/>
-          <BottomNavItem to="Exercises" icon={<BookOpen size={20}/>} label="תוכן" current={currentPageName}/>
-          <BottomNavItem to="MyAccount" icon={<User size={20}/>} label="אישי" current={currentPageName}/>
+          <BottomNavItem to="Landing" icon={<Home size={20}/>} label="בית" current={currentPageName} onClick={handleBottomNavClick}/>
+          <BottomNavItem to="TherapistSearch" icon={<Search size={20}/>} label="חיפוש" current={currentPageName} onClick={handleBottomNavClick}/>
+          <BottomNavItem to="MyAppointments" icon={<Calendar size={20}/>} label="תורים" current={currentPageName} onClick={handleBottomNavClick}/>
+          <BottomNavItem to="Exercises" icon={<BookOpen size={20}/>} label="תוכן" current={currentPageName} onClick={handleBottomNavClick}/>
+          <BottomNavItem to="MyAccount" icon={<User size={20}/>} label="אישי" current={currentPageName} onClick={handleBottomNavClick}/>
         </div>
       </nav>
 
@@ -369,18 +360,18 @@ function MobileNavLink({ to, label, onClick }) {
   );
 }
 
-function BottomNavItem({ to, icon, label, current }) {
+function BottomNavItem({ to, icon, label, current, onClick }) {
   const isActive = current === to;
   return (
-    <Link
-      to={createPageUrl(to)}
+    <button
+      onClick={onClick ? () => onClick(to) : undefined}
       className={`flex flex-col items-center gap-1 ${
         isActive ? "text-teal-600" : "text-gray-400"
       }`}
     >
       {icon}
       <span className="text-[10px] font-medium">{label}</span>
-    </Link>
+    </button>
   );
 }
 

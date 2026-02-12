@@ -98,6 +98,29 @@ export default function BookAppointment() {
 
   const bookMutation = useMutation({
     mutationFn: (data) => base44.entities.Appointment.create(data),
+    onMutate: async (newAppointment) => {
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ["existingAppointments", therapistId] });
+      
+      // Snapshot previous value
+      const previousAppointments = queryClient.getQueryData(["existingAppointments", therapistId]);
+      
+      // Optimistically update
+      queryClient.setQueryData(["existingAppointments", therapistId], (old = []) => [
+        ...old,
+        {
+          id: `temp-${Date.now()}`,
+          ...newAppointment,
+          created_date: new Date().toISOString()
+        }
+      ]);
+      
+      return { previousAppointments };
+    },
+    onError: (err, newAppointment, context) => {
+      // Rollback on error
+      queryClient.setQueryData(["existingAppointments", therapistId], context.previousAppointments);
+    },
     onSuccess: () => {
       setBookingComplete(true);
       queryClient.invalidateQueries({ queryKey: ["existingAppointments"] });

@@ -45,6 +45,30 @@ export default function TherapistChat() {
       }
       return base44.entities.ChatMessage.create({ ...data, file_url: fileUrl });
     },
+    onMutate: async (newMessage) => {
+      // Cancel outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ["chatMessages", selectedChat?.id] });
+      
+      // Snapshot previous value
+      const previousMessages = queryClient.getQueryData(["chatMessages", selectedChat?.id]);
+      
+      // Optimistically update
+      queryClient.setQueryData(["chatMessages", selectedChat?.id], (old = []) => [
+        ...old,
+        {
+          id: `temp-${Date.now()}`,
+          ...newMessage,
+          created_date: new Date().toISOString(),
+          is_read: false
+        }
+      ]);
+      
+      return { previousMessages };
+    },
+    onError: (err, newMessage, context) => {
+      // Rollback on error
+      queryClient.setQueryData(["chatMessages", selectedChat?.id], context.previousMessages);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["chatMessages"] });
       setMessage("");

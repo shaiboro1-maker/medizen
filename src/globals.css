@@ -31,6 +31,15 @@
     --chart-3: 38 92% 50%;
     --chart-4: 142 71% 45%;
     --chart-5: 0 72% 51%;
+    
+    /* App-specific colors */
+    --app-primary: #0F766E;
+    --app-primary-light: #14B8A6;
+    --app-secondary: #3B82F6;
+    --app-accent: #F59E0B;
+    --app-background: #F8FAFC;
+    --app-success: #16A34A;
+    --app-error: #DC2626;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -59,6 +68,15 @@
       --chart-3: 30 80% 55%;
       --chart-4: 280 65% 60%;
       --chart-5: 340 75% 55%;
+      
+      /* App-specific colors - dark mode */
+      --app-primary: #14B8A6;
+      --app-primary-light: #5EEAD4;
+      --app-secondary: #60A5FA;
+      --app-accent: #FBBF24;
+      --app-background: #0F172A;
+      --app-success: #22C55E;
+      --app-error: #EF4444;
     }
   }
 }
@@ -94,9 +112,34 @@ h3 {
 body, p {
   font-size: 16px;
   line-height: 1.6;
+  overscroll-behavior-y: none;
 }
 
 .text-caption {
   font-size: 14px;
   line-height: 1.5;
+}
+
+/* Disable text selection on interactive elements */
+button, 
+nav, 
+nav a, 
+[role="button"],
+.lucide,
+svg {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Allow text selection on content */
+p, 
+span:not(.lucide),
+div[class*="bio"],
+div[class*="content"],
+textarea,
+input {
+  user-select: text;
+  -webkit-user-select: text;
 }
