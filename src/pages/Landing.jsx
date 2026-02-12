@@ -77,8 +77,13 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* App Download */}
+      <section className="max-w-7xl mx-auto px-4 -mt-8 mb-8 relative z-20">
+        <AppDownload/>
+      </section>
+
       {/* Categories */}
-      <section className="max-w-7xl mx-auto px-4 -mt-8 relative z-20">
+      <section className="max-w-7xl mx-auto px-4 relative z-20">
         <div className="grid grid-cols-3 md:grid-cols-9 gap-3">
           {CATEGORIES.map((cat) => (
             <Link
@@ -189,9 +194,6 @@ export default function Landing() {
           </Link>
         </div>
       </section>
-
-      {/* App Download */}
-      <AppDownload/>
     </div>
   );
 }
