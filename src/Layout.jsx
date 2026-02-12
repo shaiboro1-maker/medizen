@@ -21,6 +21,13 @@ export default function Layout({ children, currentPageName }) {
   const [therapist, setTherapist] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [navHistory, setNavHistory] = useState({
+    Landing: [],
+    TherapistSearch: [],
+    MyAppointments: [],
+    Exercises: [],
+    MyAccount: []
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,6 +68,19 @@ export default function Layout({ children, currentPageName }) {
     "TherapistPodcasts", "TherapistProfile", "TherapistChat", "TherapistCampaigns", "TherapistMiniSite"
   ];
   const isTherapistPage = therapistPages.includes(currentPageName);
+
+  const handleBottomNavClick = (to) => {
+    if (currentPageName === to) {
+      navigate(createPageUrl(to), { replace: true });
+      setNavHistory(prev => ({ ...prev, [to]: [] }));
+    } else {
+      setNavHistory(prev => ({ 
+        ...prev, 
+        [currentPageName]: [...(prev[currentPageName] || []), currentPageName]
+      }));
+      navigate(createPageUrl(to));
+    }
+  };
 
   if (isAdminPage) {
     return (
@@ -139,29 +159,6 @@ export default function Layout({ children, currentPageName }) {
       </div>
     );
   }
-
-  const [navHistory, setNavHistory] = useState({
-    Landing: [],
-    TherapistSearch: [],
-    MyAppointments: [],
-    Exercises: [],
-    MyAccount: []
-  });
-
-  const handleBottomNavClick = (to) => {
-    if (currentPageName === to) {
-      // Reset to root when active tab is re-clicked
-      navigate(createPageUrl(to), { replace: true });
-      setNavHistory(prev => ({ ...prev, [to]: [] }));
-    } else {
-      // Preserve navigation stack
-      setNavHistory(prev => ({ 
-        ...prev, 
-        [currentPageName]: [...(prev[currentPageName] || []), currentPageName]
-      }));
-      navigate(createPageUrl(to));
-    }
-  };
 
   // Public / Client layout
   return (
