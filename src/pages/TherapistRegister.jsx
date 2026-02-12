@@ -88,8 +88,17 @@ export default function TherapistRegister() {
       <h1 className="text-3xl font-bold mb-2">הרשמה כמטפל</h1>
       <p className="text-gray-500 mb-8">מלא את הפרטים ונחזור אליך לאחר אישור</p>
 
-      <div className="mb-6">
-        <AppDownload variant="compact"/>
+      <div className="mb-6 bg-gradient-to-br from-teal-50 to-emerald-50 border border-teal-200 rounded-2xl p-6">
+        <h3 className="font-bold text-lg mb-2">🎯 קבל את האפליקציה שלך</h3>
+        <p className="text-sm text-gray-600 mb-4">
+          לאחר האישור תוכל להוריד אפליקציה ייעודית שתשמש אותך ככרטיס ביקור דיגיטלי ומיני-סייט מקצועי
+        </p>
+        <div className="text-xs text-gray-600 space-y-1">
+          <div>✓ ניהול תורים בקליק</div>
+          <div>✓ צ'אט עם מטופלים</div>
+          <div>✓ מעקב אחר הכנסות</div>
+          <div>✓ מיני-סייט מעוצב</div>
+        </div>
       </div>
 
       <div className="space-y-6 bg-white rounded-2xl border border-gray-100 p-6">
