@@ -52,20 +52,20 @@ export default function AppDownload({ variant = "default" }) {
   }
 
   return (
-    <section className="bg-gradient-to-l from-teal-600 to-emerald-600 rounded-2xl shadow-lg p-6 text-white">
-      <div className="text-center">
-        <div className="flex items-center gap-3 mb-3">
-          <Smartphone size={32} className="opacity-90"/>
-          <h3 className="text-lg font-bold">התקן את האפליקציה</h3>
+    <div className="bg-gradient-to-l from-teal-600 to-emerald-600 rounded-xl shadow-md p-4 text-white">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0">
+          <Smartphone size={20}/>
         </div>
-        <p className="text-sm text-teal-50 mb-4">
-          גישה מהירה לכל השירותים מהמסך הראשי
-        </p>
-        <Button onClick={handleInstall} className="w-full bg-white text-teal-700 hover:bg-teal-50 rounded-xl">
-          <Plus size={16} className="ml-2"/>
-          {isInstallable ? 'התקן עכשיו' : 'הוסף למסך הבית'}
+        <div className="flex-1">
+          <h3 className="font-semibold text-sm mb-0.5">התקן את האפליקציה</h3>
+          <p className="text-xs text-teal-50">גישה מהירה מהמסך הראשי</p>
+        </div>
+        <Button onClick={handleInstall} size="sm" className="bg-white text-teal-700 hover:bg-teal-50 rounded-lg px-4 text-xs font-semibold">
+          <Plus size={14} className="ml-1"/>
+          התקן
         </Button>
       </div>
-    </section>
+    </div>
   );
 }
