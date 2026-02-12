@@ -110,7 +110,7 @@ export default function Landing() {
       {/* Health Content Section */}
       <section className="max-w-7xl mx-auto px-4 py-8 bg-[#F5F1E8]">
         <h2 className="text-2xl font-black text-gray-900 mb-6 text-center">תוכן בריאותי</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           <Link
             to={createPageUrl("Exercises")}
             className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
@@ -142,6 +142,22 @@ export default function Landing() {
             <div className="text-3xl mb-2">🎙️</div>
             <h3 className="font-black text-base text-gray-900">פודקאסטים</h3>
             <p className="text-xs text-gray-600 font-medium">מעניינים</p>
+          </Link>
+          <Link
+            to={createPageUrl("Music")}
+            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
+          >
+            <div className="text-3xl mb-2">🎵</div>
+            <h3 className="font-black text-base text-gray-900">מוזיקה</h3>
+            <p className="text-xs text-gray-600 font-medium">מדיטציות</p>
+          </Link>
+          <Link
+            to={createPageUrl("Diary")}
+            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
+          >
+            <div className="text-3xl mb-2">📔</div>
+            <h3 className="font-black text-base text-gray-900">יומן</h3>
+            <p className="text-xs text-gray-600 font-medium">אישי</p>
           </Link>
         </div>
       </section>
