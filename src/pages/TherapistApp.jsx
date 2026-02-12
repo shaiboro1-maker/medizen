@@ -14,24 +14,32 @@ import { motion } from "framer-motion";
 export default function TherapistApp() {
   const [user, setUser] = useState(null);
   const [therapist, setTherapist] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const init = async () => {
-      const auth = await base44.auth.isAuthenticated();
-      if (!auth) {
+      try {
+        const auth = await base44.auth.isAuthenticated();
+        if (!auth) {
+          navigate(createPageUrl("Landing"));
+          return;
+        }
+        const me = await base44.auth.me();
+        setUser(me);
+        
+        const therapists = await base44.entities.Therapist.filter({ user_email: me.email });
+        if (therapists.length === 0) {
+          navigate(createPageUrl("TherapistRegister"));
+          return;
+        }
+        setTherapist(therapists[0]);
+      } catch (error) {
+        console.error(error);
         navigate(createPageUrl("Landing"));
-        return;
+      } finally {
+        setLoading(false);
       }
-      const me = await base44.auth.me();
-      setUser(me);
-      
-      const therapists = await base44.entities.Therapist.filter({ user_email: me.email });
-      if (therapists.length === 0) {
-        navigate(createPageUrl("Landing"));
-        return;
-      }
-      setTherapist(therapists[0]);
     };
     init();
   }, [navigate]);
@@ -71,9 +79,12 @@ export default function TherapistApp() {
     enabled: !!therapist,
   });
 
-  if (!therapist) {
+  if (loading || !therapist) {
     return <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <p>טוען...</p>
+      <div className="text-center">
+        <div className="w-12 h-12 border-4 border-teal-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-gray-600">טוען...</p>
+      </div>
     </div>;
   }
 
