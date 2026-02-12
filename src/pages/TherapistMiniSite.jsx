@@ -247,7 +247,7 @@ export default function TherapistMiniSite() {
                 <Input
                   value={editingPost ? editingPost.category : newPost.category}
                   onChange={(e) => editingPost ? setEditingPost({...editingPost, category: e.target.value}) : setNewPost({...newPost, category: e.target.value})}
-                  placeholder="קטגוריה"
+                  placeholder="קטגוריה (למשל: תזונה, פיזיותרפיה, רפואה משלימה)"
                 />
                 <div className="flex gap-2">
                   <Button onClick={() => createOrUpdatePost.mutate(editingPost || newPost)} disabled={createOrUpdatePost.isPending} className="bg-teal-600 hover:bg-teal-700">
@@ -264,8 +264,29 @@ export default function TherapistMiniSite() {
 
             <div className="bg-white rounded-2xl border border-gray-100 p-6">
               <h3 className="font-bold text-lg mb-4">הפוסטים שלי</h3>
+              <div className="mb-4 flex gap-2 flex-wrap">
+                <Button
+                  size="sm"
+                  variant={!newPost.category ? "default" : "outline"}
+                  onClick={() => setNewPost({...newPost, category: ""})}
+                >
+                  הכל ({blogPosts.length})
+                </Button>
+                {[...new Set(blogPosts.map(p => p.category).filter(Boolean))].map(cat => (
+                  <Button
+                    key={cat}
+                    size="sm"
+                    variant={newPost.category === cat ? "default" : "outline"}
+                    onClick={() => setNewPost({...newPost, category: cat})}
+                  >
+                    {cat} ({blogPosts.filter(p => p.category === cat).length})
+                  </Button>
+                ))}
+              </div>
               <div className="space-y-3">
-                {blogPosts.map(post => (
+                {blogPosts
+                  .filter(post => !newPost.category || post.category === newPost.category)
+                  .map(post => (
                   <div key={post.id} className="flex justify-between items-center p-4 bg-gray-50 rounded-xl">
                     <div className="flex-1">
                       <h4 className="font-bold">{post.title}</h4>

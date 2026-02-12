@@ -58,8 +58,10 @@ import BookAppointment from './pages/BookAppointment';
 import BulletinBoard from './pages/BulletinBoard';
 import Exercises from './pages/Exercises';
 import Landing from './pages/Landing';
+import MiniSite from './pages/MiniSite';
 import MyAccount from './pages/MyAccount';
 import MyAppointments from './pages/MyAppointments';
+import MyChat from './pages/MyChat';
 import MyFavorites from './pages/MyFavorites';
 import MyOrders from './pages/MyOrders';
 import Podcasts from './pages/Podcasts';
@@ -68,9 +70,13 @@ import Shop from './pages/Shop';
 import TherapistAppointments from './pages/TherapistAppointments';
 import TherapistAvailability from './pages/TherapistAvailability';
 import TherapistBulletin from './pages/TherapistBulletin';
+import TherapistCampaigns from './pages/TherapistCampaigns';
+import TherapistChat from './pages/TherapistChat';
 import TherapistClients from './pages/TherapistClients';
 import TherapistContent from './pages/TherapistContent';
+import TherapistCourses from './pages/TherapistCourses';
 import TherapistDashboard from './pages/TherapistDashboard';
+import TherapistMiniSite from './pages/TherapistMiniSite';
 import TherapistPodcasts from './pages/TherapistPodcasts';
 import TherapistProducts from './pages/TherapistProducts';
 import TherapistProfile from './pages/TherapistProfile';
@@ -79,12 +85,6 @@ import TherapistSearch from './pages/TherapistSearch';
 import TherapistServices from './pages/TherapistServices';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
-import TherapistCourses from './pages/TherapistCourses';
-import TherapistChat from './pages/TherapistChat';
-import TherapistCampaigns from './pages/TherapistCampaigns';
-import TherapistMiniSite from './pages/TherapistMiniSite';
-import MiniSite from './pages/MiniSite';
-import MyChat from './pages/MyChat';
 import __Layout from './Layout.jsx';
 
 
@@ -100,8 +100,10 @@ export const PAGES = {
     "BulletinBoard": BulletinBoard,
     "Exercises": Exercises,
     "Landing": Landing,
+    "MiniSite": MiniSite,
     "MyAccount": MyAccount,
     "MyAppointments": MyAppointments,
+    "MyChat": MyChat,
     "MyFavorites": MyFavorites,
     "MyOrders": MyOrders,
     "Podcasts": Podcasts,
@@ -110,9 +112,13 @@ export const PAGES = {
     "TherapistAppointments": TherapistAppointments,
     "TherapistAvailability": TherapistAvailability,
     "TherapistBulletin": TherapistBulletin,
+    "TherapistCampaigns": TherapistCampaigns,
+    "TherapistChat": TherapistChat,
     "TherapistClients": TherapistClients,
     "TherapistContent": TherapistContent,
+    "TherapistCourses": TherapistCourses,
     "TherapistDashboard": TherapistDashboard,
+    "TherapistMiniSite": TherapistMiniSite,
     "TherapistPodcasts": TherapistPodcasts,
     "TherapistProducts": TherapistProducts,
     "TherapistProfile": TherapistProfile,
@@ -121,12 +127,6 @@ export const PAGES = {
     "TherapistServices": TherapistServices,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
-    "TherapistCourses": TherapistCourses,
-    "TherapistChat": TherapistChat,
-    "TherapistCampaigns": TherapistCampaigns,
-    "TherapistMiniSite": TherapistMiniSite,
-    "MiniSite": MiniSite,
-    "MyChat": MyChat,
 }
 
 export const pagesConfig = {
