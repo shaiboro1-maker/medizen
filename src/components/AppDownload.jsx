@@ -52,7 +52,7 @@ export default function AppDownload({ variant = "default" }) {
   }
 
   return (
-    <section className="fixed top-20 left-4 right-4 md:left-auto md:right-8 md:max-w-md z-40 bg-gradient-to-l from-teal-600 to-emerald-600 rounded-2xl shadow-2xl p-5 text-white">
+    <section className="bg-gradient-to-l from-teal-600 to-emerald-600 rounded-2xl shadow-lg p-6 text-white">
       <div className="text-center">
         <div className="flex items-center gap-3 mb-3">
           <Smartphone size={32} className="opacity-90"/>
