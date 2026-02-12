@@ -78,6 +78,8 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="AdminOrders" icon={<ClipboardList size={18}/>} label="הזמנות" current={currentPageName}/>
               <AdminNavLink to="AdminBulletin" icon={<ClipboardList size={18}/>} label="לוח מודעות" current={currentPageName}/>
               <AdminNavLink to="AdminWebinars" icon={<Video size={18}/>} label="וובינרים" current={currentPageName}/>
+              <AdminNavLink to="AdminUserContent" icon={<BookOpen size={18}/>} label="תוכן משתמשים" current={currentPageName}/>
+              <AdminNavLink to="AdminNotifications" icon={<MessageCircle size={18}/>} label="התראות" current={currentPageName}/>
             </nav>
             <div className="p-4 border-t">
               <Link to={createPageUrl("Landing")} className="text-sm text-gray-500 hover:text-teal-600">
@@ -121,6 +123,8 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="TherapistMiniSiteSettings" icon={<Globe size={18}/>} label="עיצוב מיני-סייט" current={currentPageName}/>
               <AdminNavLink to="TherapistReminders" icon={<Globe size={18}/>} label="תזכורות" current={currentPageName}/>
               <AdminNavLink to="TherapistIntegrations" icon={<Globe size={18}/>} label="אינטגרציות" current={currentPageName}/>
+              <AdminNavLink to="TherapistTeam" icon={<User size={18}/>} label="ניהול צוות" current={currentPageName}/>
+              <AdminNavLink to="TherapistPricing" icon={<TrendingUp size={18}/>} label="שדרוג חבילה" current={currentPageName}/>
             </nav>
             <div className="p-4 border-t">
               <Link to={createPageUrl("Landing")} className="text-sm text-gray-500 hover:text-teal-600">
@@ -228,6 +232,9 @@ export default function Layout({ children, currentPageName }) {
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate(createPageUrl("MyChat"))}>
                     <MessageCircle size={14} className="ml-2"/> צ'אט עם מטפלים
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate(createPageUrl("SubmitContent"))}>
+                    <BookOpen size={14} className="ml-2"/> שתף תוכן
                   </DropdownMenuItem>
                   <DropdownMenuSeparator/>
                   {isTherapist && (

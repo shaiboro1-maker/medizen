@@ -92,6 +92,11 @@ import TherapistSearch from './pages/TherapistSearch';
 import TherapistServices from './pages/TherapistServices';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
+import TherapistPricing from './pages/TherapistPricing';
+import TherapistTeam from './pages/TherapistTeam';
+import SubmitContent from './pages/SubmitContent';
+import AdminUserContent from './pages/AdminUserContent';
+import AdminNotifications from './pages/AdminNotifications';
 import __Layout from './Layout.jsx';
 
 
@@ -141,6 +146,11 @@ export const PAGES = {
     "TherapistServices": TherapistServices,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
+    "TherapistPricing": TherapistPricing,
+    "TherapistTeam": TherapistTeam,
+    "SubmitContent": SubmitContent,
+    "AdminUserContent": AdminUserContent,
+    "AdminNotifications": AdminNotifications,
 }
 
 export const pagesConfig = {
