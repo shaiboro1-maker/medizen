@@ -7,6 +7,7 @@ import { Calendar, Clock, MapPin, X, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PullToRefresh from "../components/PullToRefresh";
 import moment from "moment";
 
 const STATUS_MAP = {
@@ -40,8 +41,13 @@ export default function MyAppointments() {
   const past = appointments.filter(a => a.status === "completed" || moment(a.date).isBefore(moment(), "day"));
   const cancelled = appointments.filter(a => a.status === "cancelled");
 
+  const handleRefresh = async () => {
+    await queryClient.invalidateQueries({ queryKey: ["myAppointments"] });
+  };
+
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
+    <PullToRefresh onRefresh={handleRefresh}>
+      <div className="max-w-3xl mx-auto px-4 py-8">
       <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
         <ArrowLeft size={16} className="ml-2"/> חזור
       </Button>
@@ -91,5 +97,6 @@ export default function MyAppointments() {
         ))}
       </Tabs>
     </div>
+    </PullToRefresh>
   );
 }

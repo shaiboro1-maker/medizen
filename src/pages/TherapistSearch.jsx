@@ -2,13 +2,14 @@ import React, { useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Search, Star, MapPin, Filter, X, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import PullToRefresh from "../components/PullToRefresh";
 
 const CATEGORIES = [
   { id: "all", label: "הכל" },
@@ -27,6 +28,7 @@ const AREAS = ["מרכז", "צפון", "דרום", "ירושלים", "שרון",
 
 export default function TherapistSearch() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const urlParams = new URLSearchParams(window.location.search);
   const [query, setQuery] = useState(urlParams.get("q") || "");
   const [category, setCategory] = useState(urlParams.get("category") || "all");
@@ -166,5 +168,6 @@ export default function TherapistSearch() {
         </div>
       )}
     </div>
+    </PullToRefresh>
   );
 }
