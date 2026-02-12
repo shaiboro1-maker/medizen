@@ -12,7 +12,7 @@ export default function Accessibility() {
       <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-6">
         <h2 className="text-2xl font-bold mb-4 text-teal-700">מחויבותנו לנגישות</h2>
         <p className="text-gray-700 leading-relaxed mb-4">
-          Meridian Wellness מחויבת להנגיש את שירותיה לכלל הציבור, לרבות אנשים עם מוגבלויות, 
+          Wellness Hub מחויבת להנגיש את שירותיה לכלל הציבור, לרבות אנשים עם מוגבלויות, 
           בהתאם לתקן הישראלי (ת"י 5568) ולחוק שוויון זכויות לאנשים עם מוגבלות, התשנ"ח-1998.
         </p>
         <p className="text-gray-700 leading-relaxed">
@@ -80,7 +80,7 @@ export default function Accessibility() {
           מונתה רכזת נגישות אחראית על תחום הנגישות בארגון:
         </p>
         <div className="bg-teal-50 rounded-xl p-6 space-y-3">
-          <p className="font-bold text-lg">רכזת נגישות - Meridian Wellness</p>
+          <p className="font-bold text-lg">רכזת נגישות - Wellness Hub</p>
           <div className="flex items-center gap-3 text-gray-700">
             <Phone size={18} className="text-teal-600"/>
             <span>טלפון: 03-1234567</span>

@@ -37,7 +37,8 @@
     --app-primary-light: #14B8A6;
     --app-secondary: #3B82F6;
     --app-accent: #F59E0B;
-    --app-background: #F8FAFC;
+    --app-background: #F0F9FF;
+    --app-card-bg: #FFFFFF;
     --app-success: #16A34A;
     --app-error: #DC2626;
   }
@@ -75,6 +76,7 @@
       --app-secondary: #60A5FA;
       --app-accent: #FBBF24;
       --app-background: #0F172A;
+      --app-card-bg: #1E293B;
       --app-success: #22C55E;
       --app-error: #EF4444;
     }

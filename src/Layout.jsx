@@ -187,7 +187,7 @@ export default function Layout({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to={createPageUrl("Landing")} className="flex items-center gap-2">
             <span className="text-2xl">🌿</span>
-            <span className="text-xl font-bold text-teal-700 hidden sm:inline">Meridian Wellness</span>
+            <span className="text-xl font-bold text-teal-700 hidden sm:inline">Wellness Hub</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
@@ -297,7 +297,7 @@ export default function Layout({ children, currentPageName }) {
       <footer className="hidden md:block bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-4 gap-8">
           <div>
-            <h3 className="font-bold text-lg mb-4">🌿 Meridian Wellness</h3>
+            <h3 className="font-bold text-lg mb-4">🌿 Wellness Hub</h3>
             <p className="text-gray-400 text-sm">הפלטפורמה המובילה בישראל לחיבור בין מטפלים ומטופלים</p>
           </div>
           <div>
@@ -328,7 +328,7 @@ export default function Layout({ children, currentPageName }) {
             <div className="space-x-6 space-x-reverse text-sm text-gray-400">
               <Link to={createPageUrl("Accessibility")} className="hover:text-white">הצהרת נגישות</Link>
               <Link to={createPageUrl("Support")} className="hover:text-white">תמיכה</Link>
-              <span>© 2026 Meridian Wellness</span>
+              <span>© 2026 Wellness Hub</span>
             </div>
             <p className="text-gray-400 text-sm">התקן את האפליקציה ישירות מהדפדפן</p>
           </div>

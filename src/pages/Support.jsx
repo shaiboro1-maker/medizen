@@ -56,8 +56,8 @@ export default function Support() {
           </div>
           <h3 className="font-bold text-lg mb-2">דוא"ל</h3>
           <p className="text-gray-600 text-sm mb-4">מענה תוך 24 שעות</p>
-          <a href="mailto:support@meridianwellness.co.il" className="text-teal-600 font-semibold hover:text-teal-700">
-            support@meridianwellness.co.il
+          <a href="mailto:support@wellnesshub.co.il" className="text-teal-600 font-semibold hover:text-teal-700">
+            support@wellnesshub.co.il
           </a>
         </div>
 

@@ -19,6 +19,12 @@ const CATEGORIES = [
   { id: "body_mind", label: "גוף-נפש", emoji: "🧘" },
   { id: "chiropractic", label: "כירופרקטיקה", emoji: "🔧" },
   { id: "hair", label: "ספרות", emoji: "💇" },
+  { id: "pemf", label: "פולסים אלקטרומגנטיים", emoji: "⚡" },
+  { id: "insoles", label: "מדרסים", emoji: "👟" },
+  { id: "shockwave", label: "גלי הלם", emoji: "〰️" },
+  { id: "occupational", label: "ריפוי בעיסוק", emoji: "🤲" },
+  { id: "social_work", label: "עובד/ת סוציאלי", emoji: "🤝" },
+  { id: "pedicure", label: "פדיקור/מניקור", emoji: "💅" },
 ];
 
 export default function Landing() {
@@ -39,9 +45,9 @@ export default function Landing() {
   };
 
   return (
-    <div>
+    <div className="bg-gradient-to-br from-sky-50 via-blue-50 to-teal-50 min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-bl from-[#0F766E] via-teal-600 to-emerald-500 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-teal-600 via-emerald-500 to-cyan-500 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 right-20 w-72 h-72 rounded-full bg-white/20 blur-3xl"/>
           <div className="absolute bottom-10 left-10 w-96 h-96 rounded-full bg-[#F59E0B]/20 blur-3xl"/>
@@ -53,8 +59,13 @@ export default function Landing() {
             transition={{ duration: 0.7 }}
             className="text-center max-w-3xl mx-auto"
           >
+            <div className="mb-4">
+              <span className="text-6xl md:text-7xl">🌿</span>
+            </div>
             <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-              הדרך שלך <span className="text-[#F59E0B]">לבריאות</span> טובה יותר
+              <span className="text-cyan-100">Wellness Hub</span>
+              <br/>
+              הדרך שלך לבריאות מיטבית
             </h1>
             <p className="text-lg md:text-xl text-teal-50 mb-10 leading-relaxed">
               מצא את המטפל המושלם, קבע תור בקליק, וגלה עולם שלם של תוכן טיפולי ומוצרי בריאות
@@ -83,51 +94,52 @@ export default function Landing() {
       </section>
 
       {/* Categories */}
-      <section className="max-w-7xl mx-auto px-4 relative z-20">
-        <div className="grid grid-cols-3 md:grid-cols-9 gap-3">
+      <section className="max-w-7xl mx-auto px-4 py-8 relative z-20">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">מצא את המטפל המתאים לך</h2>
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
           {CATEGORIES.map((cat) => (
             <Link
               key={cat.id}
               to={createPageUrl(`TherapistSearch?category=${cat.id}`)}
-              className="bg-white rounded-2xl p-4 text-center shadow-md hover:shadow-lg transition-all hover:-translate-y-1 border border-gray-50"
+              className="bg-white/80 backdrop-blur-sm rounded-xl p-3 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-teal-100/50 hover:border-teal-300"
             >
-              <span className="text-2xl block mb-1">{cat.emoji}</span>
-              <span className="text-xs font-medium text-gray-700">{cat.label}</span>
+              <span className="text-xl block mb-1">{cat.emoji}</span>
+              <span className="text-[10px] leading-tight font-medium text-gray-700 block">{cat.label}</span>
             </Link>
           ))}
         </div>
       </section>
 
       {/* Quick Actions */}
-      <section className="max-w-7xl mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-4 gap-6">
+      <section className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <QuickActionCard
             to="TherapistSearch"
-            icon={<Calendar className="text-[#0F766E]" size={28}/>}
+            icon={<Calendar className="text-teal-600" size={24}/>}
             title="קבע תור"
-            desc="מצא מטפל וקבע תור בשניות"
-            color="bg-[#0F766E]/5"
+            desc="בשניות"
+            color="bg-gradient-to-br from-teal-50 to-emerald-50"
           />
           <QuickActionCard
             to="Exercises"
-            icon={<BookOpen className="text-[#3B82F6]" size={28}/>}
+            icon={<BookOpen className="text-blue-600" size={24}/>}
             title="תרגילים"
-            desc="מאגר תרגילים מקצועי"
-            color="bg-[#3B82F6]/5"
+            desc="מקצועי"
+            color="bg-gradient-to-br from-blue-50 to-sky-50"
           />
           <QuickActionCard
             to="Shop"
-            icon={<ShoppingBag className="text-[#F59E0B]" size={28}/>}
+            icon={<ShoppingBag className="text-amber-600" size={24}/>}
             title="חנות"
-            desc="מוצרי בריאות וטיפול"
-            color="bg-[#F59E0B]/5"
+            desc="מוצרים"
+            color="bg-gradient-to-br from-amber-50 to-orange-50"
           />
           <QuickActionCard
             to="Webinars"
-            icon={<Sparkles className="text-[#16A34A]" size={28}/>}
+            icon={<Sparkles className="text-emerald-600" size={24}/>}
             title="וובינרים"
-            desc="סדנאות והרצאות אונליין"
-            color="bg-[#16A34A]/5"
+            desc="הרצאות"
+            color="bg-gradient-to-br from-emerald-50 to-green-50"
           />
         </div>
       </section>
@@ -181,16 +193,17 @@ export default function Landing() {
       )}
 
       {/* CTA for Therapists */}
-      <section className="py-20 bg-gradient-to-l from-[#F59E0B]/10 to-[#F59E0B]/5">
+      <section className="py-16 bg-gradient-to-br from-teal-100 via-emerald-100 to-cyan-100 mx-4 rounded-3xl my-12">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            אתה מטפל? <span className="text-[#F59E0B]">הצטרף אלינו</span>
+          <div className="text-5xl mb-4">👨‍⚕️</div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            אתה מטפל? <span className="text-teal-600">הצטרף אלינו</span>
           </h2>
-          <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
-            קבל עמוד אישי, מערכת תורים מתקדמת, חנות, וובינרים, פודקאסטים ועוד
+          <p className="text-gray-700 text-base mb-6 max-w-2xl mx-auto">
+            קבל עמוד אישי מעוצב, מערכת תורים אוטומטית, חנות, וובינרים ועוד
           </p>
           <Link to={createPageUrl("TherapistRegister")}>
-            <Button className="bg-[#F59E0B] hover:bg-[#d97706] text-white rounded-full px-8 py-6 text-lg font-semibold">
+            <Button className="bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white rounded-full px-8 py-6 text-base font-semibold shadow-lg">
               הרשמה כמטפל
             </Button>
           </Link>
@@ -204,41 +217,53 @@ function QuickActionCard({ to, icon, title, desc, color }) {
   return (
     <Link
       to={createPageUrl(to)}
-      className="group bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1"
+      className={`group ${color} rounded-2xl p-4 border border-white/50 hover:shadow-lg transition-all hover:-translate-y-1 backdrop-blur-sm`}
     >
-      <div className={`w-14 h-14 ${color} rounded-2xl flex items-center justify-center mb-4`}>
+      <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-3 shadow-sm">
         {icon}
       </div>
-      <h3 className="font-bold text-lg text-gray-900 mb-1">{title}</h3>
-      <p className="text-sm text-gray-500">{desc}</p>
+      <h3 className="font-bold text-base text-gray-900">{title}</h3>
+      <p className="text-xs text-gray-600">{desc}</p>
     </Link>
   );
 }
 
 function TherapistCard({ therapist }) {
+  const bgPatterns = [
+    "bg-gradient-to-br from-teal-400 via-emerald-400 to-cyan-400",
+    "bg-gradient-to-br from-blue-400 via-sky-400 to-cyan-400",
+    "bg-gradient-to-br from-violet-400 via-purple-400 to-fuchsia-400",
+    "bg-gradient-to-br from-rose-400 via-pink-400 to-fuchsia-400",
+    "bg-gradient-to-br from-amber-400 via-orange-400 to-red-400",
+    "bg-gradient-to-br from-lime-400 via-green-400 to-emerald-400"
+  ];
+  
+  const selectedBg = therapist.card_background_style || bgPatterns[parseInt(therapist.id.slice(-1), 16) % bgPatterns.length];
+  
   return (
     <Link
       to={createPageUrl(`TherapistProfile?id=${therapist.id}`)}
-      className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1"
+      className="bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden border border-teal-100/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:border-teal-300"
     >
-      <div className="h-48 bg-gradient-to-bl from-teal-100 to-emerald-50 flex items-center justify-center">
+      <div className={`h-40 ${selectedBg} flex items-center justify-center relative overflow-hidden`}>
         {therapist.profile_image ? (
           <img src={therapist.profile_image} alt={therapist.full_name} className="w-full h-full object-cover"/>
         ) : (
-          <div className="w-24 h-24 rounded-full bg-teal-200 flex items-center justify-center text-4xl text-teal-700 font-bold">
+          <div className="w-20 h-20 rounded-full bg-white/30 backdrop-blur-md flex items-center justify-center text-3xl text-white font-bold shadow-lg">
             {therapist.full_name?.[0]}
           </div>
         )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
       </div>
-      <div className="p-5">
-        <h3 className="font-bold text-lg text-gray-900">{therapist.full_name}</h3>
-        <p className="text-sm text-gray-500 mb-3">{therapist.specializations?.join(", ")}</p>
+      <div className="p-4">
+        <h3 className="font-bold text-base text-gray-900 mb-1">{therapist.full_name}</h3>
+        <p className="text-xs text-gray-600 mb-3 line-clamp-2">{therapist.specializations?.join(", ")}</p>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
-            <Star size={14} className="text-amber-400 fill-amber-400"/>
-            <span className="text-sm font-medium">{therapist.rating?.toFixed(1) || "חדש"}</span>
+            <Star size={13} className="text-amber-400 fill-amber-400"/>
+            <span className="text-xs font-semibold">{therapist.rating?.toFixed(1) || "חדש"}</span>
           </div>
-          <span className="text-xs text-gray-400">{therapist.city}</span>
+          <span className="text-[10px] text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{therapist.city}</span>
         </div>
       </div>
     </Link>

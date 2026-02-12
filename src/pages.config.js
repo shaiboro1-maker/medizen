@@ -47,6 +47,7 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import Accessibility from './pages/Accessibility';
 import AdminBulletin from './pages/AdminBulletin';
 import AdminContent from './pages/AdminContent';
 import AdminDashboard from './pages/AdminDashboard';
@@ -67,6 +68,7 @@ import MyOrders from './pages/MyOrders';
 import Podcasts from './pages/Podcasts';
 import Recipes from './pages/Recipes';
 import Shop from './pages/Shop';
+import Support from './pages/Support';
 import TherapistAppointments from './pages/TherapistAppointments';
 import TherapistAvailability from './pages/TherapistAvailability';
 import TherapistBulletin from './pages/TherapistBulletin';
@@ -74,28 +76,27 @@ import TherapistCampaigns from './pages/TherapistCampaigns';
 import TherapistChat from './pages/TherapistChat';
 import TherapistClients from './pages/TherapistClients';
 import TherapistContent from './pages/TherapistContent';
+import TherapistCoupons from './pages/TherapistCoupons';
 import TherapistCourses from './pages/TherapistCourses';
 import TherapistDashboard from './pages/TherapistDashboard';
+import TherapistIntegrations from './pages/TherapistIntegrations';
 import TherapistMiniSite from './pages/TherapistMiniSite';
+import TherapistMiniSiteSettings from './pages/TherapistMiniSiteSettings';
+import TherapistNewsletter from './pages/TherapistNewsletter';
 import TherapistPodcasts from './pages/TherapistPodcasts';
 import TherapistProducts from './pages/TherapistProducts';
 import TherapistProfile from './pages/TherapistProfile';
 import TherapistRegister from './pages/TherapistRegister';
+import TherapistReminders from './pages/TherapistReminders';
 import TherapistSearch from './pages/TherapistSearch';
 import TherapistServices from './pages/TherapistServices';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
-import TherapistMiniSiteSettings from './pages/TherapistMiniSiteSettings';
-import TherapistReminders from './pages/TherapistReminders';
-import TherapistIntegrations from './pages/TherapistIntegrations';
-import TherapistCoupons from './pages/TherapistCoupons';
-import TherapistNewsletter from './pages/TherapistNewsletter';
-import Accessibility from './pages/Accessibility';
-import Support from './pages/Support';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "Accessibility": Accessibility,
     "AdminBulletin": AdminBulletin,
     "AdminContent": AdminContent,
     "AdminDashboard": AdminDashboard,
@@ -116,6 +117,7 @@ export const PAGES = {
     "Podcasts": Podcasts,
     "Recipes": Recipes,
     "Shop": Shop,
+    "Support": Support,
     "TherapistAppointments": TherapistAppointments,
     "TherapistAvailability": TherapistAvailability,
     "TherapistBulletin": TherapistBulletin,
@@ -123,24 +125,22 @@ export const PAGES = {
     "TherapistChat": TherapistChat,
     "TherapistClients": TherapistClients,
     "TherapistContent": TherapistContent,
+    "TherapistCoupons": TherapistCoupons,
     "TherapistCourses": TherapistCourses,
     "TherapistDashboard": TherapistDashboard,
+    "TherapistIntegrations": TherapistIntegrations,
     "TherapistMiniSite": TherapistMiniSite,
+    "TherapistMiniSiteSettings": TherapistMiniSiteSettings,
+    "TherapistNewsletter": TherapistNewsletter,
     "TherapistPodcasts": TherapistPodcasts,
     "TherapistProducts": TherapistProducts,
     "TherapistProfile": TherapistProfile,
     "TherapistRegister": TherapistRegister,
+    "TherapistReminders": TherapistReminders,
     "TherapistSearch": TherapistSearch,
     "TherapistServices": TherapistServices,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
-    "TherapistMiniSiteSettings": TherapistMiniSiteSettings,
-    "TherapistReminders": TherapistReminders,
-    "TherapistIntegrations": TherapistIntegrations,
-    "TherapistCoupons": TherapistCoupons,
-    "TherapistNewsletter": TherapistNewsletter,
-    "Accessibility": Accessibility,
-    "Support": Support,
 }
 
 export const pagesConfig = {
