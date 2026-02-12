@@ -61,13 +61,16 @@ export default function Layout({ children, currentPageName }) {
 
   if (isAdminPage) {
     return (
-      <div dir="rtl" className="min-h-screen bg-gray-50 font-sans">
+      <div dir="rtl" className="min-h-screen bg-[#F8FAFC] font-sans">
         <style>{`
           :root {
             --primary: #0F766E;
             --primary-light: #14B8A6;
-            --accent: #D4A853;
-            --accent-light: #F5E6C8;
+            --secondary: #3B82F6;
+            --accent: #F59E0B;
+            --background: #F8FAFC;
+            --success: #16A34A;
+            --error: #DC2626;
           }
         `}</style>
         <div className="flex">
@@ -100,13 +103,16 @@ export default function Layout({ children, currentPageName }) {
 
   if (isTherapistPage) {
     return (
-      <div dir="rtl" className="min-h-screen bg-gray-50 font-sans">
+      <div dir="rtl" className="min-h-screen bg-[#F8FAFC] font-sans">
         <style>{`
           :root {
             --primary: #0F766E;
             --primary-light: #14B8A6;
-            --accent: #D4A853;
-            --accent-light: #F5E6C8;
+            --secondary: #3B82F6;
+            --accent: #F59E0B;
+            --background: #F8FAFC;
+            --success: #16A34A;
+            --error: #DC2626;
           }
         `}</style>
         <div className="flex">
@@ -146,15 +152,18 @@ export default function Layout({ children, currentPageName }) {
 
   // Public / Client layout
   return (
-    <div dir="rtl" className="min-h-screen bg-white font-sans">
+    <div dir="rtl" className="min-h-screen bg-[#F8FAFC] font-sans">
       <style>{`
-        :root {
-          --primary: #0F766E;
-          --primary-light: #14B8A6;
-          --accent: #D4A853;
-          --accent-light: #F5E6C8;
-        }
-      `}</style>
+          :root {
+            --primary: #0F766E;
+            --primary-light: #14B8A6;
+            --secondary: #3B82F6;
+            --accent: #F59E0B;
+            --background: #F8FAFC;
+            --success: #16A34A;
+            --error: #DC2626;
+          }
+        `}</style>
       
       {/* Top Header */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
@@ -226,7 +235,7 @@ export default function Layout({ children, currentPageName }) {
             ) : (
               <Button 
                 onClick={() => base44.auth.redirectToLogin()}
-                className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6"
+                className="bg-[#0F766E] hover:bg-[#0d5c56] text-white rounded-full px-6 font-semibold"
               >
                 התחברות
               </Button>
