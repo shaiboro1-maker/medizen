@@ -97,6 +97,8 @@ import TherapistTeam from './pages/TherapistTeam';
 import SubmitContent from './pages/SubmitContent';
 import AdminUserContent from './pages/AdminUserContent';
 import AdminNotifications from './pages/AdminNotifications';
+import Music from './pages/Music';
+import Diary from './pages/Diary';
 import __Layout from './Layout.jsx';
 
 
@@ -151,6 +153,8 @@ export const PAGES = {
     "SubmitContent": SubmitContent,
     "AdminUserContent": AdminUserContent,
     "AdminNotifications": AdminNotifications,
+    "Music": Music,
+    "Diary": Diary,
 }
 
 export const pagesConfig = {

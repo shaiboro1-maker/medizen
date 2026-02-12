@@ -84,13 +84,14 @@ export default function TherapistPricing() {
       await base44.entities.Therapist.update(therapists[0].id, {
         subscription_type: subscriptionType,
         subscription_expires: expiresDate.toISOString().split('T')[0],
-        is_featured: planId === "premium"
+        is_featured: planId === "premium",
+        status: "pending"
       });
 
       return { success: true };
     },
     onSuccess: () => {
-      navigate("/TherapistDashboard");
+      setSelectedPlan("waiting_approval");
     }
   });
 
@@ -98,6 +99,39 @@ export default function TherapistPricing() {
     setSelectedPlan(planId);
     subscribeMutation.mutate(planId);
   };
+
+  if (selectedPlan === "waiting_approval") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50 to-emerald-50 flex items-center justify-center px-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-lg w-full bg-white rounded-3xl shadow-2xl p-12 text-center"
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6"
+          >
+            <Check size={48} className="text-green-600"/>
+          </motion.div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">החבילה נבחרה בהצלחה!</h1>
+          <p className="text-gray-600 mb-6">
+            הפרופיל שלך נשלח לאישור מנהל המערכת.
+            <br/>
+            נחזור אליך בהקדם לאחר אישור הפרופיל.
+          </p>
+          <Button
+            onClick={() => navigate("/")}
+            className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-6 rounded-full text-lg"
+          >
+            חזרה לדף הבית
+          </Button>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50 to-emerald-50 py-16 px-4">

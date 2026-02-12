@@ -195,11 +195,11 @@ export default function Layout({ children, currentPageName }) {
 
           <nav className="hidden md:flex items-center gap-1">
             <NavLink to="TherapistSearch" label="מצא מטפל" current={currentPageName}/>
+            <NavLink to="MyAppointments" label="תורים" current={currentPageName}/>
             <NavLink to="Exercises" label="תרגילים" current={currentPageName}/>
             <NavLink to="Recipes" label="מתכונים" current={currentPageName}/>
-            <NavLink to="Shop" label="חנות" current={currentPageName}/>
-            <NavLink to="Webinars" label="וובינרים" current={currentPageName}/>
-            <NavLink to="Podcasts" label="פודקאסטים" current={currentPageName}/>
+            <NavLink to="Diary" label="יומן" current={currentPageName}/>
+            <NavLink to="Music" label="מוזיקה" current={currentPageName}/>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -274,11 +274,11 @@ export default function Layout({ children, currentPageName }) {
         {mobileMenuOpen && (
           <div className="md:hidden bg-white border-t p-4 space-y-2">
             <MobileNavLink to="TherapistSearch" label="🔎 מצא מטפל" onClick={() => setMobileMenuOpen(false)}/>
+            <MobileNavLink to="MyAppointments" label="📅 תורים" onClick={() => setMobileMenuOpen(false)}/>
             <MobileNavLink to="Exercises" label="📚 תרגילים" onClick={() => setMobileMenuOpen(false)}/>
             <MobileNavLink to="Recipes" label="🥗 מתכונים" onClick={() => setMobileMenuOpen(false)}/>
-            <MobileNavLink to="Shop" label="🛍 חנות" onClick={() => setMobileMenuOpen(false)}/>
-            <MobileNavLink to="Webinars" label="🎥 וובינרים" onClick={() => setMobileMenuOpen(false)}/>
-            <MobileNavLink to="Podcasts" label="🎙 פודקאסטים" onClick={() => setMobileMenuOpen(false)}/>
+            <MobileNavLink to="Diary" label="📔 יומן" onClick={() => setMobileMenuOpen(false)}/>
+            <MobileNavLink to="Music" label="🎵 מוזיקה" onClick={() => setMobileMenuOpen(false)}/>
           </div>
         )}
       </header>
@@ -294,7 +294,7 @@ export default function Layout({ children, currentPageName }) {
           <BottomNavItem to="Landing" icon={<Home size={20}/>} label="בית" current={currentPageName} onClick={handleBottomNavClick}/>
           <BottomNavItem to="TherapistSearch" icon={<Search size={20}/>} label="חיפוש" current={currentPageName} onClick={handleBottomNavClick}/>
           <BottomNavItem to="MyAppointments" icon={<Calendar size={20}/>} label="תורים" current={currentPageName} onClick={handleBottomNavClick}/>
-          <BottomNavItem to="Exercises" icon={<BookOpen size={20}/>} label="תוכן" current={currentPageName} onClick={handleBottomNavClick}/>
+          <BottomNavItem to="Diary" icon={<BookOpen size={20}/>} label="יומן" current={currentPageName} onClick={handleBottomNavClick}/>
           <BottomNavItem to="MyAccount" icon={<User size={20}/>} label="אישי" current={currentPageName} onClick={handleBottomNavClick}/>
         </div>
       </nav>

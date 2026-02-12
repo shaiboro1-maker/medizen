@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
 import { useMutation } from "@tanstack/react-query";
 import { Check, Upload, ArrowLeft } from "lucide-react";
@@ -23,6 +25,7 @@ const CATEGORIES = [
 ];
 
 export default function TherapistRegister() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [form, setForm] = useState({
     full_name: "",
@@ -58,9 +61,12 @@ export default function TherapistRegister() {
         profile_image: imageUrl,
         years_experience: data.years_experience ? Number(data.years_experience) : undefined,
         status: "pending",
+        subscription_type: "free"
       });
     },
-    onSuccess: () => setSuccess(true),
+    onSuccess: () => {
+      navigate(createPageUrl("TherapistPricing"));
+    },
   });
 
   const toggleCategory = (id) => {
@@ -72,17 +78,7 @@ export default function TherapistRegister() {
     }));
   };
 
-  if (success) {
-    return (
-      <div className="max-w-lg mx-auto px-4 py-20 text-center">
-        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-          <Check size={40} className="text-green-600"/>
-        </motion.div>
-        <h1 className="text-2xl font-bold mb-3">הבקשה נשלחה!</h1>
-        <p className="text-gray-500">נחזור אליך בהקדם לאחר אישור הפרופיל</p>
-      </div>
-    );
-  }
+
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
