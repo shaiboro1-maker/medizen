@@ -50,8 +50,13 @@ export default function TherapistSearch() {
     });
   }, [therapists, query, category, area]);
 
+  const handleRefresh = async () => {
+    await queryClient.invalidateQueries({ queryKey: ['therapists'] });
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <PullToRefresh onRefresh={handleRefresh}>
+      <div className="max-w-7xl mx-auto px-4 py-8">
       <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
         <ArrowLeft size={16} className="ml-2"/> חזור
       </Button>

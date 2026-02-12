@@ -5,7 +5,7 @@ import { base44 } from "@/api/base44Client";
 import {
   Home, Search, Calendar, BookOpen, User, Menu, X, 
   LogOut, Shield, Heart, ShoppingBag, Mic, Video,
-  ClipboardList, ChevronDown, TrendingUp, Globe, MessageCircle
+  ClipboardList, ChevronDown, TrendingUp, Globe, MessageCircle, ArrowRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -44,6 +44,9 @@ export default function Layout({ children, currentPageName }) {
   
   const publicPages = ["Landing", "TherapistSearch", "TherapistProfile", "BookAppointment", "Exercises", "Recipes", "Shop", "Webinars", "Podcasts"];
   const isPublicPage = publicPages.includes(currentPageName);
+  
+  const rootPages = ["Landing", "TherapistSearch", "MyAccount", "AdminDashboard", "TherapistDashboard"];
+  const isRootPage = rootPages.includes(currentPageName);
 
   const adminPages = [
     "AdminDashboard", "AdminTherapists", "AdminContent", 
@@ -165,8 +168,27 @@ export default function Layout({ children, currentPageName }) {
           }
         `}</style>
       
-      {/* Top Header */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
+      {/* Mobile Header */}
+      <header className="md:hidden sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
+        <div className="px-4 h-14 flex items-center justify-between">
+          {!isRootPage ? (
+            <button onClick={() => navigate(-1)} className="p-2">
+              <ArrowRight size={24} className="text-gray-700"/>
+            </button>
+          ) : (
+            <Link to={createPageUrl("Landing")} className="flex items-center gap-2">
+              <span className="text-2xl">🌿</span>
+            </Link>
+          )}
+          <h1 className="text-lg font-bold text-gray-900 absolute left-1/2 transform -translate-x-1/2">
+            {isRootPage ? "" : currentPageName.replace(/([A-Z])/g, ' $1').trim()}
+          </h1>
+          <div className="w-10"/> {/* Spacer for balance */}
+        </div>
+      </header>
+
+      {/* Desktop Header */}
+      <header className="hidden md:block sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to={createPageUrl("Landing")} className="flex items-center gap-2">
             <span className="text-2xl">🌿</span>
@@ -265,7 +287,7 @@ export default function Layout({ children, currentPageName }) {
       </main>
 
       {/* Mobile Bottom Nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 px-2 pb-safe">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 px-2" style={{ paddingBottom: 'env(safe-area-inset-bottom)', overscrollBehavior: 'none', userSelect: 'none' }}>
         <div className="flex justify-around items-center h-16">
           <BottomNavItem to="Landing" icon={<Home size={20}/>} label="בית" current={currentPageName}/>
           <BottomNavItem to="TherapistSearch" icon={<Search size={20}/>} label="חיפוש" current={currentPageName}/>
