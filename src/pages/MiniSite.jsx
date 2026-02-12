@@ -49,6 +49,7 @@ export default function MiniSite() {
   });
 
   const [contactForm, setContactForm] = useState({ name: "", email: "", phone: "", message: "", custom_fields: {} });
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const openWhatsApp = () => {
     const phone = therapist.phone?.replace(/\D/g, "");
@@ -199,8 +200,31 @@ export default function MiniSite() {
               <FileText size={24} className="inline ml-2"/>
               המאמרים שלי
             </h2>
+            <div className="mb-6 flex gap-2 flex-wrap">
+              <Button
+                size="sm"
+                variant={!selectedCategory ? "default" : "outline"}
+                onClick={() => setSelectedCategory("")}
+                className={!selectedCategory ? "bg-teal-600" : ""}
+              >
+                הכל ({blogPosts.length})
+              </Button>
+              {[...new Set(blogPosts.map(p => p.category).filter(Boolean))].map(cat => (
+                <Button
+                  key={cat}
+                  size="sm"
+                  variant={selectedCategory === cat ? "default" : "outline"}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={selectedCategory === cat ? "bg-teal-600" : ""}
+                >
+                  {cat} ({blogPosts.filter(p => p.category === cat).length})
+                </Button>
+              ))}
+            </div>
             <div className="grid md:grid-cols-2 gap-6">
-              {blogPosts.map(post => (
+              {blogPosts
+                .filter(post => !selectedCategory || post.category === selectedCategory)
+                .map(post => (
                 <div key={post.id} className="border border-gray-100 rounded-xl overflow-hidden hover:shadow-lg transition-all">
                   {post.image_url && (
                     <div className="h-40 bg-gradient-to-bl from-teal-50 to-blue-50">
