@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Search, ShoppingCart, Tag } from "lucide-react";
+import { Search, ShoppingCart, Tag, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +21,7 @@ const CATEGORIES = [
 ];
 
 export default function Shop() {
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [selected, setSelected] = useState(null);
@@ -50,6 +52,9 @@ export default function Shop() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
       <div className="flex justify-between items-start mb-8">
         <div>
           <h1 className="text-3xl font-bold mb-2">חנות</h1>

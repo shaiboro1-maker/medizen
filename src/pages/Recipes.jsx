@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Clock } from "lucide-react";
+import { Search, Clock, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -20,6 +21,7 @@ const CATEGORIES = [
 ];
 
 export default function Recipes() {
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [selected, setSelected] = useState(null);
@@ -39,6 +41,9 @@ export default function Recipes() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
       <h1 className="text-3xl font-bold mb-2">מתכונים בריאותיים</h1>
       <p className="text-gray-500 mb-8">מתכונים לפי מטרה בריאותית</p>
 

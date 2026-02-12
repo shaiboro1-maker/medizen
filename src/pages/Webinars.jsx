@@ -1,7 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Calendar, Users, Video } from "lucide-react";
+import { Calendar, Users, Video, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import moment from "moment";
 
 export default function Webinars() {
+  const navigate = useNavigate();
   const { data: webinars = [], isLoading } = useQuery({
     queryKey: ["webinars"],
     queryFn: () => base44.entities.Webinar.list("-date"),
@@ -19,6 +21,9 @@ export default function Webinars() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
       <h1 className="text-3xl font-bold mb-2">וובינרים</h1>
       <p className="text-gray-500 mb-8">סדנאות והרצאות אונליין מהמומחים המובילים</p>
 

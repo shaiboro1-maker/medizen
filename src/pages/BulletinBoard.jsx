@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { MapPin, Calendar, Phone } from "lucide-react";
+import { MapPin, Calendar, Phone, ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -16,6 +17,7 @@ const CATEGORIES = [
 ];
 
 export default function BulletinBoard() {
+  const navigate = useNavigate();
   const [category, setCategory] = useState("all");
   const [selected, setSelected] = useState(null);
 
@@ -30,6 +32,9 @@ export default function BulletinBoard() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
       <h1 className="text-3xl font-bold mb-2">לוח מודעות מקצועי</h1>
       <p className="text-gray-500 mb-8">שיתופי פעולה, ציוד, חדרים ומשרות</p>
 

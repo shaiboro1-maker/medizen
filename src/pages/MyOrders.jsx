@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Package } from "lucide-react";
+import { Package, ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 const STATUS_MAP = {
   pending: { label: "ממתין", color: "bg-yellow-100 text-yellow-800" },
@@ -13,6 +15,7 @@ const STATUS_MAP = {
 };
 
 export default function MyOrders() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -27,6 +30,9 @@ export default function MyOrders() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
       <h1 className="text-3xl font-bold mb-8">ההזמנות שלי</h1>
       {orders.length === 0 ? (
         <div className="text-center py-20">

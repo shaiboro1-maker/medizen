@@ -1,15 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Star, MapPin, Clock, Phone, Globe, Calendar, ArrowLeft } from "lucide-react";
+import { Star, MapPin, Clock, Phone, Globe, Calendar, ArrowLeft, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function TherapistProfile() {
+  const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
   const therapistId = urlParams.get("id");
 
@@ -46,8 +47,18 @@ export default function TherapistProfile() {
     </div>
   );
 
+  const openWhatsApp = () => {
+    const phone = therapist.phone?.replace(/\D/g, "");
+    const message = encodeURIComponent(`שלום, אני מעוניין לקבוע תור אצל ${therapist.full_name}`);
+    window.open(`https://wa.me/972${phone}?text=${message}`, "_blank");
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
+
       {/* Header */}
       <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm mb-8">
         <div className="h-48 md:h-64 bg-gradient-to-bl from-teal-600 to-emerald-500 relative">
@@ -101,6 +112,12 @@ export default function TherapistProfile() {
               <a href={therapist.website} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-teal-600"><Globe size={14}/> אתר</a>
             )}
           </div>
+          
+          {therapist.phone && (
+            <Button onClick={openWhatsApp} className="mt-6 bg-green-600 hover:bg-green-700 w-full md:w-auto">
+              <MessageCircle size={16} className="ml-2"/> שוחח בוואטסאפ
+            </Button>
+          )}
         </div>
       </div>
 

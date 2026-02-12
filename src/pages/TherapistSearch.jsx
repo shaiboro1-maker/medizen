@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Star, MapPin, Filter, X } from "lucide-react";
+import { Search, Star, MapPin, Filter, X, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +26,7 @@ const CATEGORIES = [
 const AREAS = ["מרכז", "צפון", "דרום", "ירושלים", "שרון", "שפלה"];
 
 export default function TherapistSearch() {
+  const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
   const [query, setQuery] = useState(urlParams.get("q") || "");
   const [category, setCategory] = useState(urlParams.get("category") || "all");
@@ -51,6 +52,9 @@ export default function TherapistSearch() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
       <h1 className="text-3xl font-bold text-gray-900 mb-2">מצא מטפל</h1>
       <p className="text-gray-500 mb-8">חפש מטפל לפי תחום, אזור או שם</p>
 

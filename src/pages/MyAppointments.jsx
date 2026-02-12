@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Calendar, Clock, MapPin, X } from "lucide-react";
+import { Calendar, Clock, MapPin, X, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,6 +17,7 @@ const STATUS_MAP = {
 };
 
 export default function MyAppointments() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const queryClient = useQueryClient();
 
@@ -41,6 +42,9 @@ export default function MyAppointments() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
       <h1 className="text-3xl font-bold mb-8">התורים שלי</h1>
 
       <Tabs defaultValue="upcoming">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Calendar, Clock, Check, ArrowRight, ArrowLeft } from "lucide-react";
@@ -10,6 +11,7 @@ import moment from "moment";
 const DAYS_HEB = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
 
 export default function BookAppointment() {
+  const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
   const therapistId = urlParams.get("therapist");
   const serviceId = urlParams.get("service");
@@ -141,6 +143,9 @@ export default function BookAppointment() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
       <h1 className="text-2xl font-bold mb-2">קביעת תור</h1>
       {therapist && <p className="text-gray-500 mb-8">אצל {therapist.full_name}</p>}
 

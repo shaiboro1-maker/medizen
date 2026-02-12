@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Play, FileText, Heart, Share2 } from "lucide-react";
+import { Search, Play, FileText, Heart, Share2, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,6 +25,7 @@ const CATEGORIES = [
 const DIFFICULTY_LABELS = { easy: "קל", medium: "בינוני", hard: "מתקדם" };
 
 export default function Exercises() {
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [selectedExercise, setSelectedExercise] = useState(null);
@@ -43,6 +45,9 @@ export default function Exercises() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
       <h1 className="text-3xl font-bold text-gray-900 mb-2">מאגר תרגילים</h1>
       <p className="text-gray-500 mb-8">תרגילים מקצועיים לפי תחום ורמת קושי</p>
 

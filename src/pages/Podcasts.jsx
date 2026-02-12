@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Play, Pause, Clock, Headphones } from "lucide-react";
+import { Play, Pause, Clock, Headphones, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Podcasts() {
+  const navigate = useNavigate();
   const [playing, setPlaying] = useState(null);
 
   const { data: podcasts = [], isLoading } = useQuery({
@@ -23,6 +25,9 @@ export default function Podcasts() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
       <h1 className="text-3xl font-bold mb-2">פודקאסטים</h1>
       <p className="text-gray-500 mb-8">פרקים והרצאות מהמומחים המובילים</p>
 

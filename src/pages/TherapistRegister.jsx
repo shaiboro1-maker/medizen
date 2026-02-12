@@ -86,6 +86,9 @@ export default function TherapistRegister() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => window.history.back()} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
       <h1 className="text-3xl font-bold mb-2">הרשמה כמטפל</h1>
       <p className="text-gray-500 mb-8">מלא את הפרטים ונחזור אליך לאחר אישור</p>
 

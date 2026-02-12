@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Heart } from "lucide-react";
+import { Heart, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function MyFavorites() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -18,6 +21,9 @@ export default function MyFavorites() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
+      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
+        <ArrowLeft size={16} className="ml-2"/> חזור
+      </Button>
       <h1 className="text-3xl font-bold mb-8">מועדפים</h1>
       {favorites.length === 0 ? (
         <div className="text-center py-20">
