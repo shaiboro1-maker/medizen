@@ -71,10 +71,27 @@ export default function MiniSite() {
   if (isLoading) return <div className="text-center py-20">טוען...</div>;
   if (!therapist) return <div className="text-center py-20">מטפל לא נמצא</div>;
 
+  const settings = therapist.minisite_settings || {};
+  const primaryColor = settings.primary_color || "#0F766E";
+  const secondaryColor = settings.secondary_color || "#F59E0B";
+  const fontFamily = settings.font_family || "Heebo";
+  
+  const showGallery = settings.show_gallery !== false;
+  const showServices = settings.show_services !== false;
+  const showCourses = settings.show_courses !== false;
+  const showBlog = settings.show_blog !== false;
+  const showReviews = settings.show_reviews !== false;
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" style={{ fontFamily }}>
+      <style>{`
+        :root {
+          --primary-color: ${primaryColor};
+          --secondary-color: ${secondaryColor};
+        }
+      `}</style>
       {/* Hero Section with Cover */}
-      <div className="relative h-80 bg-gradient-to-bl from-teal-600 to-emerald-500 overflow-hidden">
+      <div className="relative h-80 overflow-hidden" style={{ background: `linear-gradient(to bottom left, ${primaryColor}, ${secondaryColor})` }}>
         {therapist.cover_image && (
           <img src={therapist.cover_image} alt="" className="w-full h-full object-cover opacity-40"/>
         )}
@@ -108,7 +125,7 @@ export default function MiniSite() {
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
           <div className="grid md:grid-cols-2 gap-4">
             <Link to={createPageUrl(`BookAppointment?therapist=${therapist.id}`)}>
-              <Button className="w-full bg-teal-600 hover:bg-teal-700 py-6 text-lg">
+              <Button className="w-full py-6 text-lg" style={{ backgroundColor: primaryColor }}>
                 <Calendar size={20} className="ml-2"/> קבע תור עכשיו
               </Button>
             </Link>
@@ -134,7 +151,7 @@ export default function MiniSite() {
         )}
 
         {/* Gallery */}
-        {therapist.gallery?.length > 0 && (
+        {showGallery && therapist.gallery?.length > 0 && (
           <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
             <h2 className="text-2xl font-bold mb-4">גלריה</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -146,6 +163,7 @@ export default function MiniSite() {
         )}
 
         {/* Services */}
+        {showServices && services.length > 0 && (
         <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
           <h2 className="text-2xl font-bold mb-6">השירותים שלי</h2>
           <div className="space-y-4">
@@ -168,9 +186,10 @@ export default function MiniSite() {
             ))}
           </div>
         </div>
+        )}
 
         {/* Courses */}
-        {courses.length > 0 && (
+        {showCourses && courses.length > 0 && (
           <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
             <h2 className="text-2xl font-bold mb-6">קורסים דיגיטליים</h2>
             <div className="grid md:grid-cols-2 gap-6">
@@ -194,7 +213,7 @@ export default function MiniSite() {
         )}
 
         {/* Blog Posts */}
-        {blogPosts.length > 0 && (
+        {showBlog && blogPosts.length > 0 && (
           <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
             <h2 className="text-2xl font-bold mb-6">
               <FileText size={24} className="inline ml-2"/>
@@ -244,7 +263,7 @@ export default function MiniSite() {
         )}
 
         {/* Reviews */}
-        {reviews.length > 0 && (
+        {showReviews && reviews.length > 0 && (
           <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
             <h2 className="text-2xl font-bold mb-6">ביקורות ({reviews.length})</h2>
             <div className="space-y-4">

@@ -138,6 +138,9 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="TherapistChat" icon={<Mic size={18}/>} label="צ'אט" current={currentPageName}/>
               <AdminNavLink to="TherapistCampaigns" icon={<TrendingUp size={18}/>} label="קמפיינים" current={currentPageName}/>
               <AdminNavLink to="TherapistMiniSite" icon={<Globe size={18}/>} label="מיני-סייט" current={currentPageName}/>
+              <AdminNavLink to="TherapistMiniSiteSettings" icon={<Globe size={18}/>} label="עיצוב מיני-סייט" current={currentPageName}/>
+              <AdminNavLink to="TherapistReminders" icon={<Globe size={18}/>} label="תזכורות" current={currentPageName}/>
+              <AdminNavLink to="TherapistIntegrations" icon={<Globe size={18}/>} label="אינטגרציות" current={currentPageName}/>
             </nav>
             <div className="p-4 border-t">
               <Link to={createPageUrl("Landing")} className="text-sm text-gray-500 hover:text-teal-600">
