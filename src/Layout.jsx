@@ -186,8 +186,10 @@ export default function Layout({ children, currentPageName }) {
       <header className="hidden md:block sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to={createPageUrl("Landing")} className="flex items-center gap-2">
-            <span className="text-2xl">🌿</span>
-            <span className="text-xl font-bold text-teal-700 hidden sm:inline">Wellness Hub</span>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-500 to-emerald-500 flex items-center justify-center shadow-md">
+              <span className="text-white font-bold text-lg">W</span>
+            </div>
+            <span className="text-xl font-bold text-gray-900 hidden sm:inline">Wellness Hub</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">

@@ -25,6 +25,8 @@ const CATEGORIES = [
   { id: "occupational", label: "ריפוי בעיסוק", emoji: "🤲" },
   { id: "social_work", label: "עובד/ת סוציאלי", emoji: "🤝" },
   { id: "pedicure", label: "פדיקור/מניקור", emoji: "💅" },
+  { id: "combined", label: "טיפול משולב", emoji: "🔄" },
+  { id: "other", label: "אחר", emoji: "➕" },
 ];
 
 export default function Landing() {
@@ -45,9 +47,9 @@ export default function Landing() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-[#F5F1E8] min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-white overflow-hidden">
+      <section className="relative bg-[#F5F1E8] overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
@@ -89,7 +91,7 @@ export default function Landing() {
       </section>
 
       {/* Categories */}
-      <section className="max-w-7xl mx-auto px-4 py-8 relative z-20 bg-gray-50">
+      <section className="max-w-7xl mx-auto px-4 py-8 relative z-20 bg-[#F5F1E8]">
         <h2 className="text-2xl font-black text-gray-900 mb-6 text-center">מצא את המטפל המתאים לך</h2>
         <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
           {CATEGORIES.map((cat) => (
@@ -105,8 +107,47 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Health Content Section */}
+      <section className="max-w-7xl mx-auto px-4 py-8 bg-[#F5F1E8]">
+        <h2 className="text-2xl font-black text-gray-900 mb-6 text-center">תוכן בריאותי</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Link
+            to={createPageUrl("Exercises")}
+            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
+          >
+            <div className="text-3xl mb-2">💪</div>
+            <h3 className="font-black text-base text-gray-900">תרגילים</h3>
+            <p className="text-xs text-gray-600 font-medium">מקצועי</p>
+          </Link>
+          <Link
+            to={createPageUrl("Recipes")}
+            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
+          >
+            <div className="text-3xl mb-2">🥗</div>
+            <h3 className="font-black text-base text-gray-900">מתכונים</h3>
+            <p className="text-xs text-gray-600 font-medium">בריאים</p>
+          </Link>
+          <Link
+            to={createPageUrl("Webinars")}
+            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
+          >
+            <div className="text-3xl mb-2">🎥</div>
+            <h3 className="font-black text-base text-gray-900">וובינרים</h3>
+            <p className="text-xs text-gray-600 font-medium">הרצאות</p>
+          </Link>
+          <Link
+            to={createPageUrl("Podcasts")}
+            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
+          >
+            <div className="text-3xl mb-2">🎙️</div>
+            <h3 className="font-black text-base text-gray-900">פודקאסטים</h3>
+            <p className="text-xs text-gray-600 font-medium">מעניינים</p>
+          </Link>
+        </div>
+      </section>
+
       {/* Quick Actions */}
-      <section className="max-w-7xl mx-auto px-4 py-12 bg-gray-50">
+      <section className="max-w-7xl mx-auto px-4 py-12 bg-[#F5F1E8]">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <QuickActionCard
             to="TherapistSearch"
@@ -141,7 +182,7 @@ export default function Landing() {
 
       {/* Featured Therapists */}
       {featuredTherapists.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 pb-16 bg-gray-50">
+        <section className="max-w-7xl mx-auto px-4 pb-16 bg-[#F5F1E8]">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl md:text-3xl font-black text-gray-900">
               מטפלים מומלצים
@@ -188,16 +229,16 @@ export default function Landing() {
       )}
 
       {/* CTA for Therapists */}
-      <section className="py-16 bg-gray-900 my-12">
+      <section className="py-16 bg-[#E8DCC8] my-12">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-            אתה מטפל? <span className="text-green-400">הצטרף אלינו</span>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            אתה מטפל? <span className="text-teal-600">הצטרף אלינו</span>
           </h2>
-          <p className="text-gray-300 text-base mb-6 max-w-2xl mx-auto font-medium">
+          <p className="text-gray-700 text-base mb-6 max-w-2xl mx-auto">
             קבל עמוד אישי מעוצב, מערכת תורים אוטומטית, חנות, וובינרים ועוד
           </p>
           <Link to={createPageUrl("TherapistRegister")}>
-            <Button className="bg-white hover:bg-gray-100 text-gray-900 rounded-full px-8 py-6 text-base font-bold">
+            <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-8 py-6 text-base font-semibold">
               הרשמה כמטפל
             </Button>
           </Link>

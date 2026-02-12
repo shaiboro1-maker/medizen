@@ -22,6 +22,14 @@ const CATEGORIES = [
   { id: "body_mind", label: "גוף-נפש" },
   { id: "chiropractic", label: "כירופרקטיקה" },
   { id: "hair", label: "ספרות" },
+  { id: "pemf", label: "פולסים אלקטרומגנטיים" },
+  { id: "insoles", label: "מדרסים" },
+  { id: "shockwave", label: "גלי הלם" },
+  { id: "occupational", label: "ריפוי בעיסוק" },
+  { id: "social_work", label: "עובד/ת סוציאלי" },
+  { id: "pedicure", label: "פדיקור/מניקור" },
+  { id: "combined", label: "טיפול משולב" },
+  { id: "other", label: "אחר" },
 ];
 
 const AREAS = ["מרכז", "צפון", "דרום", "ירושלים", "שרון", "שפלה"];
