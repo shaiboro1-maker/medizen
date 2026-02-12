@@ -20,7 +20,17 @@ export default function AppDownload({ variant = "default" }) {
 
   const handleInstall = async () => {
     if (!deferredPrompt) {
-      alert('התקן את האפליקציה על ידי לחיצה על "הוסף למסך הבית" בדפדפן שלך');
+      // Detect platform and show specific instructions
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      const isAndroid = /Android/.test(navigator.userAgent);
+      
+      if (isIOS) {
+        alert('להתקנה ב-iPhone:\n1. לחץ על כפתור השיתוף למטה\n2. גלול למטה ובחר "הוסף למסך הבית"\n3. לחץ על "הוסף"');
+      } else if (isAndroid) {
+        alert('להתקנה ב-Android:\n1. לחץ על תפריט הדפדפן (⋮)\n2. בחר "התקן אפליקציה" או "הוסף למסך הבית"\n3. אשר את ההתקנה');
+      } else {
+        alert('להתקנת האפליקציה:\nחפש את אייקון ההתקנה בשורת הכתובת של הדפדפן, או בתפריט הדפדפן בחר "התקן אפליקציה"');
+      }
       return;
     }
     
