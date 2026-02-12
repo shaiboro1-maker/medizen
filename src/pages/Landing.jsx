@@ -45,51 +45,99 @@ export default function Landing() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-sky-50 via-blue-50 to-teal-50 min-h-screen">
+    <div className="bg-white min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-teal-600 via-emerald-500 to-cyan-500 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 right-20 w-72 h-72 rounded-full bg-white/20 blur-3xl"/>
-          <div className="absolute bottom-10 left-10 w-96 h-96 rounded-full bg-[#F59E0B]/20 blur-3xl"/>
-        </div>
-        <div className="max-w-7xl mx-auto px-4 py-20 md:py-32 relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <div className="mb-4">
-              <span className="text-6xl md:text-7xl">🌿</span>
-            </div>
-            <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-              <span className="text-cyan-100">Wellness Hub</span>
-              <br/>
-              הדרך שלך לבריאות מיטבית
-            </h1>
-            <p className="text-lg md:text-xl text-teal-50 mb-10 leading-relaxed">
-              מצא את המטפל המושלם, קבע תור בקליק, וגלה עולם שלם של תוכן טיפולי ומוצרי בריאות
-            </p>
-            
-            <div className="bg-white rounded-2xl p-2 flex items-center max-w-xl mx-auto shadow-2xl">
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                placeholder="חפש מטפל, תחום, או אזור..."
-                className="border-0 text-base focus-visible:ring-0 bg-transparent"
-              />
-              <Button onClick={handleSearch} className="bg-[#0F766E] hover:bg-[#0d5c56] rounded-2xl px-6 font-semibold">
-                <Search size={18} className="ml-2"/>
-                חיפוש
-              </Button>
-            </div>
-          </motion.div>
+      <section className="relative bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 py-12 md:py-20">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Right Side - Text Content */}
+            <motion.div 
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-right order-2 md:order-1"
+            >
+              <div className="mb-6 text-sm text-gray-600 flex items-center justify-end gap-2">
+                <span>✨ הבית החדש של המטפלים והמטופלים בישראל</span>
+              </div>
+              
+              <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+                <span className="text-gray-900">ניהול קליניקה</span>
+                <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-l from-teal-600 to-emerald-600">
+                  חכם ויעיל
+                </span>
+              </h1>
+              
+              <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
+                מערכת ניהול חכמה למטפלים ומרפאות: CRM מתקדם, בוט AI, תשלומים אוטומטיים,
+                ניהול תורים ועוד. הכל במקום אחד.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <Button 
+                  onClick={() => window.location.href = createPageUrl("TherapistRegister")}
+                  className="bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white rounded-2xl px-8 py-6 text-lg font-semibold shadow-lg"
+                >
+                  <Calendar size={20} className="ml-2"/>
+                  הרשמה כמטפל
+                </Button>
+                <Button 
+                  onClick={handleSearch}
+                  variant="outline"
+                  className="border-2 border-teal-600 text-teal-600 hover:bg-teal-50 rounded-2xl px-8 py-6 text-lg font-semibold"
+                >
+                  מצא מטפל
+                </Button>
+              </div>
+
+              <div className="flex items-center gap-6 text-sm text-gray-500">
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    <div className="w-8 h-8 rounded-full bg-teal-500 border-2 border-white"></div>
+                    <div className="w-8 h-8 rounded-full bg-emerald-500 border-2 border-white"></div>
+                    <div className="w-8 h-8 rounded-full bg-cyan-500 border-2 border-white"></div>
+                  </div>
+                  <span>+500 מטפלים</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Left Side - Hero Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative order-1 md:order-2"
+            >
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80" 
+                  alt="Wellness" 
+                  className="w-full h-[400px] md:h-[600px] object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+              </div>
+              
+              {/* Floating Card */}
+              <div className="hidden md:block absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-xl p-4 border border-gray-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-400 flex items-center justify-center">
+                    <Calendar className="text-white" size={24}/>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500">תור הבא שלך</p>
+                    <p className="font-bold text-sm">היום 10:30 - טיפול דיקור סיני</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* App Download */}
-      <section className="max-w-7xl mx-auto px-4 -mt-8 mb-8 relative z-20">
+      <section className="max-w-7xl mx-auto px-4 mb-8">
         <AppDownload/>
       </section>
 
