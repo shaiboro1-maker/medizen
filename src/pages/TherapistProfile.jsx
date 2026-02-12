@@ -168,7 +168,7 @@ export default function TherapistProfile() {
             )}
 
             {/* Certifications */}
-            {therapist.certifications?.length > 0 && (
+            {Array.isArray(therapist.certifications) && therapist.certifications.length > 0 && (
               <div className="bg-white rounded-2xl border border-gray-100 p-6">
                 <h3 className="font-bold text-lg mb-4">תעודות והסמכות</h3>
                 <div className="space-y-4">

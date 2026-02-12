@@ -51,15 +51,19 @@ import Accessibility from './pages/Accessibility';
 import AdminBulletin from './pages/AdminBulletin';
 import AdminContent from './pages/AdminContent';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminNotifications from './pages/AdminNotifications';
 import AdminOrders from './pages/AdminOrders';
 import AdminProducts from './pages/AdminProducts';
 import AdminTherapists from './pages/AdminTherapists';
+import AdminUserContent from './pages/AdminUserContent';
 import AdminWebinars from './pages/AdminWebinars';
 import BookAppointment from './pages/BookAppointment';
 import BulletinBoard from './pages/BulletinBoard';
+import Diary from './pages/Diary';
 import Exercises from './pages/Exercises';
 import Landing from './pages/Landing';
 import MiniSite from './pages/MiniSite';
+import Music from './pages/Music';
 import MyAccount from './pages/MyAccount';
 import MyAppointments from './pages/MyAppointments';
 import MyChat from './pages/MyChat';
@@ -68,6 +72,7 @@ import MyOrders from './pages/MyOrders';
 import Podcasts from './pages/Podcasts';
 import Recipes from './pages/Recipes';
 import Shop from './pages/Shop';
+import SubmitContent from './pages/SubmitContent';
 import Support from './pages/Support';
 import TherapistAppointments from './pages/TherapistAppointments';
 import TherapistAvailability from './pages/TherapistAvailability';
@@ -84,21 +89,16 @@ import TherapistMiniSite from './pages/TherapistMiniSite';
 import TherapistMiniSiteSettings from './pages/TherapistMiniSiteSettings';
 import TherapistNewsletter from './pages/TherapistNewsletter';
 import TherapistPodcasts from './pages/TherapistPodcasts';
+import TherapistPricing from './pages/TherapistPricing';
 import TherapistProducts from './pages/TherapistProducts';
 import TherapistProfile from './pages/TherapistProfile';
 import TherapistRegister from './pages/TherapistRegister';
 import TherapistReminders from './pages/TherapistReminders';
 import TherapistSearch from './pages/TherapistSearch';
 import TherapistServices from './pages/TherapistServices';
+import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
-import TherapistPricing from './pages/TherapistPricing';
-import TherapistTeam from './pages/TherapistTeam';
-import SubmitContent from './pages/SubmitContent';
-import AdminUserContent from './pages/AdminUserContent';
-import AdminNotifications from './pages/AdminNotifications';
-import Music from './pages/Music';
-import Diary from './pages/Diary';
 import __Layout from './Layout.jsx';
 
 
@@ -107,15 +107,19 @@ export const PAGES = {
     "AdminBulletin": AdminBulletin,
     "AdminContent": AdminContent,
     "AdminDashboard": AdminDashboard,
+    "AdminNotifications": AdminNotifications,
     "AdminOrders": AdminOrders,
     "AdminProducts": AdminProducts,
     "AdminTherapists": AdminTherapists,
+    "AdminUserContent": AdminUserContent,
     "AdminWebinars": AdminWebinars,
     "BookAppointment": BookAppointment,
     "BulletinBoard": BulletinBoard,
+    "Diary": Diary,
     "Exercises": Exercises,
     "Landing": Landing,
     "MiniSite": MiniSite,
+    "Music": Music,
     "MyAccount": MyAccount,
     "MyAppointments": MyAppointments,
     "MyChat": MyChat,
@@ -124,6 +128,7 @@ export const PAGES = {
     "Podcasts": Podcasts,
     "Recipes": Recipes,
     "Shop": Shop,
+    "SubmitContent": SubmitContent,
     "Support": Support,
     "TherapistAppointments": TherapistAppointments,
     "TherapistAvailability": TherapistAvailability,
@@ -140,21 +145,16 @@ export const PAGES = {
     "TherapistMiniSiteSettings": TherapistMiniSiteSettings,
     "TherapistNewsletter": TherapistNewsletter,
     "TherapistPodcasts": TherapistPodcasts,
+    "TherapistPricing": TherapistPricing,
     "TherapistProducts": TherapistProducts,
     "TherapistProfile": TherapistProfile,
     "TherapistRegister": TherapistRegister,
     "TherapistReminders": TherapistReminders,
     "TherapistSearch": TherapistSearch,
     "TherapistServices": TherapistServices,
+    "TherapistTeam": TherapistTeam,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
-    "TherapistPricing": TherapistPricing,
-    "TherapistTeam": TherapistTeam,
-    "SubmitContent": SubmitContent,
-    "AdminUserContent": AdminUserContent,
-    "AdminNotifications": AdminNotifications,
-    "Music": Music,
-    "Diary": Diary,
 }
 
 export const pagesConfig = {
