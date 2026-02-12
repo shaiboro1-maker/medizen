@@ -41,10 +41,10 @@ export default function Landing() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-bl from-teal-700 via-teal-600 to-emerald-500 overflow-hidden">
+      <section className="relative bg-gradient-to-bl from-[#0F766E] via-teal-600 to-emerald-500 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 right-20 w-72 h-72 rounded-full bg-white/20 blur-3xl"/>
-          <div className="absolute bottom-10 left-10 w-96 h-96 rounded-full bg-amber-300/20 blur-3xl"/>
+          <div className="absolute bottom-10 left-10 w-96 h-96 rounded-full bg-[#F59E0B]/20 blur-3xl"/>
         </div>
         <div className="max-w-7xl mx-auto px-4 py-20 md:py-32 relative z-10">
           <motion.div 
@@ -54,13 +54,13 @@ export default function Landing() {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-              הדרך שלך <span className="text-amber-300">לבריאות</span> טובה יותר
+              הדרך שלך <span className="text-[#F59E0B]">לבריאות</span> טובה יותר
             </h1>
             <p className="text-lg md:text-xl text-teal-50 mb-10 leading-relaxed">
               מצא את המטפל המושלם, קבע תור בקליק, וגלה עולם שלם של תוכן טיפולי ומוצרי בריאות
             </p>
             
-            <div className="bg-white rounded-2xl p-2 flex items-center max-w-xl mx-auto shadow-xl">
+            <div className="bg-white rounded-2xl p-2 flex items-center max-w-xl mx-auto shadow-2xl">
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -68,7 +68,7 @@ export default function Landing() {
                 placeholder="חפש מטפל, תחום, או אזור..."
                 className="border-0 text-base focus-visible:ring-0 bg-transparent"
               />
-              <Button onClick={handleSearch} className="bg-teal-600 hover:bg-teal-700 rounded-xl px-6">
+              <Button onClick={handleSearch} className="bg-[#0F766E] hover:bg-[#0d5c56] rounded-2xl px-6 font-semibold">
                 <Search size={18} className="ml-2"/>
                 חיפוש
               </Button>
@@ -98,31 +98,31 @@ export default function Landing() {
         <div className="grid md:grid-cols-4 gap-6">
           <QuickActionCard
             to="TherapistSearch"
-            icon={<Calendar className="text-teal-600" size={28}/>}
+            icon={<Calendar className="text-[#0F766E]" size={28}/>}
             title="קבע תור"
             desc="מצא מטפל וקבע תור בשניות"
-            color="bg-teal-50"
+            color="bg-[#0F766E]/5"
           />
           <QuickActionCard
             to="Exercises"
-            icon={<BookOpen className="text-blue-600" size={28}/>}
+            icon={<BookOpen className="text-[#3B82F6]" size={28}/>}
             title="תרגילים"
             desc="מאגר תרגילים מקצועי"
-            color="bg-blue-50"
+            color="bg-[#3B82F6]/5"
           />
           <QuickActionCard
             to="Shop"
-            icon={<ShoppingBag className="text-amber-600" size={28}/>}
+            icon={<ShoppingBag className="text-[#F59E0B]" size={28}/>}
             title="חנות"
             desc="מוצרי בריאות וטיפול"
-            color="bg-amber-50"
+            color="bg-[#F59E0B]/5"
           />
           <QuickActionCard
             to="Webinars"
-            icon={<Sparkles className="text-purple-600" size={28}/>}
+            icon={<Sparkles className="text-[#16A34A]" size={28}/>}
             title="וובינרים"
             desc="סדנאות והרצאות אונליין"
-            color="bg-purple-50"
+            color="bg-[#16A34A]/5"
           />
         </div>
       </section>
@@ -174,16 +174,16 @@ export default function Landing() {
       )}
 
       {/* CTA for Therapists */}
-      <section className="py-20 bg-gradient-to-l from-amber-50 to-amber-100/50">
+      <section className="py-20 bg-gradient-to-l from-[#F59E0B]/10 to-[#F59E0B]/5">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            אתה מטפל? <span className="text-amber-600">הצטרף אלינו</span>
+            אתה מטפל? <span className="text-[#F59E0B]">הצטרף אלינו</span>
           </h2>
           <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
             קבל עמוד אישי, מערכת תורים מתקדמת, חנות, וובינרים, פודקאסטים ועוד
           </p>
           <Link to={createPageUrl("TherapistRegister")}>
-            <Button className="bg-amber-500 hover:bg-amber-600 text-white rounded-full px-8 py-6 text-lg">
+            <Button className="bg-[#F59E0B] hover:bg-[#d97706] text-white rounded-full px-8 py-6 text-lg font-semibold">
               הרשמה כמטפל
             </Button>
           </Link>
