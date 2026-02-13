@@ -22,7 +22,9 @@ const CATEGORIES = [
 ];
 
 export default function Music() {
-  const [category, setCategory] = useState("all");
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialCategory = urlParams.get('category') || 'all';
+  const [category, setCategory] = useState(initialCategory);
   const [playing, setPlaying] = useState(null);
 
   const { data: tracks = [], isLoading } = useQuery({

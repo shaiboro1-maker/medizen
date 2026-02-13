@@ -243,35 +243,71 @@ export default function Landing() {
 
       {/* Quick Actions */}
       <section className="max-w-7xl mx-auto px-4 py-12 bg-[#F5F1E8]">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <QuickActionCard
-            to="TherapistSearch"
-            icon={<Calendar className="text-gray-900" size={24}/>}
-            title="קבע תור"
-            desc="בשניות"
-            color="bg-white"
-          />
-          <QuickActionCard
-            to="Exercises"
-            icon={<BookOpen className="text-gray-900" size={24}/>}
-            title="תרגילים"
-            desc="מקצועי"
-            color="bg-white"
-          />
-          <QuickActionCard
-            to="Shop"
-            icon={<ShoppingBag className="text-gray-900" size={24}/>}
-            title="חנות"
-            desc="מוצרים"
-            color="bg-white"
-          />
-          <QuickActionCard
-            to="Webinars"
-            icon={<Sparkles className="text-gray-900" size={24}/>}
-            title="וובינרים"
-            desc="הרצאות"
-            color="bg-white"
-          />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <Link to={createPageUrl("TherapistSearch")} className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1">
+            <img 
+              src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=300&fit=crop" 
+              alt="מצא מטפל"
+              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">מצא מטפל</h3>
+              <p className="text-sm opacity-90">בשניות</p>
+            </div>
+          </Link>
+          
+          <Link to={createPageUrl("TherapistSearch")} className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1">
+            <img 
+              src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop" 
+              alt="קבע תור"
+              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">קבע תור</h3>
+              <p className="text-sm opacity-90">תור מהיר</p>
+            </div>
+          </Link>
+
+          <Link to={createPageUrl("Exercises")} className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1">
+            <img 
+              src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=300&fit=crop" 
+              alt="תרגילים"
+              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">תרגילים</h3>
+              <p className="text-sm opacity-90">מקצועיים</p>
+            </div>
+          </Link>
+
+          <Link to={createPageUrl("Shop")} className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1">
+            <img 
+              src="https://images.unsplash.com/photo-1556740758-90de374c12ad?w=400&h=300&fit=crop" 
+              alt="חנות"
+              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">חנות</h3>
+              <p className="text-sm opacity-90">מוצרים</p>
+            </div>
+          </Link>
+
+          <Link to={createPageUrl("Webinars")} className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1">
+            <img 
+              src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop" 
+              alt="וובינרים"
+              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">וובינרים</h3>
+              <p className="text-sm opacity-90">הרצאות</p>
+            </div>
+          </Link>
         </div>
       </section>
 
@@ -343,20 +379,7 @@ export default function Landing() {
   );
 }
 
-function QuickActionCard({ to, icon, title, desc, color }) {
-  return (
-    <Link
-      to={createPageUrl(to)}
-      className={`group ${color} rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1`}
-    >
-      <div className="mb-3">
-        {icon}
-      </div>
-      <h3 className="font-black text-base text-gray-900">{title}</h3>
-      <p className="text-xs text-gray-600 font-medium">{desc}</p>
-    </Link>
-  );
-}
+
 
 function TherapistCard({ therapist }) {
   const bgPatterns = [
