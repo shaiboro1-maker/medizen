@@ -108,6 +108,7 @@ import TherapistCRM from './pages/TherapistCRM';
 import TherapistPopups from './pages/TherapistPopups';
 import TherapistPayments from './pages/TherapistPayments';
 import TherapistInvoices from './pages/TherapistInvoices';
+import TherapistAIWriter from './pages/TherapistAIWriter';
 import __Layout from './Layout.jsx';
 
 
@@ -173,6 +174,7 @@ export const PAGES = {
     "TherapistPopups": TherapistPopups,
     "TherapistPayments": TherapistPayments,
     "TherapistInvoices": TherapistInvoices,
+    "TherapistAIWriter": TherapistAIWriter,
 }
 
 export const pagesConfig = {
