@@ -47,37 +47,37 @@ export default function Landing() {
   };
 
   return (
-    <div style={{backgroundColor: '#FAF8F3'}} className="min-h-screen">
+    <div className="bg-[#F5F1E8] min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden" style={{backgroundColor: '#FAF8F3'}}>
-        <div className="max-w-6xl mx-auto px-4 py-12 md:py-16 relative z-10">
+      <section className="relative bg-[#F5F1E8] overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="text-right max-w-2xl"
+            className="text-center max-w-3xl mx-auto"
           >
-            <h1 className="text-3xl md:text-5xl font-black leading-tight mb-5" style={{color: '#5A7A6A'}}>
-              <span>Wellness Hub</span>
+            <h1 className="text-4xl md:text-6xl font-black text-gray-900 leading-tight mb-6">
+              <span className="text-gray-900">Wellness Hub</span>
               <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#7C9885] to-[#A8C5B5]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-l from-green-600 to-teal-600">
                 הדרך שלך לבריאות מיטבית
               </span>
             </h1>
-            <p className="text-base md:text-lg text-gray-700 mb-8 leading-relaxed">
+            <p className="text-lg md:text-xl text-gray-600 mb-10 leading-relaxed font-medium">
               מצא את המטפל המושלם, קבע תור בקליק, וגלה עולם שלם של תוכן טיפולי ומוצרי בריאות
             </p>
             
-            <div className="bg-white rounded-2xl p-2 flex items-center max-w-md border border-gray-200 shadow-sm">
+            <div className="bg-gray-100 rounded-2xl p-2 flex items-center max-w-xl mx-auto border border-gray-200">
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 placeholder="חפש מטפל, תחום, או אזור..."
-                className="border-0 text-sm focus-visible:ring-0 bg-transparent text-right"
+                className="border-0 text-base focus-visible:ring-0 bg-transparent"
               />
-              <Button onClick={handleSearch} className="rounded-xl px-4 py-2 text-sm font-medium" style={{backgroundColor: '#D4C4B0', color: '#5A4A3A'}}>
-                <Search size={16} className="ml-2"/>
+              <Button onClick={handleSearch} className="bg-gray-900 hover:bg-gray-800 text-white rounded-xl px-6 font-semibold">
+                <Search size={18} className="ml-2"/>
                 חיפוש
               </Button>
             </div>
@@ -91,123 +91,123 @@ export default function Landing() {
       </section>
 
       {/* Categories */}
-      <section className="max-w-6xl mx-auto px-4 py-6 relative z-20">
-        <h2 className="text-xl font-bold mb-5 text-right" style={{color: '#5A7A6A'}}>מצא את המטפל המתאים לך</h2>
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-2.5">
+      <section className="max-w-7xl mx-auto px-4 py-8 relative z-20 bg-[#F5F1E8]">
+        <h2 className="text-2xl font-black text-gray-900 mb-6 text-center">מצא את המטפל המתאים לך</h2>
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
           {CATEGORIES.map((cat) => (
             <Link
               key={cat.id}
               to={createPageUrl(`TherapistSearch?category=${cat.id}`)}
-              className="bg-white rounded-xl p-2.5 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-200"
+              className="bg-white rounded-xl p-3 text-center shadow-sm hover:shadow-md transition-all hover:-translate-y-1 border border-gray-200"
             >
-              <span className="text-lg block mb-0.5">{cat.emoji}</span>
-              <span className="text-[9px] leading-tight font-semibold text-gray-700 block">{cat.label}</span>
+              <span className="text-xl block mb-1">{cat.emoji}</span>
+              <span className="text-[10px] leading-tight font-semibold text-gray-700 block">{cat.label}</span>
             </Link>
           ))}
         </div>
       </section>
 
       {/* Health Content Section */}
-      <section className="max-w-6xl mx-auto px-4 py-6">
-        <h2 className="text-xl font-bold mb-5 text-right" style={{color: '#5A7A6A'}}>תוכן בריאותי</h2>
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-2.5">
+      <section className="max-w-7xl mx-auto px-4 py-8 bg-[#F5F1E8]">
+        <h2 className="text-2xl font-black text-gray-900 mb-6 text-center">תוכן בריאותי</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           <Link
             to={createPageUrl("Exercises")}
-            className="bg-white rounded-xl p-3 border border-gray-200 hover:shadow-md transition-all hover:-translate-y-1 text-center"
+            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
           >
-            <div className="text-2xl mb-1">💪</div>
-            <h3 className="font-bold text-xs text-gray-900">תרגילים</h3>
-            <p className="text-[10px] text-gray-600">מקצועי</p>
+            <div className="text-3xl mb-2">💪</div>
+            <h3 className="font-black text-base text-gray-900">תרגילים</h3>
+            <p className="text-xs text-gray-600 font-medium">מקצועי</p>
           </Link>
           <Link
             to={createPageUrl("Recipes")}
-            className="bg-white rounded-xl p-3 border border-gray-200 hover:shadow-md transition-all hover:-translate-y-1 text-center"
+            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
           >
-            <div className="text-2xl mb-1">🥗</div>
-            <h3 className="font-bold text-xs text-gray-900">מתכונים</h3>
-            <p className="text-[10px] text-gray-600">בריאים</p>
+            <div className="text-3xl mb-2">🥗</div>
+            <h3 className="font-black text-base text-gray-900">מתכונים</h3>
+            <p className="text-xs text-gray-600 font-medium">בריאים</p>
           </Link>
           <Link
             to={createPageUrl("Webinars")}
-            className="bg-white rounded-xl p-3 border border-gray-200 hover:shadow-md transition-all hover:-translate-y-1 text-center"
+            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
           >
-            <div className="text-2xl mb-1">🎥</div>
-            <h3 className="font-bold text-xs text-gray-900">וובינרים</h3>
-            <p className="text-[10px] text-gray-600">הרצאות</p>
+            <div className="text-3xl mb-2">🎥</div>
+            <h3 className="font-black text-base text-gray-900">וובינרים</h3>
+            <p className="text-xs text-gray-600 font-medium">הרצאות</p>
           </Link>
           <Link
             to={createPageUrl("Podcasts")}
-            className="bg-white rounded-xl p-3 border border-gray-200 hover:shadow-md transition-all hover:-translate-y-1 text-center"
+            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
           >
-            <div className="text-2xl mb-1">🎙️</div>
-            <h3 className="font-bold text-xs text-gray-900">פודקאסטים</h3>
-            <p className="text-[10px] text-gray-600">מעניינים</p>
+            <div className="text-3xl mb-2">🎙️</div>
+            <h3 className="font-black text-base text-gray-900">פודקאסטים</h3>
+            <p className="text-xs text-gray-600 font-medium">מעניינים</p>
           </Link>
           <Link
             to={createPageUrl("Music")}
-            className="bg-white rounded-xl p-3 border border-gray-200 hover:shadow-md transition-all hover:-translate-y-1 text-center"
+            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
           >
-            <div className="text-2xl mb-1">🎵</div>
-            <h3 className="font-bold text-xs text-gray-900">מוזיקה</h3>
-            <p className="text-[10px] text-gray-600">מדיטציות</p>
+            <div className="text-3xl mb-2">🎵</div>
+            <h3 className="font-black text-base text-gray-900">מוזיקה</h3>
+            <p className="text-xs text-gray-600 font-medium">מדיטציות</p>
           </Link>
           <Link
             to={createPageUrl("Diary")}
-            className="bg-white rounded-xl p-3 border border-gray-200 hover:shadow-md transition-all hover:-translate-y-1 text-center"
+            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
           >
-            <div className="text-2xl mb-1">📔</div>
-            <h3 className="font-bold text-xs text-gray-900">יומן</h3>
-            <p className="text-[10px] text-gray-600">אישי</p>
+            <div className="text-3xl mb-2">📔</div>
+            <h3 className="font-black text-base text-gray-900">יומן</h3>
+            <p className="text-xs text-gray-600 font-medium">אישי</p>
           </Link>
         </div>
       </section>
 
       {/* Quick Actions */}
-      <section className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <section className="max-w-7xl mx-auto px-4 py-12 bg-[#F5F1E8]">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <QuickActionCard
             to="TherapistSearch"
-            icon={<Calendar size={20} style={{color: '#7C9885'}}/>}
+            icon={<Calendar className="text-gray-900" size={24}/>}
             title="קבע תור"
             desc="בשניות"
-            color="bg-[#E6D5C3]"
+            color="bg-white"
           />
           <QuickActionCard
             to="Exercises"
-            icon={<BookOpen size={20} style={{color: '#7C9885'}}/>}
+            icon={<BookOpen className="text-gray-900" size={24}/>}
             title="תרגילים"
             desc="מקצועי"
-            color="bg-[#D4E4DB]"
+            color="bg-white"
           />
           <QuickActionCard
             to="Shop"
-            icon={<ShoppingBag size={20} style={{color: '#7C9885'}}/>}
+            icon={<ShoppingBag className="text-gray-900" size={24}/>}
             title="חנות"
             desc="מוצרים"
-            color="bg-[#F2E6D9]"
+            color="bg-white"
           />
           <QuickActionCard
             to="Webinars"
-            icon={<Sparkles size={20} style={{color: '#7C9885'}}/>}
+            icon={<Sparkles className="text-gray-900" size={24}/>}
             title="וובינרים"
             desc="הרצאות"
-            color="bg-[#D4C4B0]"
+            color="bg-white"
           />
         </div>
       </section>
 
       {/* Featured Therapists */}
       {featuredTherapists.length > 0 && (
-        <section className="max-w-6xl mx-auto px-4 pb-12">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold" style={{color: '#5A7A6A'}}>
+        <section className="max-w-7xl mx-auto px-4 pb-16 bg-[#F5F1E8]">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-black text-gray-900">
               מטפלים מומלצים
             </h2>
-            <Link to={createPageUrl("TherapistSearch")} className="text-sm font-semibold flex items-center gap-1" style={{color: '#7C9885'}}>
-              צפה בכולם <ArrowLeft size={12}/>
+            <Link to={createPageUrl("TherapistSearch")} className="text-gray-900 hover:text-gray-700 text-sm font-semibold flex items-center gap-1">
+              צפה בכולם <ArrowLeft size={14}/>
             </Link>
           </div>
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-3 gap-6">
             {featuredTherapists.map((t) => (
               <TherapistCard key={t.id} therapist={t}/>
             ))}
@@ -245,16 +245,16 @@ export default function Landing() {
       )}
 
       {/* CTA for Therapists */}
-      <section className="py-12 my-8" style={{backgroundColor: '#E8DCC8'}}>
-        <div className="max-w-4xl mx-auto px-4 text-right">
-          <h2 className="text-2xl md:text-3xl font-bold mb-3" style={{color: '#5A4A3A'}}>
-            אתה מטפל? <span style={{color: '#7C9885'}}>הצטרף אלינו</span>
+      <section className="py-16 bg-[#E8DCC8] my-12">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            אתה מטפל? <span className="text-teal-600">הצטרף אלינו</span>
           </h2>
-          <p className="text-sm mb-5 max-w-xl" style={{color: '#6A5A4A'}}>
+          <p className="text-gray-700 text-base mb-6 max-w-2xl mx-auto">
             קבל עמוד אישי מעוצב, מערכת תורים אוטומטית, חנות, וובינרים ועוד
           </p>
           <Link to={createPageUrl("TherapistRegister")}>
-            <Button className="rounded-full px-6 py-2.5 text-sm font-semibold" style={{backgroundColor: '#D4C4B0', color: '#5A4A3A'}}>
+            <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-8 py-6 text-base font-semibold">
               הרשמה כמטפל
             </Button>
           </Link>
@@ -268,13 +268,13 @@ function QuickActionCard({ to, icon, title, desc, color }) {
   return (
     <Link
       to={createPageUrl(to)}
-      className={`group ${color} rounded-xl p-3 border border-gray-200 hover:shadow-md transition-all hover:-translate-y-1 text-center`}
+      className={`group ${color} rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1`}
     >
-      <div className="mb-2">
+      <div className="mb-3">
         {icon}
       </div>
-      <h3 className="font-bold text-sm" style={{color: '#5A4A3A'}}>{title}</h3>
-      <p className="text-[10px]" style={{color: '#8A7A6A'}}>{desc}</p>
+      <h3 className="font-black text-base text-gray-900">{title}</h3>
+      <p className="text-xs text-gray-600 font-medium">{desc}</p>
     </Link>
   );
 }
