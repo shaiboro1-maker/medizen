@@ -199,7 +199,7 @@ export default function Layout({ children, currentPageName }) {
               <span className="text-2xl">🌿</span>
             </Link>
           )}
-          <h1 className="text-lg font-bold text-gray-900 absolute left-1/2 transform -translate-x-1/2">
+          <h1 className="text-lg font-bold text-gray-900 flex-1 text-center">
             {isRootPage ? "" : currentPageName.replace(/([A-Z])/g, ' $1').trim()}
           </h1>
           <div className="w-10"/> {/* Spacer for balance */}

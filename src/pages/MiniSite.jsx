@@ -156,7 +156,14 @@ export default function MiniSite() {
             <h2 className="text-2xl font-bold mb-4">גלריה</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {therapist.gallery.map((url, i) => (
-                <img key={i} src={url} alt="" className="w-full h-48 object-cover rounded-xl"/>
+                <div key={i} className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all">
+                  <img src={url} alt="" className="w-full h-64 object-cover"/>
+                </div>
+              ))}
+              {therapist.video_testimonials?.map((vid, i) => (
+                <div key={`vid-${i}`} className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all">
+                  <video src={vid.url} className="w-full h-64 object-cover" controls/>
+                </div>
               ))}
             </div>
           </div>
@@ -166,21 +173,27 @@ export default function MiniSite() {
         {showServices && services.length > 0 && (
         <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
           <h2 className="text-2xl font-bold mb-6">השירותים שלי</h2>
-          <div className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-6">
             {services.map(s => (
-              <div key={s.id} className="flex flex-col md:flex-row justify-between items-start md:items-center p-5 bg-gray-50 rounded-xl gap-4">
-                <div className="flex-1">
-                  <h3 className="font-bold text-lg">{s.name}</h3>
-                  <p className="text-sm text-gray-500">{s.description}</p>
-                  <p className="text-sm text-gray-400 mt-1">{s.duration_minutes} דקות</p>
+              <div key={s.id} className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all">
+                <div className="aspect-video bg-gradient-to-br from-[#7C9885] to-[#9CB4A4] flex items-center justify-center">
+                  <img 
+                    src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop" 
+                    alt={s.name}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <div className="flex items-center gap-3">
-                  <p className="text-xl font-bold text-teal-700">₪{s.price}</p>
-                  <Link to={createPageUrl(`BookAppointment?therapist=${therapist.id}&service=${s.id}`)}>
-                    <Button size="sm" className="bg-teal-600 hover:bg-teal-700 whitespace-nowrap">
-                      <Calendar size={14} className="ml-1"/> קבע תור
-                    </Button>
-                  </Link>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-5">
+                  <h3 className="font-bold text-xl text-white mb-1">{s.name}</h3>
+                  <p className="text-sm text-white/80 mb-2 line-clamp-2">{s.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl font-bold text-white">₪{s.price}</span>
+                    <Link to={createPageUrl(`BookAppointment?therapist=${therapist.id}&service=${s.id}`)}>
+                      <Button size="sm" className="bg-white/90 hover:bg-white text-[#7C9885]">
+                        <Calendar size={14} className="ml-1"/> קבע תור
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))}
@@ -194,16 +207,20 @@ export default function MiniSite() {
             <h2 className="text-2xl font-bold mb-6">קורסים דיגיטליים</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {courses.map(c => (
-                <div key={c.id} className="border border-gray-100 rounded-xl overflow-hidden">
-                  <div className="h-40 bg-gradient-to-bl from-purple-50 to-blue-50">
-                    {c.image_url && <img src={c.image_url} alt="" className="w-full h-full object-cover"/>}
+                <div key={c.id} className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all">
+                  <div className="aspect-video">
+                    <img 
+                      src={c.image_url || "https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=600&h=400&fit=crop"} 
+                      alt={c.title}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                  <div className="p-5">
-                    <h3 className="font-bold mb-2">{c.title}</h3>
-                    <p className="text-sm text-gray-500 mb-3">{c.lessons?.length} שיעורים · {c.total_duration_minutes} דק׳</p>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-5">
+                    <h3 className="font-bold text-xl text-white mb-2">{c.title}</h3>
+                    <p className="text-sm text-white/80 mb-3">{c.lessons?.length} שיעורים · {c.total_duration_minutes} דק׳</p>
                     <div className="flex justify-between items-center">
-                      <span className="font-bold text-teal-700">₪{c.price}</span>
-                      <Button size="sm" className="bg-purple-600 hover:bg-purple-700">רכישה</Button>
+                      <span className="font-bold text-white text-2xl">₪{c.price}</span>
+                      <Button size="sm" className="bg-white/90 hover:bg-white text-[#7C9885]">רכישה</Button>
                     </div>
                   </div>
                 </div>
@@ -244,17 +261,19 @@ export default function MiniSite() {
               {blogPosts
                 .filter(post => !selectedCategory || post.category === selectedCategory)
                 .map(post => (
-                <div key={post.id} className="border border-gray-100 rounded-xl overflow-hidden hover:shadow-lg transition-all">
-                  {post.image_url && (
-                    <div className="h-40 bg-gradient-to-bl from-teal-50 to-blue-50">
-                      <img src={post.image_url} alt={post.title} className="w-full h-full object-cover"/>
-                    </div>
-                  )}
-                  <div className="p-5">
-                    <Badge variant="secondary" className="mb-2 bg-teal-50 text-teal-700">{post.category || "כללי"}</Badge>
-                    <h3 className="font-bold text-lg mb-2">{post.title}</h3>
-                    <p className="text-sm text-gray-500 mb-3 line-clamp-2">{post.excerpt}</p>
-                    <Button size="sm" variant="outline">קרא עוד</Button>
+                <div key={post.id} className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all">
+                  <div className="aspect-video">
+                    <img 
+                      src={post.image_url || "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&h=400&fit=crop"} 
+                      alt={post.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-5">
+                    <Badge variant="secondary" className="mb-2 bg-white/90 text-[#7C9885] w-fit">{post.category || "כללי"}</Badge>
+                    <h3 className="font-bold text-xl text-white mb-2">{post.title}</h3>
+                    <p className="text-sm text-white/80 mb-3 line-clamp-2">{post.excerpt}</p>
+                    <Button size="sm" className="bg-white/90 hover:bg-white text-[#7C9885] w-fit">קרא עוד</Button>
                   </div>
                 </div>
               ))}

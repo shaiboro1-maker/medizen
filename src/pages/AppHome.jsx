@@ -141,51 +141,213 @@ export default function AppHome() {
 
       {/* Quick Actions */}
       <div className="px-4 mt-6">
-        <h2 className="text-xl font-bold mb-4 text-[#7C9885] text-right">פעולות מהירות</h2>
+        <h2 className="text-xl font-bold mb-4 text-[#7C9885]">פעולות מהירות</h2>
         <div className="grid grid-cols-2 gap-4">
-          {quickActions.map((action, i) => (
-            <Link key={i} to={createPageUrl(action.to)}>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.05 }}
-                className="rounded-3xl p-5 text-white shadow-md hover:shadow-lg transition-all flex flex-col items-center justify-center h-28"
-                style={{backgroundColor: action.color}}
-              >
-                <div className="mb-2">{action.icon}</div>
-                <p className="text-base font-medium">{action.label}</p>
-              </motion.div>
-            </Link>
-          ))}
+          <Link to={createPageUrl("TherapistSearch")}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=300&fit=crop" 
+                alt="מצא מטפל"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <p className="text-white text-lg font-bold">מצא מטפל</p>
+              </div>
+            </motion.div>
+          </Link>
+
+          <Link to={createPageUrl("MyAppointments")}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.05 }}
+              className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop" 
+                alt="יומן תורים"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <p className="text-white text-lg font-bold">יומן תורים</p>
+              </div>
+            </motion.div>
+          </Link>
+
+          <Link to={createPageUrl("Shop")}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1556740758-90de374c12ad?w=400&h=300&fit=crop" 
+                alt="חנות"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <p className="text-white text-lg font-bold">חנות</p>
+              </div>
+            </motion.div>
+          </Link>
+
+          <Link to={createPageUrl("Music")}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.15 }}
+              className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=400&h=300&fit=crop" 
+                alt="מוזיקה"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <p className="text-white text-lg font-bold">מוזיקה</p>
+              </div>
+            </motion.div>
+          </Link>
         </div>
       </div>
 
       {/* Content Sections */}
-      <div className="px-4 mt-6 space-y-3">
-        <ContentCard
-          icon="📚"
-          title="תרגילים"
-          subtitle="תרגילים מומלצים"
-          to="Exercises"
-        />
-        <ContentCard
-          icon="🥗"
-          title="מתכונים"
-          subtitle="מתכונים בריאים"
-          to="Recipes"
-        />
-        <ContentCard
-          icon="📔"
-          title="יומן אישי"
-          subtitle="עקוב אחר ההתקדמות"
-          to="Diary"
-        />
-        <ContentCard
-          icon="🎵"
-          title="מוזיקה"
-          subtitle="מוזיקה מרגיעה"
-          to="Music"
-        />
+      <div className="px-4 mt-6">
+        <h2 className="text-xl font-bold mb-4 text-[#7C9885]">תוכן לגוף ולנפש</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <Link to={createPageUrl("Exercises")}>
+            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+              <img 
+                src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=300&fit=crop" 
+                alt="תרגילים"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <div className="text-right">
+                  <h3 className="text-white text-lg font-bold">תרגילים</h3>
+                  <p className="text-white/80 text-sm">מקצועיים</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link to={createPageUrl("Recipes")}>
+            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+              <img 
+                src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" 
+                alt="מתכונים"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <div className="text-right">
+                  <h3 className="text-white text-lg font-bold">מתכונים</h3>
+                  <p className="text-white/80 text-sm">בריאים</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link to={createPageUrl("Music?category=body_mind")}>
+            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+              <img 
+                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop" 
+                alt="גוף ונפש"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <div className="text-right">
+                  <h3 className="text-white text-lg font-bold">גוף ונפש</h3>
+                  <p className="text-white/80 text-sm">ריפוי והרמוניה</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link to={createPageUrl("Music?category=sleep")}>
+            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+              <img 
+                src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=400&h=300&fit=crop" 
+                alt="שינה רגועה"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <div className="text-right">
+                  <h3 className="text-white text-lg font-bold">שינה רגועה</h3>
+                  <p className="text-white/80 text-sm">תדרי שינה</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link to={createPageUrl("Music?category=breathing")}>
+            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+              <img 
+                src="https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=400&h=300&fit=crop" 
+                alt="תרגילי נשימה"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <div className="text-right">
+                  <h3 className="text-white text-lg font-bold">תרגילי נשימה</h3>
+                  <p className="text-white/80 text-sm">טכניקות הרגעה</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link to={createPageUrl("Music?category=life_stories")}>
+            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+              <img 
+                src="https://images.unsplash.com/photo-1516534775068-ba3e7458af70?w=400&h=300&fit=crop" 
+                alt="סיפורים לחיים"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <div className="text-right">
+                  <h3 className="text-white text-lg font-bold">סיפורים לחיים</h3>
+                  <p className="text-white/80 text-sm">השראה</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link to={createPageUrl("Music?category=jokes")}>
+            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+              <img 
+                src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=400&h=300&fit=crop" 
+                alt="בדיחות"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <div className="text-right">
+                  <h3 className="text-white text-lg font-bold">בדיחות מצחיקות</h3>
+                  <p className="text-white/80 text-sm">העלאת מורל</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link to={createPageUrl("Diary")}>
+            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+              <img 
+                src="https://images.unsplash.com/photo-1517842645767-c639042777db?w=400&h=300&fit=crop" 
+                alt="יומן אישי"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <div className="text-right">
+                  <h3 className="text-white text-lg font-bold">יומן אישי</h3>
+                  <p className="text-white/80 text-sm">מעקב יומי</p>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
       </div>
       
       <div className="h-16"></div>
@@ -204,21 +366,7 @@ export default function AppHome() {
   );
 }
 
-function ContentCard({ icon, title, subtitle, to }) {
-  return (
-    <Link to={createPageUrl(to)}>
-      <div className="bg-white rounded-xl p-5 border border-[#E5DDD3] hover:shadow-md transition-all">
-        <div className="flex items-center gap-4 justify-start">
-          <div className="text-3xl">{icon}</div>
-          <div className="text-right">
-            <h3 className="font-semibold text-base text-[#7C9885]">{title}</h3>
-            <p className="text-sm text-[#A8947D]">{subtitle}</p>
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-}
+
 
 function NavItem({ icon, label, to }) {
   return (
