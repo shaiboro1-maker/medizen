@@ -89,10 +89,10 @@ export default function TherapistApp() {
   }
 
   const quickActions = [
-    { icon: <Calendar size={24}/>, label: "תורים", to: "TherapistAppointments", color: "from-blue-500 to-cyan-500" },
-    { icon: <Users size={24}/>, label: "לקוחות", to: "TherapistClients", color: "from-purple-500 to-pink-500" },
-    { icon: <MessageCircle size={24}/>, label: "צ'אט", to: "TherapistChat", color: "from-green-500 to-emerald-500" },
-    { icon: <Globe size={24}/>, label: "מיני-סייט", to: "TherapistMiniSiteManager", color: "from-orange-500 to-red-500" },
+    { icon: <Calendar size={24}/>, label: "תורים", to: "TherapistAppointments", color: "from-[#7C9885] to-[#9CB4A4]" },
+    { icon: <Users size={24}/>, label: "לקוחות", to: "TherapistClients", color: "from-[#A8947D] to-[#B89968]" },
+    { icon: <MessageCircle size={24}/>, label: "צ'אט", to: "TherapistChat", color: "from-[#9CB4A4] to-[#A8947D]" },
+    { icon: <Globe size={24}/>, label: "מיני-סייט", to: "TherapistMiniSiteManager", color: "from-[#B89968] to-[#C9A876]" },
   ];
 
   const features = [
@@ -105,7 +105,7 @@ export default function TherapistApp() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50 to-emerald-50 pb-20">
       {/* Header */}
-      <div className="bg-gradient-to-br from-teal-600 to-emerald-600 text-white px-4 pt-8 pb-6 rounded-b-3xl shadow-lg">
+      <div className="bg-gradient-to-br from-[#7C9885] to-[#9CB4A4] text-white px-4 pt-8 pb-6 rounded-b-3xl shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-white/20 overflow-hidden border-2 border-white/30">
@@ -157,7 +157,7 @@ export default function TherapistApp() {
                       <span className="text-xs text-gray-500">{apt.start_time}</span>
                     </div>
                   </div>
-                  <Badge className="bg-teal-600 text-xs">מאושר</Badge>
+                  <Badge className="bg-[#7C9885] text-xs">מאושר</Badge>
                 </div>
               </motion.div>
             ))}
@@ -175,7 +175,7 @@ export default function TherapistApp() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.05 }}
-                className={`bg-gradient-to-br ${action.color} rounded-xl p-4 text-white shadow-md hover:shadow-lg transition-all`}
+                className={`bg-gradient-to-br ${action.color} rounded-3xl p-4 text-white shadow-md hover:shadow-lg transition-all`}
               >
                 <div className="mb-2">{action.icon}</div>
                 <p className="text-sm font-medium">{action.label}</p>
@@ -215,7 +215,7 @@ export default function TherapistApp() {
             <Globe size={20} className="text-teal-600"/>
           </div>
           <Link to={createPageUrl("TherapistMiniSiteManager")}>
-            <button className="w-full bg-teal-600 text-white rounded-lg py-2 text-sm font-medium hover:bg-teal-700 transition-colors">
+            <button className="w-full bg-[#7C9885] text-white rounded-full py-2 text-sm font-medium hover:bg-[#9CB4A4] transition-colors">
               נהל את המיני-סייט
             </button>
           </Link>
@@ -223,7 +223,7 @@ export default function TherapistApp() {
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-200 px-2 z-50 shadow-lg" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <nav className="fixed bottom-0 left-0 right-0 bg-[#F5F1E8]/95 backdrop-blur-lg border-t border-[#A8947D]/20 px-2 z-50 shadow-lg" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <div className="flex justify-around items-center h-14">
           <NavItem icon={<BarChart3 size={20}/>} label="דשבורד" to="TherapistDashboard"/>
           <NavItem icon={<Calendar size={20}/>} label="תורים" to="TherapistAppointments"/>
@@ -248,7 +248,7 @@ function StatCard({ icon, value, label }) {
 
 function NavItem({ icon, label, to }) {
   return (
-    <Link to={createPageUrl(to)} className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-teal-600 transition-colors py-1">
+    <Link to={createPageUrl(to)} className="flex flex-col items-center gap-0.5 text-[#7C9885] hover:text-[#A8947D] transition-colors py-1">
       {icon}
       <span className="text-[9px] font-medium">{label}</span>
     </Link>

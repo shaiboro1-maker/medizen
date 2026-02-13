@@ -59,17 +59,17 @@ export default function Diary() {
   });
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
+    <div className="max-w-5xl mx-auto px-4 py-8 min-h-screen" style={{backgroundColor: '#F5F1E8'}}>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold mb-2">📔 היומן שלי</h1>
-          <p className="text-gray-500">עקוב אחר מצב הרוח, הכאב והאנרגיה שלך</p>
+          <h1 className="text-2xl font-bold mb-2">📔 יומן אישי</h1>
+          <p className="text-sm text-gray-500">עקוב אחר מצב הרוח שלך</p>
         </div>
         <Button
           onClick={() => setShowDialog(true)}
-          className="bg-teal-600 hover:bg-teal-700 text-white"
+          className="bg-[#7C9885] hover:bg-[#9CB4A4] text-white rounded-full text-sm"
         >
-          <Plus size={18} className="ml-2"/> רשומה חדשה
+          <Plus size={16} className="ml-2"/> רשומה חדשה
         </Button>
       </div>
 
@@ -209,11 +209,11 @@ export default function Diary() {
             </div>
 
             <Button
-              onClick={() => createMutation.mutate(form)}
-              disabled={!form.content || createMutation.isPending}
-              className="w-full bg-teal-600 hover:bg-teal-700"
+            onClick={() => createMutation.mutate(form)}
+            disabled={!form.content || createMutation.isPending}
+            className="w-full bg-[#7C9885] hover:bg-[#9CB4A4] rounded-full"
             >
-              {createMutation.isPending ? "שומר..." : "שמור רשומה"}
+            {createMutation.isPending ? "שומר..." : "שמור רשומה"}
             </Button>
           </div>
         </DialogContent>

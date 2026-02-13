@@ -33,14 +33,14 @@
     --chart-5: 0 72% 51%;
     
     /* App-specific colors */
-    --app-primary: #0F766E;
-    --app-primary-light: #14B8A6;
-    --app-secondary: #3B82F6;
-    --app-accent: #F59E0B;
-    --app-background: #F0F9FF;
+    --app-primary: #7C9885;
+    --app-primary-light: #9CB4A4;
+    --app-secondary: #A8947D;
+    --app-accent: #B89968;
+    --app-background: #F5F1E8;
     --app-card-bg: #FFFFFF;
-    --app-success: #16A34A;
-    --app-error: #DC2626;
+    --app-success: #7C9885;
+    --app-error: #D4876F;
   }
 
   @media (prefers-color-scheme: dark) {

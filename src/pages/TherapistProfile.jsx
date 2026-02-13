@@ -54,14 +54,14 @@ export default function TherapistProfile() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 py-8 min-h-screen" style={{backgroundColor: '#F5F1E8'}}>
       <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
         <ArrowLeft size={16} className="ml-2"/> חזור
       </Button>
 
       {/* Header */}
       <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm mb-8">
-        <div className="h-48 md:h-64 bg-gradient-to-bl from-teal-600 to-emerald-500 relative">
+        <div className="h-48 md:h-64 bg-gradient-to-bl from-[#7C9885] to-[#9CB4A4] relative">
           {therapist.profile_image && (
             <img src={therapist.profile_image} alt="" className="w-full h-full object-cover opacity-30"/>
           )}
@@ -96,7 +96,7 @@ export default function TherapistProfile() {
         <div className="p-6">
           <div className="flex flex-wrap gap-2 mb-4">
             {therapist.specializations?.map((s, i) => (
-              <Badge key={i} variant="secondary" className="bg-teal-50 text-teal-700">{s}</Badge>
+              <Badge key={i} variant="secondary" className="bg-[#F5F1E8] text-[#7C9885] rounded-full">{s}</Badge>
             ))}
           </div>
           {therapist.bio && <p className="text-gray-600 leading-relaxed">{therapist.bio}</p>}
@@ -113,11 +113,18 @@ export default function TherapistProfile() {
             )}
           </div>
           
-          {therapist.phone && (
-            <Button onClick={openWhatsApp} className="mt-6 bg-green-600 hover:bg-green-700 w-full md:w-auto">
-              <MessageCircle size={16} className="ml-2"/> שוחח בוואטסאפ
-            </Button>
-          )}
+          <div className="flex gap-3 mt-6">
+            <Link to={createPageUrl(`BookAppointment?therapist=${therapistId}`)} className="flex-1">
+              <Button className="w-full bg-[#7C9885] hover:bg-[#9CB4A4] rounded-full">
+                <Calendar size={16} className="ml-2"/> קבע תור
+              </Button>
+            </Link>
+            {therapist.phone && (
+              <Button onClick={openWhatsApp} className="flex-1 bg-green-600 hover:bg-green-700 rounded-full">
+                <MessageCircle size={16} className="ml-2"/> וואטסאפ
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -146,7 +153,7 @@ export default function TherapistProfile() {
                   <div className="text-left flex flex-col items-end gap-2">
                     <span className="text-xl font-bold text-teal-700">₪{service.price}</span>
                     <Link to={createPageUrl(`BookAppointment?therapist=${therapistId}&service=${service.id}`)}>
-                      <Button className="bg-teal-600 hover:bg-teal-700 rounded-xl">
+                      <Button className="bg-[#7C9885] hover:bg-[#9CB4A4] rounded-full text-sm">
                         <Calendar size={14} className="ml-2"/> קבע תור
                       </Button>
                     </Link>

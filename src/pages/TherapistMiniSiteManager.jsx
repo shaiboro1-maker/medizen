@@ -161,10 +161,10 @@ export default function TherapistMiniSiteManager() {
                   <img src={therapist.cover_image} alt="Cover" className="w-full h-48 object-cover rounded-lg"/>
                 )}
                 <label className="block">
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-teal-500 transition-colors">
-                    <Upload className="mx-auto mb-2 text-gray-400" size={32}/>
+                  <div className="border-2 border-dashed border-[#A8947D] rounded-lg p-6 text-center cursor-pointer hover:border-[#7C9885] transition-colors bg-[#F5F1E8]/30">
+                    <Upload className="mx-auto mb-2 text-[#7C9885]" size={32}/>
                     <p className="text-sm text-gray-600">לחץ להעלאת תמונת כיסוי</p>
-                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, "cover_image")}/>
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, "cover_image")} disabled={uploadingImage}/>
                   </div>
                 </label>
               </CardContent>
@@ -250,7 +250,7 @@ export default function TherapistMiniSiteManager() {
                     className="mt-2"
                   />
                 </div>
-                <Button onClick={() => handleSave("content")} className="w-full bg-teal-600">
+                <Button onClick={() => handleSave("content")} className="w-full bg-[#7C9885] hover:bg-[#9CB4A4] rounded-full">
                   <Save size={18} className="ml-2"/>
                   שמור שינויים
                 </Button>

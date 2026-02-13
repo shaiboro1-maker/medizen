@@ -52,20 +52,20 @@ export default function AppHome() {
   const nextAppointment = upcomingAppointments[0];
 
   const quickActions = [
-    { icon: <Search size={20}/>, label: "מצא מטפל", to: "TherapistSearch", color: "from-teal-500 to-emerald-500" },
-    { icon: <Calendar size={20}/>, label: "יומן תורים", to: "MyAppointments", color: "from-blue-500 to-cyan-500" },
-    { icon: <ShoppingBag size={20}/>, label: "חנות", to: "Shop", color: "from-purple-500 to-pink-500" },
-    { icon: <MusicIcon size={20}/>, label: "מוזיקה", to: "Music", color: "from-orange-500 to-red-500" },
+    { icon: <Search size={20}/>, label: "מצא מטפל", to: "TherapistSearch", color: "from-[#7C9885] to-[#9CB4A4]" },
+    { icon: <Calendar size={20}/>, label: "יומן תורים", to: "MyAppointments", color: "from-[#A8947D] to-[#B89968]" },
+    { icon: <ShoppingBag size={20}/>, label: "חנות", to: "Shop", color: "from-[#9CB4A4] to-[#A8947D]" },
+    { icon: <MusicIcon size={20}/>, label: "מוזיקה", to: "Music", color: "from-[#B89968] to-[#C9A876]" },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50 to-emerald-50 pb-20">
       {/* Header */}
-      <div className="bg-gradient-to-br from-teal-600 to-emerald-600 text-white px-4 pt-8 pb-6 rounded-b-3xl shadow-lg">
+      <div className="bg-gradient-to-br from-[#7C9885] to-[#9CB4A4] text-white px-4 pt-8 pb-6 rounded-b-3xl shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-md">
-              <span className="text-2xl">🌿</span>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#A8947D] to-[#B89968] flex items-center justify-center shadow-md">
+              <span className="text-2xl">🧘‍♀️</span>
             </div>
             <div>
               <h1 className="text-lg font-bold">שלום{user ? `, ${user.full_name?.split(' ')[0]}` : ''}</h1>
@@ -132,7 +132,7 @@ export default function AppHome() {
                   <span>⏰ {nextAppointment.start_time}</span>
                 </div>
               </div>
-              <Badge className="bg-teal-600 text-xs">מאושר</Badge>
+              <Badge className="bg-[#7C9885] text-xs">מאושר</Badge>
             </div>
           </motion.div>
         </div>
@@ -148,7 +148,7 @@ export default function AppHome() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.05 }}
-                className={`bg-gradient-to-br ${action.color} rounded-xl p-4 text-white shadow-md hover:shadow-lg transition-all`}
+                className={`bg-gradient-to-br ${action.color} rounded-3xl p-4 text-white shadow-md hover:shadow-lg transition-all`}
               >
                 <div className="mb-2">{action.icon}</div>
                 <p className="text-sm font-medium">{action.label}</p>
@@ -187,7 +187,7 @@ export default function AppHome() {
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-200 px-2 z-50 shadow-lg" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <nav className="fixed bottom-0 left-0 right-0 bg-[#F5F1E8]/95 backdrop-blur-lg border-t border-[#A8947D]/20 px-2 z-50 shadow-lg" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <div className="flex justify-around items-center h-14">
           <NavItem icon={<Search size={20}/>} label="חיפוש" to="TherapistSearch"/>
           <NavItem icon={<Calendar size={20}/>} label="תורים" to="MyAppointments"/>
@@ -218,7 +218,7 @@ function ContentCard({ icon, title, subtitle, to }) {
 
 function NavItem({ icon, label, to }) {
   return (
-    <Link to={createPageUrl(to)} className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-teal-600 transition-colors py-1">
+    <Link to={createPageUrl(to)} className="flex flex-col items-center gap-0.5 text-[#7C9885] hover:text-[#A8947D] transition-colors py-1">
       {icon}
       <span className="text-[9px] font-medium">{label}</span>
     </Link>

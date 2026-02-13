@@ -157,7 +157,7 @@ export default function BookAppointment() {
         <h1 className="text-2xl font-bold mb-3">התור נקבע בהצלחה!</h1>
         <p className="text-gray-500 mb-2">{service?.name} אצל {therapist?.full_name}</p>
         <p className="text-gray-500 mb-8">{moment(selectedDate).format("DD/MM/YYYY")} בשעה {selectedTime}</p>
-        <Button onClick={() => window.location.href = createPageUrl("MyAppointments")} className="bg-teal-600 hover:bg-teal-700 rounded-xl">
+        <Button onClick={() => window.location.href = createPageUrl("MyAppointments")} className="bg-[#7C9885] hover:bg-[#9CB4A4] rounded-full">
           צפה בתורים שלי
         </Button>
       </div>
@@ -165,7 +165,7 @@ export default function BookAppointment() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-2xl mx-auto px-4 py-8 min-h-screen" style={{backgroundColor: '#F5F1E8'}}>
       <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
         <ArrowLeft size={16} className="ml-2"/> חזור
       </Button>
@@ -177,11 +177,11 @@ export default function BookAppointment() {
         {[1, 2, 3, 4].map((s) => (
           <div key={s} className="flex items-center gap-2">
             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-              step >= s ? "bg-teal-600 text-white" : "bg-gray-100 text-gray-400"
+              step >= s ? "bg-[#7C9885] text-white" : "bg-gray-100 text-gray-400"
             }`}>
               {step > s ? <Check size={14}/> : s}
             </div>
-            {s < 4 && <div className={`w-8 h-0.5 ${step > s ? "bg-teal-600" : "bg-gray-200"}`}/>}
+            {s < 4 && <div className={`w-8 h-0.5 ${step > s ? "bg-[#7C9885]" : "bg-gray-200"}`}/>}
           </div>
         ))}
       </div>
@@ -196,8 +196,8 @@ export default function BookAppointment() {
                 <button
                   key={s.id}
                   onClick={() => { setSelectedService(s.id); setStep(2); }}
-                  className={`w-full text-right bg-white rounded-2xl border p-5 hover:border-teal-300 transition-all ${
-                    selectedService === s.id ? "border-teal-500 ring-2 ring-teal-100" : "border-gray-100"
+                  className={`w-full text-right bg-white rounded-2xl border p-5 hover:border-[#A8947D] transition-all ${
+                    selectedService === s.id ? "border-[#7C9885] ring-2 ring-[#F5F1E8]" : "border-gray-100"
                   }`}
                 >
                   <h3 className="font-bold">{s.name}</h3>
@@ -221,8 +221,8 @@ export default function BookAppointment() {
                 <button
                   key={day.date}
                   onClick={() => { setSelectedDate(day.date); setStep(3); }}
-                  className={`rounded-2xl border p-4 text-center hover:border-teal-300 transition-all ${
-                    selectedDate === day.date ? "border-teal-500 bg-teal-50" : "border-gray-100 bg-white"
+                  className={`rounded-2xl border p-4 text-center hover:border-[#A8947D] transition-all ${
+                    selectedDate === day.date ? "border-[#7C9885] bg-[#F5F1E8]" : "border-gray-100 bg-white"
                   }`}
                 >
                   <div className="text-sm font-medium text-gray-500">יום {day.label}</div>
@@ -247,9 +247,8 @@ export default function BookAppointment() {
                 {timeSlots.map((time) => (
                   <button
                     key={time}
-                    onClick={() => { setSelectedTime(time); setStep(4); }}
-                    className={`rounded-xl border p-3 text-center font-medium hover:border-teal-300 transition-all ${
-                      selectedTime === time ? "border-teal-500 bg-teal-50 text-teal-700" : "border-gray-100 bg-white"
+                    className={`rounded-xl border p-3 text-center font-medium hover:border-[#A8947D] transition-all ${
+                      selectedTime === time ? "border-[#7C9885] bg-[#F5F1E8] text-[#7C9885]" : "border-gray-100 bg-white"
                     }`}
                   >
                     {time}
@@ -304,7 +303,7 @@ export default function BookAppointment() {
               <Button 
                 onClick={handleBook} 
                 disabled={bookMutation.isPending}
-                className="flex-1 bg-teal-600 hover:bg-teal-700"
+                className="flex-1 bg-[#7C9885] hover:bg-[#9CB4A4] rounded-full"
               >
                 {bookMutation.isPending ? "שולח..." : "אשר תור"}
               </Button>
