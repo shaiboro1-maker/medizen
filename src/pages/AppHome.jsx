@@ -141,7 +141,7 @@ export default function AppHome() {
 
       {/* Quick Actions */}
       <div className="px-4 mt-6">
-        <h2 className="text-xl font-bold mb-4 text-[#7C9885]">פעולות מהירות</h2>
+        <h2 className="text-xl font-bold mb-4 text-[#7C9885] text-right">פעולות מהירות</h2>
         <div className="grid grid-cols-2 gap-4">
           <Link to={createPageUrl("TherapistSearch")}>
             <motion.div
@@ -218,7 +218,7 @@ export default function AppHome() {
 
       {/* Content Sections */}
       <div className="px-4 mt-6">
-        <h2 className="text-xl font-bold mb-4 text-[#7C9885]">תוכן לגוף ולנפש</h2>
+        <h2 className="text-xl font-bold mb-4 text-[#7C9885] text-right">תוכן לגוף ולנפש</h2>
         <div className="grid grid-cols-2 gap-4">
           <Link to={createPageUrl("Exercises")}>
             <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
