@@ -109,7 +109,7 @@ export default function Landing() {
 
       {/* Health Content Section */}
       <section className="max-w-7xl mx-auto px-4 py-8 bg-[#F5F1E8]">
-        <h2 className="text-2xl font-black text-gray-900 mb-6 text-center">תוכן בריאותי</h2>
+        <h2 className="text-2xl font-black text-gray-900 mb-6 text-right">תוכן בריאותי</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           <Link
             to={createPageUrl("Exercises")}
@@ -121,7 +121,7 @@ export default function Landing() {
               className="w-full h-48 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">תרגילים</h3>
               <p className="text-sm opacity-90">תרגילים מקצועיים</p>
             </div>
@@ -137,7 +137,7 @@ export default function Landing() {
               className="w-full h-48 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">מתכונים</h3>
               <p className="text-sm opacity-90">מתכונים בריאים</p>
             </div>
@@ -153,7 +153,7 @@ export default function Landing() {
               className="w-full h-48 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">מוזיקה</h3>
               <p className="text-sm opacity-90">מוזיקה מרגיעה</p>
             </div>
@@ -169,7 +169,7 @@ export default function Landing() {
               className="w-full h-48 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">יומן אישי</h3>
               <p className="text-sm opacity-90">עקוב אחר ההתקדמות</p>
             </div>
@@ -185,7 +185,7 @@ export default function Landing() {
               className="w-full h-48 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">גוף ונפש</h3>
               <p className="text-sm opacity-90">תדרים וריפוי</p>
             </div>
@@ -201,7 +201,7 @@ export default function Landing() {
               className="w-full h-48 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">שינה רגועה</h3>
               <p className="text-sm opacity-90">תדרים לשינה עמוקה</p>
             </div>
@@ -217,7 +217,7 @@ export default function Landing() {
               className="w-full h-48 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">תרגילי נשימה</h3>
               <p className="text-sm opacity-90">טכניקות הרגעה</p>
             </div>
@@ -233,7 +233,7 @@ export default function Landing() {
               className="w-full h-48 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">סיפורים לחיים</h3>
               <p className="text-sm opacity-90">השראה וחוכמה</p>
             </div>
@@ -249,7 +249,7 @@ export default function Landing() {
               className="w-full h-48 object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">בדיחות לנפש</h3>
               <p className="text-sm opacity-90">העלאת מצב רוח</p>
             </div>
@@ -259,6 +259,7 @@ export default function Landing() {
 
       {/* Quick Actions */}
       <section className="max-w-7xl mx-auto px-4 py-12 bg-[#F5F1E8]">
+        <h2 className="text-2xl font-black text-gray-900 mb-6 text-right">פעולות מהירות</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <Link to={createPageUrl("TherapistSearch")} className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1">
             <img 
@@ -267,7 +268,7 @@ export default function Landing() {
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">מצא מטפל</h3>
               <p className="text-sm opacity-90">בשניות</p>
             </div>
@@ -280,7 +281,7 @@ export default function Landing() {
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">קבע תור</h3>
               <p className="text-sm opacity-90">תור מהיר</p>
             </div>
@@ -293,7 +294,7 @@ export default function Landing() {
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">תרגילים</h3>
               <p className="text-sm opacity-90">מקצועיים</p>
             </div>
@@ -306,7 +307,7 @@ export default function Landing() {
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">חנות</h3>
               <p className="text-sm opacity-90">מוצרים</p>
             </div>
@@ -319,7 +320,7 @@ export default function Landing() {
               className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="absolute bottom-0 right-0 left-0 p-4 text-white text-right">
               <h3 className="font-black text-xl mb-1">וובינרים</h3>
               <p className="text-sm opacity-90">הרצאות</p>
             </div>

@@ -62,7 +62,6 @@ import BookAppointment from './pages/BookAppointment';
 import BulletinBoard from './pages/BulletinBoard';
 import Diary from './pages/Diary';
 import Exercises from './pages/Exercises';
-import Landing from './pages/Landing';
 import MiniSite from './pages/MiniSite';
 import Music from './pages/Music';
 import MyAccount from './pages/MyAccount';
@@ -104,6 +103,7 @@ import TherapistServices from './pages/TherapistServices';
 import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
+import Landing from './pages/Landing';
 import __Layout from './Layout.jsx';
 
 
@@ -123,7 +123,6 @@ export const PAGES = {
     "BulletinBoard": BulletinBoard,
     "Diary": Diary,
     "Exercises": Exercises,
-    "Landing": Landing,
     "MiniSite": MiniSite,
     "Music": Music,
     "MyAccount": MyAccount,
@@ -165,6 +164,7 @@ export const PAGES = {
     "TherapistTeam": TherapistTeam,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
+    "Landing": Landing,
 }
 
 export const pagesConfig = {
