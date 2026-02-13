@@ -16,6 +16,7 @@ import {
   Save, ArrowRight, Instagram, Facebook, Chrome, 
   Twitter, ExternalLink, Trash2
 } from "lucide-react";
+import FAQManager from "../components/FAQManager";
 import { toast } from "react-hot-toast";
 
 export default function TherapistMiniSiteManager() {
@@ -80,14 +81,20 @@ export default function TherapistMiniSiteManager() {
     setUploadingImage(false);
   };
 
-  const handleVideoUpload = async (e) => {
+  const handleVideoUpload = async (e, isGallery = false) => {
     const file = e.target.files[0];
     if (!file) return;
     setUploadingVideo(true);
     try {
       const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      await updateMutation.mutateAsync({ video_intro_url: file_url });
-      setTherapist({ ...therapist, video_intro_url: file_url });
+      if (isGallery) {
+        const updatedVideos = [...(therapist.video_testimonials || []), { url: file_url, title: "סרטון" }];
+        await updateMutation.mutateAsync({ video_testimonials: updatedVideos });
+        setTherapist({ ...therapist, video_testimonials: updatedVideos });
+      } else {
+        await updateMutation.mutateAsync({ video_intro_url: file_url });
+        setTherapist({ ...therapist, video_intro_url: file_url });
+      }
       toast.success("הסרטון הועלה בהצלחה!");
     } catch (error) {
       toast.error("שגיאה בהעלאת הסרטון");
@@ -139,11 +146,14 @@ export default function TherapistMiniSiteManager() {
         </Card>
 
         <Tabs defaultValue="media" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-4">
+          <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="media">מדיה</TabsTrigger>
             <TabsTrigger value="content">תוכן</TabsTrigger>
             <TabsTrigger value="social">רשתות</TabsTrigger>
-            <TabsTrigger value="bot">בוט</TabsTrigger>
+          </TabsList>
+          <TabsList className="grid w-full grid-cols-3 mb-4">
+            <TabsTrigger value="reviews">ביקורות</TabsTrigger>
+            <TabsTrigger value="faq">שאלות</TabsTrigger>
             <TabsTrigger value="design">עיצוב</TabsTrigger>
           </TabsList>
 
@@ -197,30 +207,47 @@ export default function TherapistMiniSiteManager() {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <ImageIcon size={20}/>
-                  גלריית תמונות ({therapist.gallery?.length || 0})
+                  גלריית מדיה ({(therapist.gallery?.length || 0) + (therapist.video_testimonials?.length || 0)})
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-3">
                   {therapist.gallery?.map((img, i) => (
                     <div key={i} className="relative group">
-                      <img src={img} alt={`Gallery ${i}`} className="w-full h-24 object-cover rounded-lg"/>
+                      <img src={img} alt={`Gallery ${i}`} className="w-full h-32 object-cover rounded-lg"/>
                       <button
                         onClick={() => handleRemoveFromGallery(i)}
-                        className="absolute top-1 left-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute top-2 left-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                       >
                         <Trash2 size={14}/>
                       </button>
                     </div>
                   ))}
+                  {therapist.video_testimonials?.map((video, i) => (
+                    <div key={`video-${i}`} className="relative group">
+                      <video src={video.url} className="w-full h-32 object-cover rounded-lg"/>
+                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <Video size={24} className="text-white"/>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <label className="block">
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-teal-500 transition-colors">
-                    <Upload className="mx-auto mb-2 text-gray-400" size={24}/>
-                    <p className="text-xs text-gray-600">הוסף תמונה לגלריה</p>
-                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, "gallery")}/>
-                  </div>
-                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <label className="block">
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center cursor-pointer hover:border-[#7C9885] transition-colors">
+                      <Upload className="mx-auto mb-1 text-gray-400" size={20}/>
+                      <p className="text-xs text-gray-600">תמונה</p>
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, "gallery")}/>
+                    </div>
+                  </label>
+                  <label className="block">
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center cursor-pointer hover:border-[#7C9885] transition-colors">
+                      <Video className="mx-auto mb-1 text-gray-400" size={20}/>
+                      <p className="text-xs text-gray-600">סרטון</p>
+                      <input type="file" accept="video/*" className="hidden" onChange={(e) => handleVideoUpload(e, true)}/>
+                    </div>
+                  </label>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -375,7 +402,82 @@ export default function TherapistMiniSiteManager() {
             </Card>
           </TabsContent>
 
-          {/* בוט לידים */}
+          {/* ביקורות חיצוניות */}
+          <TabsContent value="reviews" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Star size={20}/>
+                  חיבור לביקורות חיצוניות
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Facebook size={24} className="text-blue-600"/>
+                      <div>
+                        <Label className="font-semibold">ביקורות מפייסבוק</Label>
+                        <p className="text-xs text-gray-600">הצג ביקורות מדף הפייסבוק שלך</p>
+                      </div>
+                    </div>
+                    <Switch
+                      checked={formData.review_integrations?.facebook_enabled}
+                      onCheckedChange={(checked) => setFormData({
+                        ...formData,
+                        review_integrations: { ...formData.review_integrations, facebook_enabled: checked }
+                      })}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <Chrome size={24} className="text-red-600"/>
+                      <div>
+                        <Label className="font-semibold">ביקורות מגוגל</Label>
+                        <p className="text-xs text-gray-600">הצג ביקורות מגוגל עסק שלי</p>
+                      </div>
+                    </div>
+                    <Switch
+                      checked={formData.review_integrations?.google_enabled}
+                      onCheckedChange={(checked) => setFormData({
+                        ...formData,
+                        review_integrations: { ...formData.review_integrations, google_enabled: checked }
+                      })}
+                    />
+                  </div>
+
+                  <div className="p-4 bg-amber-50 rounded-lg">
+                    <p className="text-sm text-gray-700">
+                      💡 <strong>טיפ:</strong> לאחר הפעלת החיבור, הביקורות יוצגו אוטומטית במיני-סייט שלך. 
+                      הביקורות מתעדכנות אחת ליום.
+                    </p>
+                  </div>
+                </div>
+                <Button onClick={() => handleSave("reviews")} className="w-full bg-[#7C9885] hover:bg-[#9CB4A4] rounded-full">
+                  <Save size={18} className="ml-2"/>
+                  שמור הגדרות
+                </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* שאלות נפוצות */}
+          <TabsContent value="faq" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <MessageSquare size={20}/>
+                  שאלות נפוצות (FAQ)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <FAQManager therapistId={therapist.id}/>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+        {/* בוט לידים */}
           <TabsContent value="bot" className="space-y-4">
             <Card>
               <CardHeader>

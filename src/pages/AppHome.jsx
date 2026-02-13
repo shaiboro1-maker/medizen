@@ -52,24 +52,24 @@ export default function AppHome() {
   const nextAppointment = upcomingAppointments[0];
 
   const quickActions = [
-    { icon: <Search size={20}/>, label: "מצא מטפל", to: "TherapistSearch", color: "from-[#7C9885] to-[#9CB4A4]" },
-    { icon: <Calendar size={20}/>, label: "יומן תורים", to: "MyAppointments", color: "from-[#A8947D] to-[#B89968]" },
-    { icon: <ShoppingBag size={20}/>, label: "חנות", to: "Shop", color: "from-[#9CB4A4] to-[#A8947D]" },
-    { icon: <MusicIcon size={20}/>, label: "מוזיקה", to: "Music", color: "from-[#B89968] to-[#C9A876]" },
+    { icon: <Search size={24}/>, label: "מצא מטפל", to: "TherapistSearch", color: "from-[#BED4C6] to-[#D4E4DB]" },
+    { icon: <Calendar size={24}/>, label: "יומן תורים", to: "MyAppointments", color: "from-[#E6D5C3] to-[#F2E6D9]" },
+    { icon: <ShoppingBag size={24}/>, label: "חנות", to: "Shop", color: "from-[#D4C4B0] to-[#E8D8C4]" },
+    { icon: <MusicIcon size={24}/>, label: "מוזיקה", to: "Music", color: "from-[#F2E6D9] to-[#FFF5EB]" },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50 to-emerald-50 pb-20">
+    <div className="min-h-screen pb-20" style={{backgroundColor: '#FAF8F3'}}>
       {/* Header */}
-      <div className="bg-gradient-to-br from-[#7C9885] to-[#9CB4A4] text-white px-4 pt-8 pb-6 rounded-b-3xl shadow-lg">
+      <div className="bg-gradient-to-br from-[#A8C5B5] to-[#BED4C6] text-white px-4 pt-8 pb-6 rounded-b-3xl shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#A8947D] to-[#B89968] flex items-center justify-center shadow-md">
-              <span className="text-2xl">🧘‍♀️</span>
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#D4C4B0] to-[#E6D5C3] flex items-center justify-center shadow-md">
+              <span className="text-3xl">🧘‍♀️</span>
             </div>
-            <div>
-              <h1 className="text-lg font-bold">שלום{user ? `, ${user.full_name?.split(' ')[0]}` : ''}</h1>
-              <p className="text-teal-100 text-xs">איך אפשר לעזור לך היום?</p>
+            <div className="text-right">
+              <h1 className="text-xl font-bold">שלום{user ? `, ${user.full_name?.split(' ')[0]}` : ''}</h1>
+              <p className="text-white/80 text-sm">איך אפשר לעזור לך היום?</p>
             </div>
           </div>
           <div className="relative">
@@ -99,12 +99,12 @@ export default function AppHome() {
 
         {/* Search */}
         <div className="relative">
-          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18}/>
+          <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20}/>
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="חפש מטפלים, שירותים..."
-            className="w-full pr-10 py-3 text-sm rounded-xl border-0 bg-white shadow-md"
+            className="w-full pr-12 py-4 text-base text-right rounded-2xl border-0 bg-white shadow-lg"
             onKeyDown={(e) => {
               if (e.key === 'Enter' && searchQuery) {
                 window.location.href = createPageUrl(`TherapistSearch?q=${searchQuery}`);
@@ -120,38 +120,38 @@ export default function AppHome() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl shadow-md p-4 border-r-4 border-teal-600"
+            className="bg-white rounded-2xl shadow-lg p-5 border-r-4 border-[#A8C5B5]"
           >
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between text-right">
               <div>
-                <p className="text-xs text-gray-500 mb-1">התור הבא שלך</p>
-                <h3 className="font-semibold text-base mb-1">{nextAppointment.service_name}</h3>
-                <p className="text-xs text-gray-600">{nextAppointment.therapist_name}</p>
-                <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
+                <p className="text-sm text-gray-500 mb-1">התור הבא שלך</p>
+                <h3 className="font-bold text-lg mb-1">{nextAppointment.service_name}</h3>
+                <p className="text-sm text-gray-600">{nextAppointment.therapist_name}</p>
+                <div className="flex items-center gap-3 mt-3 text-sm text-gray-500">
                   <span>📅 {new Date(nextAppointment.date).toLocaleDateString('he-IL')}</span>
                   <span>⏰ {nextAppointment.start_time}</span>
                 </div>
               </div>
-              <Badge className="bg-[#7C9885] text-xs">מאושר</Badge>
+              <Badge className="bg-[#A8C5B5] text-sm">מאושר</Badge>
             </div>
           </motion.div>
         </div>
       )}
 
       {/* Quick Actions */}
-      <div className="px-4 mt-6">
-        <h2 className="text-base font-bold mb-3 text-gray-800">פעולות מהירות</h2>
-        <div className="grid grid-cols-2 gap-3">
+      <div className="px-4 mt-8">
+        <h2 className="text-xl font-bold mb-5 text-right" style={{color: '#5A7A6A'}}>פעולות מהירות</h2>
+        <div className="grid grid-cols-2 gap-4">
           {quickActions.map((action, i) => (
             <Link key={i} to={createPageUrl(action.to)}>
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.05 }}
-                className={`bg-gradient-to-br ${action.color} rounded-3xl p-4 text-white shadow-md hover:shadow-lg transition-all`}
+                className={`bg-gradient-to-br ${action.color} rounded-3xl p-6 text-white shadow-lg hover:shadow-xl transition-all text-center flex flex-col items-center justify-center min-h-[120px]`}
               >
-                <div className="mb-2">{action.icon}</div>
-                <p className="text-sm font-medium">{action.label}</p>
+                <div className="mb-3">{action.icon}</div>
+                <p className="text-base font-semibold">{action.label}</p>
               </motion.div>
             </Link>
           ))}
@@ -159,7 +159,8 @@ export default function AppHome() {
       </div>
 
       {/* Content Sections */}
-      <div className="px-4 mt-6 space-y-3">
+      <div className="px-4 mt-8 space-y-4">
+        <h2 className="text-xl font-bold mb-5 text-right" style={{color: '#5A7A6A'}}>תכנים שיעזרו לך</h2>
         <ContentCard
           icon="📚"
           title="תרגילים"
@@ -187,13 +188,13 @@ export default function AppHome() {
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-[#F5F1E8]/95 backdrop-blur-lg border-t border-[#A8947D]/20 px-2 z-50 shadow-lg" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-        <div className="flex justify-around items-center h-14">
-          <NavItem icon={<Search size={20}/>} label="חיפוש" to="TherapistSearch"/>
-          <NavItem icon={<Calendar size={20}/>} label="תורים" to="MyAppointments"/>
-          <NavItem icon={<Heart size={20}/>} label="מועדפים" to="MyFavorites"/>
-          <NavItem icon={<ShoppingBag size={20}/>} label="חנות" to="Shop"/>
-          <NavItem icon={<User size={20}/>} label="אישי" to="MyAccount"/>
+      <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-200/50 px-2 z-50 shadow-lg" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+        <div className="flex justify-around items-center h-16">
+          <NavItem icon={<Search size={22}/>} label="חיפוש" to="TherapistSearch"/>
+          <NavItem icon={<Calendar size={22}/>} label="תורים" to="MyAppointments"/>
+          <NavItem icon={<Heart size={22}/>} label="מועדפים" to="MyFavorites"/>
+          <NavItem icon={<ShoppingBag size={22}/>} label="חנות" to="Shop"/>
+          <NavItem icon={<User size={22}/>} label="אישי" to="MyAccount"/>
         </div>
       </nav>
     </div>
@@ -203,12 +204,12 @@ export default function AppHome() {
 function ContentCard({ icon, title, subtitle, to }) {
   return (
     <Link to={createPageUrl(to)}>
-      <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200/50 hover:shadow-md transition-all">
-        <div className="flex items-center gap-3">
-          <div className="text-2xl">{icon}</div>
-          <div>
-            <h3 className="font-semibold text-sm text-gray-900">{title}</h3>
-            <p className="text-xs text-gray-600">{subtitle}</p>
+      <div className="bg-white rounded-2xl p-5 border border-gray-200/30 hover:shadow-lg transition-all">
+        <div className="flex items-center gap-4 text-right">
+          <div className="text-3xl">{icon}</div>
+          <div className="flex-1">
+            <h3 className="font-bold text-base text-gray-900">{title}</h3>
+            <p className="text-sm text-gray-600 mt-1">{subtitle}</p>
           </div>
         </div>
       </div>
@@ -218,9 +219,9 @@ function ContentCard({ icon, title, subtitle, to }) {
 
 function NavItem({ icon, label, to }) {
   return (
-    <Link to={createPageUrl(to)} className="flex flex-col items-center gap-0.5 text-[#7C9885] hover:text-[#A8947D] transition-colors py-1">
+    <Link to={createPageUrl(to)} className="flex flex-col items-center gap-1 text-[#7C9885] hover:text-[#A8C5B5] transition-colors py-1">
       {icon}
-      <span className="text-[9px] font-medium">{label}</span>
+      <span className="text-[10px] font-semibold">{label}</span>
     </Link>
   );
 }
