@@ -109,7 +109,7 @@ export default function Landing() {
 
       {/* Health Content Section */}
       <section className="max-w-7xl mx-auto px-4 py-8 bg-[#F5F1E8]">
-        <h2 className="text-2xl font-black text-gray-900 mb-6 text-right">תוכן בריאותי</h2>
+        <h2 className="text-2xl font-black text-gray-900 mb-6 text-center">תוכן בריאותי</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           <Link
             to={createPageUrl("Exercises")}
@@ -259,7 +259,6 @@ export default function Landing() {
 
       {/* Quick Actions */}
       <section className="max-w-7xl mx-auto px-4 py-12 bg-[#F5F1E8]">
-        <h2 className="text-2xl font-black text-gray-900 mb-6 text-right">פעולות מהירות</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <Link to={createPageUrl("TherapistSearch")} className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1">
             <img 
