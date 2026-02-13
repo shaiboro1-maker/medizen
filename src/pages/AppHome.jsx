@@ -154,8 +154,8 @@ export default function AppHome() {
                 alt="מצא מטפל"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-                <p className="text-white text-lg font-bold">מצא מטפל</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-end p-4">
+                <p className="text-white text-lg font-bold text-right">מצא מטפל</p>
               </div>
             </motion.div>
           </Link>
@@ -172,8 +172,8 @@ export default function AppHome() {
                 alt="יומן תורים"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-                <p className="text-white text-lg font-bold">יומן תורים</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-end p-4">
+                <p className="text-white text-lg font-bold text-right">יומן תורים</p>
               </div>
             </motion.div>
           </Link>
@@ -190,8 +190,8 @@ export default function AppHome() {
                 alt="חנות"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-                <p className="text-white text-lg font-bold">חנות</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-end p-4">
+                <p className="text-white text-lg font-bold text-right">חנות</p>
               </div>
             </motion.div>
           </Link>
@@ -208,8 +208,8 @@ export default function AppHome() {
                 alt="מוזיקה"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-                <p className="text-white text-lg font-bold">מוזיקה</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-end p-4">
+                <p className="text-white text-lg font-bold text-right">מוזיקה</p>
               </div>
             </motion.div>
           </Link>
