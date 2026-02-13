@@ -1,171 +1,195 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Calendar, Clock, MapPin, X, ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PullToRefresh from "../components/PullToRefresh";
 import moment from "moment";
+import 'moment/locale/he';
 
-const STATUS_MAP = {
-  pending: { label: "ממתין", color: "bg-yellow-100 text-yellow-800" },
-  confirmed: { label: "מאושר", color: "bg-green-100 text-green-800" },
-  completed: { label: "הושלם", color: "bg-blue-100 text-blue-800" },
-  cancelled: { label: "בוטל", color: "bg-red-100 text-red-800" },
-};
+moment.locale('he');
 
 export default function MyAppointments() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const queryClient = useQueryClient();
+  const [currentDate, setCurrentDate] = useState(moment());
+  const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => base44.auth.redirectToLogin());
   }, []);
 
-  const { data: appointments = [], isLoading } = useQuery({
+  const { data: appointments = [] } = useQuery({
     queryKey: ["myAppointments", user?.email],
-    queryFn: () => base44.entities.Appointment.filter({ client_email: user.email }, "-date"),
+    queryFn: () => base44.entities.Appointment.filter({ client_email: user.email }),
     enabled: !!user,
   });
 
-  const { data: therapists = [] } = useQuery({
-    queryKey: ["therapists"],
-    queryFn: () => base44.entities.Therapist.list(),
-    enabled: !!user,
-  });
-
-  const [showCancelDialog, setShowCancelDialog] = useState(null);
-
-  const cancelMutation = useMutation({
-    mutationFn: (id) => base44.entities.Appointment.update(id, { status: "cancelled" }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["myAppointments"] });
-      setShowCancelDialog(null);
-      alert("התור בוטל בהצלחה");
-    },
-  });
-
-  const canCancelAppointment = (apt) => {
-    const therapist = therapists.find(t => t.id === apt.therapist_id);
-    if (!therapist?.cancellation_policy?.allow_cancellation) return false;
+  // Generate calendar days for current month
+  const calendarDays = useMemo(() => {
+    const startOfMonth = currentDate.clone().startOf('month');
+    const endOfMonth = currentDate.clone().endOf('month');
+    const startDate = startOfMonth.clone().startOf('week');
+    const endDate = endOfMonth.clone().endOf('week');
     
-    const hoursBeforeAllowed = therapist.cancellation_policy?.hours_before || 24;
-    const appointmentTime = moment(`${apt.date} ${apt.time}`, "YYYY-MM-DD HH:mm");
-    const hoursUntilAppointment = appointmentTime.diff(moment(), "hours");
+    const days = [];
+    let day = startDate.clone();
     
-    return hoursUntilAppointment >= hoursBeforeAllowed;
+    while (day.isSameOrBefore(endDate)) {
+      days.push(day.clone());
+      day.add(1, 'day');
+    }
+    
+    return days;
+  }, [currentDate]);
+
+  // Get appointments for selected date
+  const selectedDateAppointments = useMemo(() => {
+    if (!selectedDate) return [];
+    return appointments.filter(apt => 
+      moment(apt.date).format('YYYY-MM-DD') === selectedDate.format('YYYY-MM-DD')
+    );
+  }, [selectedDate, appointments]);
+
+  // Check if a day has appointments
+  const hasAppointments = (day) => {
+    return appointments.some(apt => 
+      moment(apt.date).format('YYYY-MM-DD') === day.format('YYYY-MM-DD')
+    );
   };
 
-  const upcoming = appointments.filter(a => ["pending", "confirmed"].includes(a.status) && moment(a.date).isSameOrAfter(moment(), "day"));
-  const past = appointments.filter(a => a.status === "completed" || moment(a.date).isBefore(moment(), "day"));
-  const cancelled = appointments.filter(a => a.status === "cancelled");
+  const goToPreviousMonth = () => {
+    setCurrentDate(currentDate.clone().subtract(1, 'month'));
+  };
 
-  const handleRefresh = async () => {
-    await queryClient.invalidateQueries({ queryKey: ["myAppointments"] });
+  const goToNextMonth = () => {
+    setCurrentDate(currentDate.clone().add(1, 'month'));
   };
 
   return (
-    <PullToRefresh onRefresh={handleRefresh}>
-      <div className="max-w-3xl mx-auto px-4 py-8">
-      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
-        <ArrowLeft size={16} className="ml-2"/> חזור
-      </Button>
-      <h1 className="text-3xl font-bold mb-8">התורים שלי</h1>
+    <div className="min-h-screen pb-24" style={{backgroundColor: '#F5F1E8'}}>
+      <div className="max-w-4xl mx-auto px-4 py-6">
+        <div className="text-right mb-6">
+          <h1 className="text-2xl font-bold text-[#7C9885]">📅 יומן תורים</h1>
+          <p className="text-sm text-[#A8947D] mt-1">בחר תאריך לצפייה בתורים שלך</p>
+        </div>
 
-      <Tabs defaultValue="upcoming">
-        <TabsList className="bg-gray-100 rounded-xl p-1 mb-6">
-          <TabsTrigger value="upcoming">קרובים ({upcoming.length})</TabsTrigger>
-          <TabsTrigger value="past">עבר ({past.length})</TabsTrigger>
-          <TabsTrigger value="cancelled">בוטלו ({cancelled.length})</TabsTrigger>
-        </TabsList>
+        {/* Calendar Header */}
+        <div className="bg-white rounded-xl shadow-sm p-4 mb-4">
+          <div className="flex items-center justify-between mb-4">
+            <button onClick={goToPreviousMonth} className="p-2 hover:bg-gray-100 rounded-full">
+              <ChevronRight size={24} className="text-[#7C9885]"/>
+            </button>
+            <h2 className="text-lg font-bold text-[#7C9885]">
+              {currentDate.format('MMMM YYYY')}
+            </h2>
+            <button onClick={goToNextMonth} className="p-2 hover:bg-gray-100 rounded-full">
+              <ChevronLeft size={24} className="text-[#7C9885]"/>
+            </button>
+          </div>
 
-        {["upcoming", "past", "cancelled"].map(tab => (
-          <TabsContent key={tab} value={tab}>
-            {(tab === "upcoming" ? upcoming : tab === "past" ? past : cancelled).length === 0 ? (
-              <div className="text-center py-12 text-gray-400">אין תורים</div>
+          {/* Weekday headers */}
+          <div className="grid grid-cols-7 gap-1 mb-2">
+            {['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש'].map((day, i) => (
+              <div key={i} className="text-center text-xs font-medium text-[#A8947D] py-2">
+                {day}
+              </div>
+            ))}
+          </div>
+
+          {/* Calendar days */}
+          <div className="grid grid-cols-7 gap-1">
+            {calendarDays.map((day, i) => {
+              const isCurrentMonth = day.month() === currentDate.month();
+              const isToday = day.isSame(moment(), 'day');
+              const isSelected = selectedDate && day.isSame(selectedDate, 'day');
+              const dayHasAppointments = hasAppointments(day);
+
+              return (
+                <button
+                  key={i}
+                  onClick={() => setSelectedDate(day.clone())}
+                  className={`
+                    aspect-square rounded-lg flex flex-col items-center justify-center relative
+                    ${!isCurrentMonth ? 'text-gray-300' : 'text-gray-800'}
+                    ${isToday ? 'bg-[#B8A393] text-white font-bold' : ''}
+                    ${isSelected ? 'bg-[#7C9885] text-white' : 'hover:bg-gray-100'}
+                  `}
+                >
+                  <span className="text-sm">{day.format('D')}</span>
+                  {dayHasAppointments && !isToday && !isSelected && (
+                    <div className="absolute bottom-1 w-1 h-1 rounded-full bg-[#B89968]"></div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Appointments List */}
+        {selectedDate && (
+          <div className="bg-white rounded-xl shadow-sm p-4">
+            <h3 className="text-lg font-bold text-[#7C9885] mb-4 text-right">
+              תורים ל-{selectedDate.format('D MMMM YYYY')}
+            </h3>
+            {selectedDateAppointments.length === 0 ? (
+              <div className="text-center py-8 text-[#A8947D]">
+                <CalendarIcon size={48} className="mx-auto mb-2 opacity-30"/>
+                <p>אין תורים ביום זה</p>
+              </div>
             ) : (
-              <div className="space-y-4">
-                {(tab === "upcoming" ? upcoming : tab === "past" ? past : cancelled).map(apt => (
-                  <div key={apt.id} className="bg-white rounded-2xl border border-gray-100 p-5">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-bold text-lg">{apt.service_name}</h3>
-                        <p className="text-sm text-gray-500">אצל {apt.therapist_name}</p>
-                        <div className="flex gap-4 mt-3 text-sm text-gray-400">
-                          <span className="flex items-center gap-1"><Calendar size={14}/> {moment(apt.date).format("DD/MM/YYYY")}</span>
-                          <span className="flex items-center gap-1"><Clock size={14}/> {apt.time}</span>
-                        </div>
+              <div className="space-y-3">
+                {selectedDateAppointments.map(apt => (
+                  <div key={apt.id} className="bg-[#F5F1E8] rounded-xl p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="text-right">
+                        <h4 className="font-semibold text-base text-[#7C9885]">{apt.service_name}</h4>
+                        <p className="text-sm text-[#A8947D]">אצל {apt.therapist_name}</p>
                       </div>
-                      <div className="flex flex-col items-end gap-2">
-                        <Badge className={STATUS_MAP[apt.status]?.color}>{STATUS_MAP[apt.status]?.label}</Badge>
-                        <span className="font-bold text-teal-700">₪{apt.price}</span>
-                      </div>
+                      <Badge 
+                        className={
+                          apt.status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                          apt.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                          apt.status === 'completed' ? 'bg-blue-100 text-blue-800' :
+                          'bg-red-100 text-red-800'
+                        }
+                      >
+                        {apt.status === 'confirmed' ? 'מאושר' :
+                         apt.status === 'pending' ? 'ממתין' :
+                         apt.status === 'completed' ? 'הושלם' : 'בוטל'}
+                      </Badge>
                     </div>
-                    {tab === "upcoming" && (
-                      <div className="mt-4 pt-4 border-t">
-                        {canCancelAppointment(apt) ? (
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
-                            onClick={() => setShowCancelDialog(apt)} 
-                            className="text-red-600 border-red-200 hover:bg-red-50"
-                          >
-                            <X size={14} className="ml-1"/> ביטול תור
-                          </Button>
-                        ) : (
-                          <p className="text-xs text-gray-400">
-                            לא ניתן לבטל תור זה עקב מדיניות הביטול של המטפל
-                          </p>
-                        )}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4 text-sm text-[#A8947D]">
+                        <span>⏰ {apt.time}</span>
+                        <span>⏱️ {apt.duration_minutes} דקות</span>
                       </div>
+                      <span className="font-bold text-[#7C9885]">₪{apt.price}</span>
+                    </div>
+                    {apt.notes && (
+                      <p className="text-xs text-gray-500 mt-2 text-right">{apt.notes}</p>
                     )}
                   </div>
                 ))}
               </div>
             )}
-          </TabsContent>
-        ))}
-      </Tabs>
-
-      {/* Cancel Dialog */}
-      {showCancelDialog && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6">
-            <h3 className="font-bold text-lg mb-3">האם לבטל את התור?</h3>
-            <div className="mb-4 p-4 bg-gray-50 rounded-xl">
-              <p className="text-sm text-gray-600">{showCancelDialog.service_name}</p>
-              <p className="text-sm text-gray-600">אצל {showCancelDialog.therapist_name}</p>
-              <p className="text-sm text-gray-600 mt-1">
-                📅 {moment(showCancelDialog.date).format("DD/MM/YYYY")} • ⏰ {showCancelDialog.time}
-              </p>
-            </div>
-            <p className="text-sm text-gray-500 mb-4">
-              תקבל אישור ביטול באימייל. המטפל יקבל הודעה על הביטול.
-            </p>
-            <div className="flex gap-3">
-              <Button 
-                variant="outline" 
-                onClick={() => setShowCancelDialog(null)}
-                className="flex-1"
-              >
-                ביטול
-              </Button>
-              <Button 
-                onClick={() => cancelMutation.mutate(showCancelDialog.id)}
-                disabled={cancelMutation.isPending}
-                className="flex-1 bg-red-600 hover:bg-red-700"
-              >
-                {cancelMutation.isPending ? "מבטל..." : "אישור ביטול"}
-              </Button>
-            </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {/* Quick Book Button */}
+        <Link to={createPageUrl("TherapistSearch")}>
+          <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 w-auto">
+            <button 
+              className="rounded-full px-6 py-3 text-white font-medium shadow-lg"
+              style={{backgroundColor: '#B8A393'}}
+            >
+              <CalendarIcon size={20} className="inline ml-2"/>
+              קבע תור חדש
+            </button>
+          </div>
+        </Link>
+      </div>
     </div>
-    </PullToRefresh>
   );
 }

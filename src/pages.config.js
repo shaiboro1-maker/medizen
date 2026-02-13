@@ -57,12 +57,10 @@ import AdminProducts from './pages/AdminProducts';
 import AdminTherapists from './pages/AdminTherapists';
 import AdminUserContent from './pages/AdminUserContent';
 import AdminWebinars from './pages/AdminWebinars';
-import AppHome from './pages/AppHome';
 import BookAppointment from './pages/BookAppointment';
 import BulletinBoard from './pages/BulletinBoard';
 import Diary from './pages/Diary';
 import Exercises from './pages/Exercises';
-import Landing from './pages/Landing';
 import MiniSite from './pages/MiniSite';
 import Music from './pages/Music';
 import MyAccount from './pages/MyAccount';
@@ -86,7 +84,9 @@ import TherapistContent from './pages/TherapistContent';
 import TherapistCoupons from './pages/TherapistCoupons';
 import TherapistCourses from './pages/TherapistCourses';
 import TherapistDashboard from './pages/TherapistDashboard';
+import TherapistFinance from './pages/TherapistFinance';
 import TherapistIntegrations from './pages/TherapistIntegrations';
+import TherapistLeadBot from './pages/TherapistLeadBot';
 import TherapistMiniSite from './pages/TherapistMiniSite';
 import TherapistMiniSiteSettings from './pages/TherapistMiniSiteSettings';
 import TherapistNewsletter from './pages/TherapistNewsletter';
@@ -101,9 +101,9 @@ import TherapistServices from './pages/TherapistServices';
 import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
+import Landing from './pages/Landing';
+import AppHome from './pages/AppHome';
 import TherapistMiniSiteManager from './pages/TherapistMiniSiteManager';
-import TherapistFinance from './pages/TherapistFinance';
-import TherapistLeadBot from './pages/TherapistLeadBot';
 import __Layout from './Layout.jsx';
 
 
@@ -118,12 +118,10 @@ export const PAGES = {
     "AdminTherapists": AdminTherapists,
     "AdminUserContent": AdminUserContent,
     "AdminWebinars": AdminWebinars,
-    "AppHome": AppHome,
     "BookAppointment": BookAppointment,
     "BulletinBoard": BulletinBoard,
     "Diary": Diary,
     "Exercises": Exercises,
-    "Landing": Landing,
     "MiniSite": MiniSite,
     "Music": Music,
     "MyAccount": MyAccount,
@@ -147,7 +145,9 @@ export const PAGES = {
     "TherapistCoupons": TherapistCoupons,
     "TherapistCourses": TherapistCourses,
     "TherapistDashboard": TherapistDashboard,
+    "TherapistFinance": TherapistFinance,
     "TherapistIntegrations": TherapistIntegrations,
+    "TherapistLeadBot": TherapistLeadBot,
     "TherapistMiniSite": TherapistMiniSite,
     "TherapistMiniSiteSettings": TherapistMiniSiteSettings,
     "TherapistNewsletter": TherapistNewsletter,
@@ -162,9 +162,9 @@ export const PAGES = {
     "TherapistTeam": TherapistTeam,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
+    "Landing": Landing,
+    "AppHome": AppHome,
     "TherapistMiniSiteManager": TherapistMiniSiteManager,
-    "TherapistFinance": TherapistFinance,
-    "TherapistLeadBot": TherapistLeadBot,
 }
 
 export const pagesConfig = {

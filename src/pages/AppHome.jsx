@@ -52,24 +52,24 @@ export default function AppHome() {
   const nextAppointment = upcomingAppointments[0];
 
   const quickActions = [
-    { icon: <Search size={20}/>, label: "מצא מטפל", to: "TherapistSearch", color: "from-[#7C9885] to-[#9CB4A4]" },
-    { icon: <Calendar size={20}/>, label: "יומן תורים", to: "MyAppointments", color: "from-[#A8947D] to-[#B89968]" },
-    { icon: <ShoppingBag size={20}/>, label: "חנות", to: "Shop", color: "from-[#9CB4A4] to-[#A8947D]" },
-    { icon: <MusicIcon size={20}/>, label: "מוזיקה", to: "Music", color: "from-[#B89968] to-[#C9A876]" },
+    { icon: <Search size={24}/>, label: "מצא מטפל", to: "TherapistSearch", color: "#B8A393" },
+    { icon: <Calendar size={24}/>, label: "יומן תורים", to: "MyAppointments", color: "#C5B5A4" },
+    { icon: <ShoppingBag size={24}/>, label: "חנות", to: "Shop", color: "#D4C2B0" },
+    { icon: <MusicIcon size={24}/>, label: "מוזיקה", to: "Music", color: "#B89968" },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50 to-emerald-50 pb-20">
+    <div className="min-h-screen pb-20" style={{backgroundColor: '#F5F1E8'}}>
       {/* Header */}
-      <div className="bg-gradient-to-br from-[#7C9885] to-[#9CB4A4] text-white px-4 pt-8 pb-6 rounded-b-3xl shadow-lg">
-        <div className="flex items-center justify-between mb-4">
+      <div className="text-[#7C9885] px-4 pt-8 pb-6" style={{backgroundColor: '#F5F1E8'}}>
+        <div className="flex items-center justify-start mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#A8947D] to-[#B89968] flex items-center justify-center shadow-md">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#A8947D] to-[#B89968] flex items-center justify-center shadow-md">
               <span className="text-2xl">🧘‍♀️</span>
             </div>
-            <div>
-              <h1 className="text-lg font-bold">שלום{user ? `, ${user.full_name?.split(' ')[0]}` : ''}</h1>
-              <p className="text-teal-100 text-xs">איך אפשר לעזור לך היום?</p>
+            <div className="text-right">
+              <h1 className="text-xl font-bold">שלום{user ? `, ${user.full_name?.split(' ')[0]}` : ''}</h1>
+              <p className="text-[#A8947D] text-base">איך אפשר לעזור לך היום?</p>
             </div>
           </div>
           <div className="relative">
@@ -98,13 +98,14 @@ export default function AppHome() {
         </div>
 
         {/* Search */}
-        <div className="relative">
-          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18}/>
+        <div className="relative mt-4">
+          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#A8947D]" size={20}/>
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="חפש מטפלים, שירותים..."
-            className="w-full pr-10 py-3 text-sm rounded-xl border-0 bg-white shadow-md"
+            className="w-full pr-12 py-4 text-base rounded-xl border-0 bg-white shadow-md text-right"
+            style={{backgroundColor: '#FFFFFF'}}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && searchQuery) {
                 window.location.href = createPageUrl(`TherapistSearch?q=${searchQuery}`);
@@ -116,23 +117,23 @@ export default function AppHome() {
 
       {/* Next Appointment */}
       {nextAppointment && (
-        <div className="px-4 -mt-3">
+        <div className="px-4 mt-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl shadow-md p-4 border-r-4 border-teal-600"
+            className="bg-white rounded-xl shadow-md p-5 border-r-4 border-[#7C9885]"
           >
             <div className="flex items-start justify-between">
-              <div>
-                <p className="text-xs text-gray-500 mb-1">התור הבא שלך</p>
-                <h3 className="font-semibold text-base mb-1">{nextAppointment.service_name}</h3>
-                <p className="text-xs text-gray-600">{nextAppointment.therapist_name}</p>
-                <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
+              <div className="text-right">
+                <p className="text-sm text-[#A8947D] mb-1">התור הבא שלך</p>
+                <h3 className="font-semibold text-lg mb-1">{nextAppointment.service_name}</h3>
+                <p className="text-sm text-gray-600">{nextAppointment.therapist_name}</p>
+                <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
                   <span>📅 {new Date(nextAppointment.date).toLocaleDateString('he-IL')}</span>
                   <span>⏰ {nextAppointment.start_time}</span>
                 </div>
               </div>
-              <Badge className="bg-[#7C9885] text-xs">מאושר</Badge>
+              <Badge className="bg-[#7C9885] text-sm">מאושר</Badge>
             </div>
           </motion.div>
         </div>
@@ -140,18 +141,19 @@ export default function AppHome() {
 
       {/* Quick Actions */}
       <div className="px-4 mt-6">
-        <h2 className="text-base font-bold mb-3 text-gray-800">פעולות מהירות</h2>
-        <div className="grid grid-cols-2 gap-3">
+        <h2 className="text-xl font-bold mb-4 text-[#7C9885] text-right">פעולות מהירות</h2>
+        <div className="grid grid-cols-2 gap-4">
           {quickActions.map((action, i) => (
             <Link key={i} to={createPageUrl(action.to)}>
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.05 }}
-                className={`bg-gradient-to-br ${action.color} rounded-3xl p-4 text-white shadow-md hover:shadow-lg transition-all`}
+                className="rounded-3xl p-5 text-white shadow-md hover:shadow-lg transition-all flex flex-col items-center justify-center h-28"
+                style={{backgroundColor: action.color}}
               >
                 <div className="mb-2">{action.icon}</div>
-                <p className="text-sm font-medium">{action.label}</p>
+                <p className="text-base font-medium">{action.label}</p>
               </motion.div>
             </Link>
           ))}
@@ -185,6 +187,8 @@ export default function AppHome() {
           to="Music"
         />
       </div>
+      
+      <div className="h-16"></div>
 
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-[#F5F1E8]/95 backdrop-blur-lg border-t border-[#A8947D]/20 px-2 z-50 shadow-lg" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
@@ -203,12 +207,12 @@ export default function AppHome() {
 function ContentCard({ icon, title, subtitle, to }) {
   return (
     <Link to={createPageUrl(to)}>
-      <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200/50 hover:shadow-md transition-all">
-        <div className="flex items-center gap-3">
-          <div className="text-2xl">{icon}</div>
-          <div>
-            <h3 className="font-semibold text-sm text-gray-900">{title}</h3>
-            <p className="text-xs text-gray-600">{subtitle}</p>
+      <div className="bg-white rounded-xl p-5 border border-[#E5DDD3] hover:shadow-md transition-all">
+        <div className="flex items-center gap-4 justify-start">
+          <div className="text-3xl">{icon}</div>
+          <div className="text-right">
+            <h3 className="font-semibold text-base text-[#7C9885]">{title}</h3>
+            <p className="text-sm text-[#A8947D]">{subtitle}</p>
           </div>
         </div>
       </div>

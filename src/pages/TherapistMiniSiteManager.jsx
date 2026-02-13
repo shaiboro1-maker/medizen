@@ -139,9 +139,10 @@ export default function TherapistMiniSiteManager() {
         </Card>
 
         <Tabs defaultValue="media" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-4">
+          <TabsList className="grid w-full grid-cols-6 mb-4">
             <TabsTrigger value="media">מדיה</TabsTrigger>
             <TabsTrigger value="content">תוכן</TabsTrigger>
+            <TabsTrigger value="faq">שאלות</TabsTrigger>
             <TabsTrigger value="social">רשתות</TabsTrigger>
             <TabsTrigger value="bot">בוט</TabsTrigger>
             <TabsTrigger value="design">עיצוב</TabsTrigger>
@@ -197,7 +198,7 @@ export default function TherapistMiniSiteManager() {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <ImageIcon size={20}/>
-                  גלריית תמונות ({therapist.gallery?.length || 0})
+                  גלריה ({therapist.gallery?.length || 0} תמונות, {therapist.video_testimonials?.length || 0} סרטונים)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -213,14 +214,31 @@ export default function TherapistMiniSiteManager() {
                       </button>
                     </div>
                   ))}
+                  {therapist.video_testimonials?.map((vid, i) => (
+                    <div key={`vid-${i}`} className="relative group">
+                      <video src={vid.url} className="w-full h-24 object-cover rounded-lg"/>
+                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                        <Video size={24} className="text-white"/>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <label className="block">
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-teal-500 transition-colors">
-                    <Upload className="mx-auto mb-2 text-gray-400" size={24}/>
-                    <p className="text-xs text-gray-600">הוסף תמונה לגלריה</p>
-                    <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, "gallery")}/>
-                  </div>
-                </label>
+                <div className="flex gap-2">
+                  <label className="flex-1">
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center cursor-pointer hover:border-teal-500 transition-colors">
+                      <ImageIcon className="mx-auto mb-1 text-gray-400" size={20}/>
+                      <p className="text-xs text-gray-600">הוסף תמונה</p>
+                      <input type="file" accept="image/*" className="hidden" onChange={(e) => handleImageUpload(e, "gallery")}/>
+                    </div>
+                  </label>
+                  <label className="flex-1">
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center cursor-pointer hover:border-teal-500 transition-colors">
+                      <Video className="mx-auto mb-1 text-gray-400" size={20}/>
+                      <p className="text-xs text-gray-600">הוסף סרטון</p>
+                      <input type="file" accept="video/*" className="hidden" onChange={handleVideoUpload}/>
+                    </div>
+                  </label>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -254,6 +272,21 @@ export default function TherapistMiniSiteManager() {
                   <Save size={18} className="ml-2"/>
                   שמור שינויים
                 </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* שאלות נפוצות */}
+          <TabsContent value="faq" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">שאלות נפוצות (FAQ)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-sm text-gray-500">הוסף שאלות ותשובות נפוצות שהלקוחות שלך שואלים</p>
+                <div className="text-center py-8 text-gray-400">
+                  <p>בקרוב: ניהול שאלות נפוצות</p>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -333,12 +366,16 @@ export default function TherapistMiniSiteManager() {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Star size={20}/>
-                  חיבורים לביקורות
+                  אינטגרציות ביקורות
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                <p className="text-sm text-gray-500 mb-3">הפעל אינטגרציות לטעינה אוטומטית של ביקורות מפלטפורמות חיצוניות</p>
                 <div className="flex items-center justify-between">
-                  <Label>ביקורות מפייסבוק</Label>
+                  <Label className="flex items-center gap-2">
+                    <Facebook size={18}/>
+                    ביקורות מפייסבוק
+                  </Label>
                   <Switch
                     checked={formData.review_integrations?.facebook_enabled}
                     onCheckedChange={(checked) => setFormData({
@@ -348,7 +385,10 @@ export default function TherapistMiniSiteManager() {
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <Label>ביקורות מגוגל</Label>
+                  <Label className="flex items-center gap-2">
+                    <Chrome size={18}/>
+                    ביקורות מגוגל
+                  </Label>
                   <Switch
                     checked={formData.review_integrations?.google_enabled}
                     onCheckedChange={(checked) => setFormData({
@@ -358,7 +398,10 @@ export default function TherapistMiniSiteManager() {
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <Label>ביקורות מאינסטגרם</Label>
+                  <Label className="flex items-center gap-2">
+                    <Instagram size={18}/>
+                    ביקורות מאינסטגרם
+                  </Label>
                   <Switch
                     checked={formData.review_integrations?.instagram_enabled}
                     onCheckedChange={(checked) => setFormData({
@@ -367,7 +410,10 @@ export default function TherapistMiniSiteManager() {
                     })}
                   />
                 </div>
-                <Button onClick={() => handleSave("reviews")} className="w-full bg-teal-600">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-800">
+                  💡 טיפ: לאחר הפעלת האינטגרציות, הביקורות יטענו אוטומטית למיני-סייט שלך
+                </div>
+                <Button onClick={() => handleSave("reviews")} className="w-full bg-[#7C9885] hover:bg-[#9CB4A4] rounded-full">
                   <Save size={18} className="ml-2"/>
                   שמור הגדרות
                 </Button>

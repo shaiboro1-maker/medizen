@@ -59,15 +59,15 @@ export default function Diary() {
   });
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 min-h-screen" style={{backgroundColor: '#F5F1E8'}}>
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-2xl font-bold mb-2">📔 יומן אישי</h1>
-          <p className="text-sm text-gray-500">עקוב אחר מצב הרוח שלך</p>
+    <div className="max-w-4xl mx-auto px-4 py-6 min-h-screen pb-24" style={{backgroundColor: '#F5F1E8'}}>
+      <div className="flex justify-between items-center mb-6">
+        <div className="text-right">
+          <h1 className="text-xl font-bold mb-1 text-[#7C9885]">📔 יומן אישי</h1>
+          <p className="text-sm text-[#A8947D]">עקוב אחר מצב הרוח שלך</p>
         </div>
         <Button
           onClick={() => setShowDialog(true)}
-          className="bg-[#7C9885] hover:bg-[#9CB4A4] text-white rounded-full text-sm"
+          className="bg-[#B8A393] hover:bg-[#C5B5A4] text-white rounded-full text-sm px-4 py-2"
         >
           <Plus size={16} className="ml-2"/> רשומה חדשה
         </Button>
@@ -85,33 +85,33 @@ export default function Diary() {
           </Button>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {entries.map(entry => {
             const mood = MOODS.find(m => m.id === entry.mood);
             return (
-              <div key={entry.id} className="bg-white rounded-2xl border border-gray-100 p-6">
-                <div className="flex items-start justify-between mb-4">
+              <div key={entry.id} className="bg-white rounded-xl border border-[#E5DDD3] p-4">
+                <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className={`w-12 h-12 rounded-full ${mood?.color} flex items-center justify-center text-2xl`}>
+                    <div className={`w-10 h-10 rounded-full ${mood?.color} flex items-center justify-center text-xl`}>
                       {mood?.emoji}
                     </div>
-                    <div>
-                      <h3 className="font-bold">{format(new Date(entry.date), "d MMMM yyyy", { locale: he })}</h3>
-                      <p className="text-sm text-gray-500">{mood?.label}</p>
+                    <div className="text-right">
+                      <h3 className="font-semibold text-sm">{format(new Date(entry.date), "d MMMM yyyy", { locale: he })}</h3>
+                      <p className="text-xs text-gray-500">{mood?.label}</p>
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1">
                     {entry.pain_level > 0 && (
-                      <Badge variant="outline" className="text-red-600">
-                        כאב: {entry.pain_level}/10
+                      <Badge variant="outline" className="text-red-600 text-xs">
+                        כאב: {entry.pain_level}
                       </Badge>
                     )}
-                    <Badge variant="outline" className="text-blue-600">
-                      אנרגיה: {entry.energy_level}/10
+                    <Badge variant="outline" className="text-blue-600 text-xs">
+                      אנרגיה: {entry.energy_level}
                     </Badge>
                   </div>
                 </div>
-                <p className="text-gray-700 whitespace-pre-line">{entry.content}</p>
+                <p className="text-gray-700 text-sm whitespace-pre-line line-clamp-2">{entry.content}</p>
                 {entry.tags?.length > 0 && (
                   <div className="flex gap-2 mt-4">
                     {entry.tags.map((tag, i) => (
@@ -211,7 +211,7 @@ export default function Diary() {
             <Button
             onClick={() => createMutation.mutate(form)}
             disabled={!form.content || createMutation.isPending}
-            className="w-full bg-[#7C9885] hover:bg-[#9CB4A4] rounded-full"
+            className="w-full bg-[#B8A393] hover:bg-[#C5B5A4] rounded-full"
             >
             {createMutation.isPending ? "שומר..." : "שמור רשומה"}
             </Button>
