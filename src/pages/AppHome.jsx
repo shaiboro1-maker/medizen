@@ -62,17 +62,8 @@ export default function AppHome() {
     <div className="min-h-screen pb-20" style={{backgroundColor: '#F5F1E8'}}>
       {/* Header */}
       <div className="text-[#7C9885] px-4 pt-8 pb-6" style={{backgroundColor: '#F5F1E8'}}>
-        <div className="flex items-center justify-start mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#A8947D] to-[#B89968] flex items-center justify-center shadow-md">
-              <span className="text-2xl">🧘‍♀️</span>
-            </div>
-            <div className="text-right">
-              <h1 className="text-xl font-bold">שלום{user ? `, ${user.full_name?.split(' ')[0]}` : ''}</h1>
-              <p className="text-[#A8947D] text-base">איך אפשר לעזור לך היום?</p>
-            </div>
-          </div>
-          <div className="relative">
+        <div className="flex items-center justify-end mb-4">
+          <div className="relative ml-auto">
             <input 
               ref={fileInputRef}
               type="file" 
@@ -94,6 +85,15 @@ export default function AppHome() {
                 <Camera size={16}/>
               </div>
             </button>
+          </div>
+          <div className="flex items-center gap-3 mr-auto">
+            <div className="text-right">
+              <h1 className="text-xl font-bold">שלום{user ? `, ${user.full_name?.split(' ')[0]}` : ''}</h1>
+              <p className="text-[#A8947D] text-base">איך אפשר לעזור לך היום?</p>
+            </div>
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#A8947D] to-[#B89968] flex items-center justify-center shadow-md">
+              <span className="text-2xl">🧘‍♀️</span>
+            </div>
           </div>
         </div>
 
