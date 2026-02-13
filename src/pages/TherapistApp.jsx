@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { 
   Calendar, Users, MessageCircle, TrendingUp, 
   Settings, Globe, BookOpen, ShoppingBag, Video,
-  BarChart3, Clock, DollarSign, Star
+  BarChart3, Clock, DollarSign, Star, MessageSquare
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
@@ -91,15 +91,15 @@ export default function TherapistApp() {
   const quickActions = [
     { icon: <Calendar size={24}/>, label: "תורים", to: "TherapistAppointments", color: "from-blue-500 to-cyan-500" },
     { icon: <Users size={24}/>, label: "לקוחות", to: "TherapistClients", color: "from-purple-500 to-pink-500" },
-    { icon: <MessageCircle size={24}/>, label: "הודעות", to: "TherapistChat", color: "from-green-500 to-emerald-500" },
-    { icon: <Globe size={24}/>, label: "מיני-סייט", to: "TherapistMiniSite", color: "from-orange-500 to-red-500" },
+    { icon: <MessageCircle size={24}/>, label: "צ'אט", to: "TherapistChat", color: "from-green-500 to-emerald-500" },
+    { icon: <Globe size={24}/>, label: "מיני-סייט", to: "TherapistMiniSiteManager", color: "from-orange-500 to-red-500" },
   ];
 
   const features = [
-    { icon: <BookOpen size={20}/>, label: "תוכן", to: "TherapistContent" },
+    { icon: <DollarSign size={20}/>, label: "פיננסים", to: "TherapistFinance" },
+    { icon: <MessageSquare size={20}/>, label: "בוט לידים", to: "TherapistLeadBot" },
     { icon: <ShoppingBag size={20}/>, label: "חנות", to: "TherapistProducts" },
     { icon: <Video size={20}/>, label: "קורסים", to: "TherapistCourses" },
-    { icon: <TrendingUp size={20}/>, label: "קמפיינים", to: "TherapistCampaigns" },
   ];
 
   return (

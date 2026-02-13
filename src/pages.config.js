@@ -57,6 +57,7 @@ import AdminProducts from './pages/AdminProducts';
 import AdminTherapists from './pages/AdminTherapists';
 import AdminUserContent from './pages/AdminUserContent';
 import AdminWebinars from './pages/AdminWebinars';
+import AppHome from './pages/AppHome';
 import BookAppointment from './pages/BookAppointment';
 import BulletinBoard from './pages/BulletinBoard';
 import Diary from './pages/Diary';
@@ -74,6 +75,7 @@ import Recipes from './pages/Recipes';
 import Shop from './pages/Shop';
 import SubmitContent from './pages/SubmitContent';
 import Support from './pages/Support';
+import TherapistApp from './pages/TherapistApp';
 import TherapistAppointments from './pages/TherapistAppointments';
 import TherapistAvailability from './pages/TherapistAvailability';
 import TherapistBulletin from './pages/TherapistBulletin';
@@ -99,8 +101,9 @@ import TherapistServices from './pages/TherapistServices';
 import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
-import AppHome from './pages/AppHome';
-import TherapistApp from './pages/TherapistApp';
+import TherapistMiniSiteManager from './pages/TherapistMiniSiteManager';
+import TherapistFinance from './pages/TherapistFinance';
+import TherapistLeadBot from './pages/TherapistLeadBot';
 import __Layout from './Layout.jsx';
 
 
@@ -115,6 +118,7 @@ export const PAGES = {
     "AdminTherapists": AdminTherapists,
     "AdminUserContent": AdminUserContent,
     "AdminWebinars": AdminWebinars,
+    "AppHome": AppHome,
     "BookAppointment": BookAppointment,
     "BulletinBoard": BulletinBoard,
     "Diary": Diary,
@@ -132,6 +136,7 @@ export const PAGES = {
     "Shop": Shop,
     "SubmitContent": SubmitContent,
     "Support": Support,
+    "TherapistApp": TherapistApp,
     "TherapistAppointments": TherapistAppointments,
     "TherapistAvailability": TherapistAvailability,
     "TherapistBulletin": TherapistBulletin,
@@ -157,8 +162,9 @@ export const PAGES = {
     "TherapistTeam": TherapistTeam,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
-    "AppHome": AppHome,
-    "TherapistApp": TherapistApp,
+    "TherapistMiniSiteManager": TherapistMiniSiteManager,
+    "TherapistFinance": TherapistFinance,
+    "TherapistLeadBot": TherapistLeadBot,
 }
 
 export const pagesConfig = {
