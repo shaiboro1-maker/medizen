@@ -73,10 +73,11 @@ export default function Layout({ children, currentPageName }) {
   const isAdminPage = adminPages.includes(currentPageName);
 
   const therapistPages = [
-    "TherapistDashboard", "TherapistAppointments", "TherapistServices",
+    "TherapistDashboard", "TherapistCRM", "TherapistAppointments", "TherapistServices",
     "TherapistAvailability", "TherapistClients", "TherapistContent", 
     "TherapistProducts", "TherapistCourses", "TherapistBulletin", "TherapistWebinars",
-    "TherapistPodcasts", "TherapistProfile", "TherapistChat", "TherapistCampaigns", "TherapistMiniSite"
+    "TherapistPodcasts", "TherapistProfile", "TherapistChat", "TherapistPopups", "TherapistCampaigns",
+    "TherapistPayments", "TherapistInvoices", "TherapistMiniSite"
   ];
   const isTherapistPage = therapistPages.includes(currentPageName);
   const isAppHomePage = currentPageName === "AppHome";
@@ -138,6 +139,7 @@ export default function Layout({ children, currentPageName }) {
             </div>
             <nav className="flex-1 p-4 space-y-1">
               <AdminNavLink to="TherapistDashboard" icon={<Home size={18}/>} label="דשבורד" current={currentPageName}/>
+              <AdminNavLink to="TherapistCRM" icon={<User size={18}/>} label="CRM לקוחות" current={currentPageName}/>
               <AdminNavLink to="TherapistAppointments" icon={<Calendar size={18}/>} label="תורים" current={currentPageName}/>
               <AdminNavLink to="TherapistServices" icon={<ClipboardList size={18}/>} label="שירותים" current={currentPageName}/>
               <AdminNavLink to="TherapistAvailability" icon={<Calendar size={18}/>} label="זמינות" current={currentPageName}/>
@@ -149,9 +151,12 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="TherapistWebinars" icon={<Video size={18}/>} label="וובינרים" current={currentPageName}/>
               <AdminNavLink to="TherapistPodcasts" icon={<Mic size={18}/>} label="פודקאסט" current={currentPageName}/>
               <AdminNavLink to="TherapistChat" icon={<Mic size={18}/>} label="צ'אט" current={currentPageName}/>
+              <AdminNavLink to="TherapistPopups" icon={<MessageCircle size={18}/>} label="פופ-אפים" current={currentPageName}/>
               <AdminNavLink to="TherapistCampaigns" icon={<TrendingUp size={18}/>} label="קמפיינים" current={currentPageName}/>
               <AdminNavLink to="TherapistCoupons" icon={<TrendingUp size={18}/>} label="קופונים" current={currentPageName}/>
               <AdminNavLink to="TherapistNewsletter" icon={<TrendingUp size={18}/>} label="ניוזלטר" current={currentPageName}/>
+              <AdminNavLink to="TherapistPayments" icon={<TrendingUp size={18}/>} label="תשלומים וסליקה" current={currentPageName}/>
+              <AdminNavLink to="TherapistInvoices" icon={<TrendingUp size={18}/>} label="חשבוניות" current={currentPageName}/>
               <AdminNavLink to="TherapistMiniSite" icon={<Globe size={18}/>} label="מיני-סייט" current={currentPageName}/>
               <AdminNavLink to="TherapistMiniSiteSettings" icon={<Globe size={18}/>} label="עיצוב מיני-סייט" current={currentPageName}/>
               <AdminNavLink to="TherapistReminders" icon={<Globe size={18}/>} label="תזכורות" current={currentPageName}/>
