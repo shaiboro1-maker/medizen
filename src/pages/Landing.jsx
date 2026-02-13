@@ -238,6 +238,22 @@ export default function Landing() {
               <p className="text-sm opacity-90">השראה וחוכמה</p>
             </div>
           </Link>
+
+          <Link
+            to={createPageUrl("Music?category=jokes")}
+            className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
+          >
+            <img 
+              src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=400&h=300&fit=crop" 
+              alt="בדיחות לנפש"
+              className="w-full h-48 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">בדיחות לנפש</h3>
+              <p className="text-sm opacity-90">העלאת מצב רוח</p>
+            </div>
+          </Link>
         </div>
       </section>
 

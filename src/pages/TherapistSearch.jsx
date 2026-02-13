@@ -34,6 +34,30 @@ const CATEGORIES = [
 
 const AREAS = ["מרכז", "צפון", "דרום", "ירושלים", "שרון", "שפלה"];
 
+function getCategoryImage(categoryId) {
+  const images = {
+    all: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=300&fit=crop",
+    acupuncture: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop",
+    physio: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=300&fit=crop",
+    cosmetics: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=300&fit=crop",
+    nutrition: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&h=300&fit=crop",
+    sports: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=300&fit=crop",
+    massage: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&h=300&fit=crop",
+    body_mind: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop",
+    chiropractic: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=300&fit=crop",
+    hair: "https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400&h=300&fit=crop",
+    pemf: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=400&h=300&fit=crop",
+    insoles: "https://images.unsplash.com/photo-1556906781-9a412961c28c?w=400&h=300&fit=crop",
+    shockwave: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400&h=300&fit=crop",
+    occupational: "https://images.unsplash.com/photo-1516534775068-ba3e7458af70?w=400&h=300&fit=crop",
+    social_work: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=300&fit=crop",
+    pedicure: "https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=400&h=300&fit=crop",
+    combined: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop",
+    other: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=400&h=300&fit=crop"
+  };
+  return images[categoryId] || images.other;
+}
+
 export default function TherapistSearch() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -104,19 +128,25 @@ export default function TherapistSearch() {
           </div>
         )}
 
-        {/* Category Pills */}
-        <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+      </div>
+
+      {/* Category Grid */}
+      <div className="mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setCategory(cat.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                category === cat.id
-                  ? "bg-teal-600 text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
+              className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
             >
-              {cat.label}
+              <img 
+                src={getCategoryImage(cat.id)} 
+                alt={cat.label}
+                className="w-full h-full object-cover"
+              />
+              <div className={`absolute inset-0 ${category === cat.id ? 'bg-teal-600/70' : 'bg-black/50'} flex items-center justify-center transition-all`}>
+                <p className="text-white text-base font-bold text-center px-2">{cat.label}</p>
+              </div>
             </button>
           ))}
         </div>
