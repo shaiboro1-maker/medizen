@@ -12,6 +12,13 @@ const CATEGORIES = [
   { id: "calming", label: "מוזיקה מרגיעה", emoji: "😌" },
   { id: "chill", label: "צ'יל", emoji: "☁️" },
   { id: "yoga", label: "יוגה", emoji: "🕉️" },
+  { id: "body_mind", label: "גוף ונפש", emoji: "🌿" },
+  { id: "brain_healing", label: "תדרים לריפוי המוח", emoji: "🧠" },
+  { id: "alpha_waves", label: "גלי אלפא", emoji: "✨" },
+  { id: "sleep", label: "שינה רגועה", emoji: "😴" },
+  { id: "breathing", label: "תרגילי נשימה", emoji: "🫁" },
+  { id: "life_stories", label: "סיפורים לחיים", emoji: "📖" },
+  { id: "jokes", label: "בדיחות מצחיקות", emoji: "😄" },
 ];
 
 export default function Music() {
@@ -36,19 +43,19 @@ export default function Music() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-4 py-8 pb-24" style={{backgroundColor: '#F5F1E8', minHeight: '100vh'}}>
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2">🎵 מוזיקה ומדיטציות</h1>
-        <p className="text-gray-500">מוזיקה מרגיעה, מדיטציות מודרכות ועוד</p>
+        <h1 className="text-3xl font-bold mb-2 text-[#7C9885]">🎵 גוף ונפש - מוזיקה ומדיטציות</h1>
+        <p className="text-[#A8947D]">תדרים לריפוי, מוזיקה מרגיעה, מדיטציות מודרכות ועוד</p>
       </div>
 
-      <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+      <div className="flex gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">
         {CATEGORIES.map(cat => (
           <button
             key={cat.id}
             onClick={() => setCategory(cat.id)}
-            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-              category === cat.id ? "bg-teal-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            className={`px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+              category === cat.id ? "bg-[#7C9885] text-white shadow-md" : "bg-white text-[#A8947D] hover:bg-[#E5DDD3]"
             }`}
           >
             {cat.emoji} {cat.label}
@@ -63,51 +70,56 @@ export default function Music() {
       ) : filtered.length === 0 ? (
         <div className="text-center py-20 text-gray-400">אין מוזיקה זמינה</div>
       ) : (
-        <div className="space-y-4">
+        <div className="grid md:grid-cols-2 gap-6">
           {filtered.map(track => (
             <div
               key={track.id}
-              className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all"
+              className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all"
             >
-              <div className="flex items-center gap-4">
-                <div
-                  className="w-16 h-16 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-400 flex items-center justify-center flex-shrink-0 overflow-hidden"
-                >
-                  {track.image_url ? (
-                    <img src={track.image_url} alt={track.title} className="w-full h-full object-cover"/>
-                  ) : (
-                    <MusicIcon className="text-white" size={28}/>
+              <div className="aspect-video overflow-hidden">
+                {track.image_url ? (
+                  <img 
+                    src={track.image_url} 
+                    alt={track.title} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-[#7C9885] to-[#9CB4A4] flex items-center justify-center">
+                    <MusicIcon className="text-white" size={48}/>
+                  </div>
+                )}
+              </div>
+              
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+              
+              <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge className="bg-[#7C9885]/80 text-white text-xs">
+                    {CATEGORIES.find(c => c.id === track.category)?.emoji} {CATEGORIES.find(c => c.id === track.category)?.label}
+                  </Badge>
+                  {track.duration_minutes && (
+                    <span className="text-xs opacity-80">{track.duration_minutes} דקות</span>
+                  )}
+                  {track.is_featured && (
+                    <Badge className="bg-amber-500/80 text-white text-xs">⭐ מומלץ</Badge>
                   )}
                 </div>
                 
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-lg mb-1">{track.title}</h3>
-                  {track.description && (
-                    <p className="text-gray-500 text-sm line-clamp-1">{track.description}</p>
-                  )}
-                  <div className="flex items-center gap-3 mt-2">
-                    <Badge variant="secondary" className="bg-teal-50 text-teal-700">
-                      {CATEGORIES.find(c => c.id === track.category)?.emoji} {CATEGORIES.find(c => c.id === track.category)?.label}
-                    </Badge>
-                    {track.duration_minutes && (
-                      <span className="text-xs text-gray-400">{track.duration_minutes} דקות</span>
-                    )}
-                    {track.is_featured && (
-                      <Badge className="bg-amber-400 text-white">⭐ מומלץ</Badge>
-                    )}
-                  </div>
-                </div>
-
+                <h3 className="font-bold text-xl mb-1">{track.title}</h3>
+                {track.description && (
+                  <p className="text-sm opacity-90 line-clamp-2 mb-3">{track.description}</p>
+                )}
+                
                 <button
                   onClick={() => handlePlay(track.id)}
-                  className="w-14 h-14 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center flex-shrink-0 transition-all hover:scale-105"
+                  className="w-12 h-12 rounded-full bg-white/90 hover:bg-white text-[#7C9885] flex items-center justify-center transition-all hover:scale-110"
                 >
-                  {playing === track.id ? <Pause size={24}/> : <Play size={24}/>}
+                  {playing === track.id ? <Pause size={20}/> : <Play size={20}/>}
                 </button>
               </div>
 
               {playing === track.id && track.audio_url && (
-                <div className="mt-4 pt-4 border-t">
+                <div className="absolute top-0 left-0 right-0 p-4 bg-black/60 backdrop-blur-sm">
                   <audio
                     src={track.audio_url}
                     controls

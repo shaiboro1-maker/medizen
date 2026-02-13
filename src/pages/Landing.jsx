@@ -58,7 +58,7 @@ export default function Landing() {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-6xl font-black text-gray-900 leading-tight mb-6">
-              <span className="text-gray-900">Wellness Hub</span>
+              <span className="text-gray-900">MediZen</span>
               <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-l from-green-600 to-teal-600">
                 הדרך שלך לבריאות מיטבית
@@ -110,54 +110,133 @@ export default function Landing() {
       {/* Health Content Section */}
       <section className="max-w-7xl mx-auto px-4 py-8 bg-[#F5F1E8]">
         <h2 className="text-2xl font-black text-gray-900 mb-6 text-center">תוכן בריאותי</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           <Link
             to={createPageUrl("Exercises")}
-            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
+            className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
           >
-            <div className="text-3xl mb-2">💪</div>
-            <h3 className="font-black text-base text-gray-900">תרגילים</h3>
-            <p className="text-xs text-gray-600 font-medium">מקצועי</p>
+            <img 
+              src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=300&fit=crop" 
+              alt="תרגילים"
+              className="w-full h-48 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">תרגילים</h3>
+              <p className="text-sm opacity-90">תרגילים מקצועיים</p>
+            </div>
           </Link>
+          
           <Link
             to={createPageUrl("Recipes")}
-            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
+            className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
           >
-            <div className="text-3xl mb-2">🥗</div>
-            <h3 className="font-black text-base text-gray-900">מתכונים</h3>
-            <p className="text-xs text-gray-600 font-medium">בריאים</p>
+            <img 
+              src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" 
+              alt="מתכונים"
+              className="w-full h-48 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">מתכונים</h3>
+              <p className="text-sm opacity-90">מתכונים בריאים</p>
+            </div>
           </Link>
-          <Link
-            to={createPageUrl("Webinars")}
-            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
-          >
-            <div className="text-3xl mb-2">🎥</div>
-            <h3 className="font-black text-base text-gray-900">וובינרים</h3>
-            <p className="text-xs text-gray-600 font-medium">הרצאות</p>
-          </Link>
-          <Link
-            to={createPageUrl("Podcasts")}
-            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
-          >
-            <div className="text-3xl mb-2">🎙️</div>
-            <h3 className="font-black text-base text-gray-900">פודקאסטים</h3>
-            <p className="text-xs text-gray-600 font-medium">מעניינים</p>
-          </Link>
+
           <Link
             to={createPageUrl("Music")}
-            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
+            className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
           >
-            <div className="text-3xl mb-2">🎵</div>
-            <h3 className="font-black text-base text-gray-900">מוזיקה</h3>
-            <p className="text-xs text-gray-600 font-medium">מדיטציות</p>
+            <img 
+              src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=400&h=300&fit=crop" 
+              alt="מוזיקה"
+              className="w-full h-48 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">מוזיקה</h3>
+              <p className="text-sm opacity-90">מוזיקה מרגיעה</p>
+            </div>
           </Link>
+          
           <Link
             to={createPageUrl("Diary")}
-            className="bg-white rounded-2xl p-4 border border-gray-200 hover:shadow-lg transition-all hover:-translate-y-1 text-center"
+            className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
           >
-            <div className="text-3xl mb-2">📔</div>
-            <h3 className="font-black text-base text-gray-900">יומן</h3>
-            <p className="text-xs text-gray-600 font-medium">אישי</p>
+            <img 
+              src="https://images.unsplash.com/photo-1517842645767-c639042777db?w=400&h=300&fit=crop" 
+              alt="יומן"
+              className="w-full h-48 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">יומן אישי</h3>
+              <p className="text-sm opacity-90">עקוב אחר ההתקדמות</p>
+            </div>
+          </Link>
+
+          <Link
+            to={createPageUrl("Music?category=body_mind")}
+            className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
+          >
+            <img 
+              src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop" 
+              alt="גוף ונפש"
+              className="w-full h-48 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">גוף ונפש</h3>
+              <p className="text-sm opacity-90">תדרים וריפוי</p>
+            </div>
+          </Link>
+
+          <Link
+            to={createPageUrl("Music?category=sleep")}
+            className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
+          >
+            <img 
+              src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=400&h=300&fit=crop" 
+              alt="שינה"
+              className="w-full h-48 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">שינה רגועה</h3>
+              <p className="text-sm opacity-90">תדרים לשינה עמוקה</p>
+            </div>
+          </Link>
+
+          <Link
+            to={createPageUrl("Music?category=breathing")}
+            className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
+          >
+            <img 
+              src="https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=400&h=300&fit=crop" 
+              alt="נשימה"
+              className="w-full h-48 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">תרגילי נשימה</h3>
+              <p className="text-sm opacity-90">טכניקות הרגעה</p>
+            </div>
+          </Link>
+
+          <Link
+            to={createPageUrl("Music?category=life_stories")}
+            className="group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
+          >
+            <img 
+              src="https://images.unsplash.com/photo-1516534775068-ba3e7458af70?w=400&h=300&fit=crop" 
+              alt="סיפורים"
+              className="w-full h-48 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+              <h3 className="font-black text-xl mb-1">סיפורים לחיים</h3>
+              <p className="text-sm opacity-90">השראה וחוכמה</p>
+            </div>
           </Link>
         </div>
       </section>
@@ -217,7 +296,7 @@ export default function Landing() {
 
       {/* Upcoming Webinars */}
       {upcomingWebinars.length > 0 && (
-        <section className="bg-white py-16">
+        <section className="bg-[#F5F1E8] py-16">
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex justify-between items-center mb-8">
               <h2 className="text-2xl md:text-3xl font-black text-gray-900">וובינרים קרובים</h2>

@@ -211,9 +211,9 @@ export default function Layout({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to={createPageUrl("Landing")} className="flex items-center gap-2">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-teal-500 to-emerald-500 flex items-center justify-center shadow-md">
-              <span className="text-white font-bold text-lg">W</span>
+              <span className="text-white font-bold text-lg">M</span>
             </div>
-            <span className="text-xl font-bold text-gray-900 hidden sm:inline">Wellness Hub</span>
+            <span className="text-xl font-bold text-gray-900 hidden sm:inline">MediZen</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1">
@@ -323,43 +323,43 @@ export default function Layout({ children, currentPageName }) {
       </nav>
 
       {/* Footer (desktop) */}
-      <footer className="hidden md:block bg-gray-900 text-white py-12">
+      <footer className="hidden md:block py-12" style={{backgroundColor: '#F5F1E8'}}>
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-4 gap-8">
           <div>
-            <h3 className="font-bold text-lg mb-4">🌿 Wellness Hub</h3>
-            <p className="text-gray-400 text-sm">הפלטפורמה המובילה בישראל לחיבור בין מטפלים ומטופלים</p>
+            <h3 className="font-bold text-lg mb-4 text-[#7C9885]">🌿 MediZen</h3>
+            <p className="text-[#A8947D] text-sm">הפלטפורמה המובילה בישראל לחיבור בין מטפלים ומטופלים</p>
           </div>
           <div>
-            <h4 className="font-semibold mb-3">ניווט</h4>
-            <div className="space-y-2 text-sm text-gray-400">
-              <Link to={createPageUrl("TherapistSearch")} className="block hover:text-white">מצא מטפל</Link>
-              <Link to={createPageUrl("Exercises")} className="block hover:text-white">תרגילים</Link>
-              <Link to={createPageUrl("Shop")} className="block hover:text-white">חנות</Link>
+            <h4 className="font-semibold mb-3 text-[#7C9885]">ניווט</h4>
+            <div className="space-y-2 text-sm text-[#A8947D]">
+              <Link to={createPageUrl("TherapistSearch")} className="block hover:text-[#7C9885]">מצא מטפל</Link>
+              <Link to={createPageUrl("Exercises")} className="block hover:text-[#7C9885]">תרגילים</Link>
+              <Link to={createPageUrl("Shop")} className="block hover:text-[#7C9885]">חנות</Link>
             </div>
           </div>
           <div>
-            <h4 className="font-semibold mb-3">תוכן</h4>
-            <div className="space-y-2 text-sm text-gray-400">
-              <Link to={createPageUrl("Webinars")} className="block hover:text-white">וובינרים</Link>
-              <Link to={createPageUrl("Podcasts")} className="block hover:text-white">פודקאסטים</Link>
-              <Link to={createPageUrl("Recipes")} className="block hover:text-white">מתכונים</Link>
+            <h4 className="font-semibold mb-3 text-[#7C9885]">תוכן</h4>
+            <div className="space-y-2 text-sm text-[#A8947D]">
+              <Link to={createPageUrl("Webinars")} className="block hover:text-[#7C9885]">וובינרים</Link>
+              <Link to={createPageUrl("Podcasts")} className="block hover:text-[#7C9885]">פודקאסטים</Link>
+              <Link to={createPageUrl("Recipes")} className="block hover:text-[#7C9885]">מתכונים</Link>
             </div>
           </div>
           <div>
-            <h4 className="font-semibold mb-3">למטפלים</h4>
-            <div className="space-y-2 text-sm text-gray-400">
-              <Link to={createPageUrl("TherapistRegister")} className="block hover:text-white">הרשמה כמטפל</Link>
+            <h4 className="font-semibold mb-3 text-[#7C9885]">למטפלים</h4>
+            <div className="space-y-2 text-sm text-[#A8947D]">
+              <Link to={createPageUrl("TherapistRegister")} className="block hover:text-[#7C9885]">הרשמה כמטפל</Link>
             </div>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 mt-8 pt-8 border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 mt-8 pt-8 border-t border-[#E5DDD3]">
           <div className="flex justify-between items-center">
-            <div className="space-x-6 space-x-reverse text-sm text-gray-400">
-              <Link to={createPageUrl("Accessibility")} className="hover:text-white">הצהרת נגישות</Link>
-              <Link to={createPageUrl("Support")} className="hover:text-white">תמיכה</Link>
-              <span>© 2026 Wellness Hub</span>
+            <div className="space-x-6 space-x-reverse text-sm text-[#A8947D]">
+              <Link to={createPageUrl("Accessibility")} className="hover:text-[#7C9885]">הצהרת נגישות</Link>
+              <Link to={createPageUrl("Support")} className="hover:text-[#7C9885]">תמיכה</Link>
+              <span>© 2026 MediZen</span>
             </div>
-            <p className="text-gray-400 text-sm">התקן את האפליקציה ישירות מהדפדפן</p>
+            <p className="text-[#A8947D] text-sm">התקן את האפליקציה ישירות מהדפדפן</p>
           </div>
         </div>
       </footer>
