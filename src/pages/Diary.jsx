@@ -126,92 +126,91 @@ export default function Diary() {
       )}
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>רשומה חדשה ביומן</DialogTitle>
+            <DialogTitle className="text-right">רשומה חדשה ביומן</DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-6">
+          <div className="space-y-3">
             <div>
-              <Label>תאריך</Label>
-              <Calendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={setSelectedDate}
-                locale={he}
-                className="rounded-md border"
+              <Label className="text-sm">תאריך</Label>
+              <Input
+                type="date"
+                value={format(selectedDate, "yyyy-MM-dd")}
+                onChange={(e) => setSelectedDate(new Date(e.target.value))}
+                className="mt-1 h-9"
               />
             </div>
 
             <div>
-              <Label>איך אתה מרגיש?</Label>
-              <div className="flex gap-2 mt-2">
+              <Label className="text-sm">איך אתה מרגיש?</Label>
+              <div className="grid grid-cols-5 gap-1 mt-2">
                 {MOODS.map(mood => (
                   <button
                     key={mood.id}
                     onClick={() => setForm({...form, mood: mood.id})}
-                    className={`flex-1 p-3 rounded-xl border-2 transition-all ${
+                    className={`p-2 rounded-lg border transition-all ${
                       form.mood === mood.id 
                         ? `${mood.color} border-current` 
-                        : "border-gray-200 hover:border-gray-300"
+                        : "border-gray-200"
                     }`}
                   >
-                    <div className="text-2xl mb-1">{mood.emoji}</div>
-                    <div className="text-xs font-medium">{mood.label}</div>
+                    <div className="text-xl">{mood.emoji}</div>
+                    <div className="text-[9px]">{mood.label}</div>
                   </button>
                 ))}
               </div>
             </div>
 
             <div>
-              <Label>מה קרה היום?</Label>
+              <Label className="text-sm">מה קרה היום?</Label>
               <Textarea
                 value={form.content}
                 onChange={(e) => setForm({...form, content: e.target.value})}
-                className="h-32 mt-2"
-                placeholder="רשום את מחשבותיך, תחושותיך או כל דבר שקרה היום..."
+                className="h-24 mt-1 text-sm"
+                placeholder="רשום את מחשבותיך..."
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-2">
               <div>
-                <Label>רמת כאב (0-10)</Label>
+                <Label className="text-sm">כאב (0-10)</Label>
                 <Input
                   type="number"
                   min="0"
                   max="10"
                   value={form.pain_level}
                   onChange={(e) => setForm({...form, pain_level: Number(e.target.value)})}
-                  className="mt-2"
+                  className="mt-1 h-9"
                 />
               </div>
               <div>
-                <Label>רמת אנרגיה (0-10)</Label>
+                <Label className="text-sm">אנרגיה (0-10)</Label>
                 <Input
                   type="number"
                   min="0"
                   max="10"
                   value={form.energy_level}
                   onChange={(e) => setForm({...form, energy_level: Number(e.target.value)})}
-                  className="mt-2"
+                  className="mt-1 h-9"
                 />
               </div>
             </div>
 
             <div>
-              <Label>תגיות (מופרד בפסיקים)</Label>
+              <Label className="text-sm">תגיות (מופרד בפסיקים)</Label>
               <Input
                 value={form.tags.join(", ")}
                 onChange={(e) => setForm({...form, tags: e.target.value.split(",").map(t => t.trim()).filter(Boolean)})}
-                placeholder="כאב, שינה, פעילות גופנית..."
-                className="mt-2"
+                placeholder="כאב, שינה..."
+                className="mt-1 h-9"
               />
             </div>
 
             <Button
             onClick={() => createMutation.mutate(form)}
             disabled={!form.content || createMutation.isPending}
-            className="w-full bg-[#B8A393] hover:bg-[#C5B5A4] rounded-full"
+            className="w-full bg-[#B8A393] hover:bg-[#C5B5A4] h-10"
             >
             {createMutation.isPending ? "שומר..." : "שמור רשומה"}
             </Button>
