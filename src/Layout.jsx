@@ -74,7 +74,7 @@ export default function Layout({ children, currentPageName }) {
 
   const therapistPages = [
     "TherapistDashboard", "TherapistCRM", "TherapistAppointments", "TherapistServices",
-    "TherapistAvailability", "TherapistClients", "TherapistContent", 
+    "TherapistAvailability", "TherapistClients", "TherapistAIWriter", "TherapistContent", 
     "TherapistProducts", "TherapistCourses", "TherapistBulletin", "TherapistWebinars",
     "TherapistPodcasts", "TherapistProfile", "TherapistChat", "TherapistPopups", "TherapistCampaigns",
     "TherapistPayments", "TherapistInvoices", "TherapistMiniSite"
@@ -138,12 +138,12 @@ export default function Layout({ children, currentPageName }) {
               <h1 className="text-xl font-bold text-teal-700">🌿 פאנל מטפל</h1>
             </div>
             <nav className="flex-1 p-4 space-y-1">
-              <AdminNavLink to="TherapistDashboard" icon={<Home size={18}/>} label="דשבורד" current={currentPageName}/>
+              <AdminNavLink to="TherapistDashboard" icon={<Home size={18}/>} label="דשבורד מרכזי" current={currentPageName}/>
               <AdminNavLink to="TherapistCRM" icon={<User size={18}/>} label="CRM לקוחות" current={currentPageName}/>
               <AdminNavLink to="TherapistAppointments" icon={<Calendar size={18}/>} label="תורים" current={currentPageName}/>
               <AdminNavLink to="TherapistServices" icon={<ClipboardList size={18}/>} label="שירותים" current={currentPageName}/>
               <AdminNavLink to="TherapistAvailability" icon={<Calendar size={18}/>} label="זמינות" current={currentPageName}/>
-              <AdminNavLink to="TherapistClients" icon={<User size={18}/>} label="לקוחות" current={currentPageName}/>
+              <AdminNavLink to="TherapistAIWriter" icon={<BookOpen size={18}/>} label="AI כתיבת מאמרים" current={currentPageName}/>
               <AdminNavLink to="TherapistContent" icon={<BookOpen size={18}/>} label="תוכן" current={currentPageName}/>
               <AdminNavLink to="TherapistProducts" icon={<ShoppingBag size={18}/>} label="חנות" current={currentPageName}/>
               <AdminNavLink to="TherapistCourses" icon={<Video size={18}/>} label="קורסים" current={currentPageName}/>
