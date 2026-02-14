@@ -119,6 +119,8 @@ import AdminCRM from './pages/AdminCRM';
 import AdminPayments from './pages/AdminPayments';
 import AdminPromotions from './pages/AdminPromotions';
 import AIAdvisor from './pages/AIAdvisor';
+import AdminCampaigns from './pages/AdminCampaigns';
+import HealthTracker from './pages/HealthTracker';
 import __Layout from './Layout.jsx';
 
 
@@ -195,6 +197,8 @@ export const PAGES = {
     "AdminPayments": AdminPayments,
     "AdminPromotions": AdminPromotions,
     "AIAdvisor": AIAdvisor,
+    "AdminCampaigns": AdminCampaigns,
+    "HealthTracker": HealthTracker,
 }
 
 export const pagesConfig = {
