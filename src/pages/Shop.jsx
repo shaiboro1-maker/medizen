@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Search, ShoppingCart, Tag, ArrowRight } from "lucide-react";
+import { Search, ShoppingCart, Tag, ArrowRight, Star, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -31,9 +31,32 @@ export default function Shop() {
   const [selected, setSelected] = useState(null);
   const [cart, setCart] = useState([]);
 
+  const [user, setUser] = useState(null);
+
+  React.useEffect(() => {
+    const init = async () => {
+      try {
+        const me = await base44.auth.me();
+        setUser(me);
+      } catch (e) {}
+    };
+    init();
+  }, []);
+
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: () => base44.entities.Product.filter({ is_active: true }, "-created_date"),
+  });
+
+  const { data: reviews = [] } = useQuery({
+    queryKey: ["reviews"],
+    queryFn: () => base44.entities.ProductReview.filter({ is_approved: true }),
+  });
+
+  const { data: myOrders = [] } = useQuery({
+    queryKey: ["myOrders", user?.email],
+    queryFn: () => base44.entities.Order.filter({ client_email: user.email }),
+    enabled: !!user,
   });
 
   const filtered = useMemo(() => {
@@ -43,6 +66,18 @@ export default function Shop() {
       return matchQuery && matchCat;
     });
   }, [products, query, category]);
+
+  const getProductRating = (productId) => {
+    const productReviews = reviews.filter(r => r.product_id === productId);
+    if (productReviews.length === 0) return 0;
+    return productReviews.reduce((sum, r) => sum + r.rating, 0) / productReviews.length;
+  };
+
+  const getRecommendedProducts = () => {
+    if (!myOrders || myOrders.length === 0) return products.slice(0, 4);
+    const purchasedCategories = myOrders.flatMap(o => o.items?.map(i => i.product_id) || []);
+    return products.filter(p => !purchasedCategories.includes(p.id)).slice(0, 4);
+  };
 
   const addToCart = (product) => {
     setCart(prev => {
@@ -76,6 +111,31 @@ export default function Shop() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-4">
+        {/* AI Recommendations */}
+        {user && getRecommendedProducts().length > 0 && (
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles size={20} className="text-purple-600"/>
+              <h2 className="font-bold text-[#7C9885]">מומלץ במיוחד עבורך</h2>
+            </div>
+            <div className="flex gap-3 overflow-x-auto pb-2">
+              {getRecommendedProducts().map(p => (
+                <div key={p.id} className="bg-white rounded-xl border border-[#E5DDD3] p-3 min-w-[150px] cursor-pointer" onClick={() => setSelected(p)}>
+                  <div className="h-20 bg-gray-50 rounded-lg mb-2 flex items-center justify-center">
+                    {p.image_url ? (
+                      <img src={p.image_url} alt={p.name} className="w-full h-full object-cover rounded-lg"/>
+                    ) : (
+                      <Tag size={20} className="text-gray-300"/>
+                    )}
+                  </div>
+                  <p className="text-xs font-medium line-clamp-2 mb-1">{p.name}</p>
+                  <p className="text-sm font-bold text-teal-600">₪{p.price}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="bg-white rounded-2xl border border-gray-100 p-4 mb-6 shadow-sm">
           <div className="relative">
             <Search size={18} className="absolute right-3 top-3 text-gray-400"/>
@@ -113,6 +173,13 @@ export default function Shop() {
                 </div>
               <div className="p-4">
                 <h3 className="font-bold text-sm mb-2 line-clamp-2">{p.name}</h3>
+                {getProductRating(p.id) > 0 && (
+                  <div className="flex items-center gap-1 mb-2">
+                    <Star size={12} className="text-yellow-500 fill-yellow-500"/>
+                    <span className="text-xs text-gray-600">{getProductRating(p.id).toFixed(1)}</span>
+                    <span className="text-xs text-gray-400">({reviews.filter(r => r.product_id === p.id).length})</span>
+                  </div>
+                )}
                 <div className="flex items-center justify-between">
                   <div>
                     {p.sale_price ? (
@@ -166,7 +233,30 @@ export default function Shop() {
             <>
               <DialogHeader><DialogTitle>{selected.name}</DialogTitle></DialogHeader>
               {selected.image_url && <img src={selected.image_url} alt="" className="w-full h-48 object-cover rounded-xl"/>}
-              <p className="text-gray-600">{selected.description}</p>
+              <p className="text-gray-600 mb-4">{selected.description}</p>
+              
+              {/* Reviews */}
+              <div className="mb-4">
+                <h3 className="font-bold mb-2">ביקורות</h3>
+                {reviews.filter(r => r.product_id === selected.id).length === 0 ? (
+                  <p className="text-sm text-gray-400">אין ביקורות עדיין</p>
+                ) : (
+                  <div className="space-y-2 max-h-40 overflow-y-auto">
+                    {reviews.filter(r => r.product_id === selected.id).map((review, i) => (
+                      <div key={i} className="p-2 bg-gray-50 rounded-lg">
+                        <div className="flex items-center gap-1 mb-1">
+                          {Array(5).fill(0).map((_, j) => (
+                            <Star key={j} size={12} className={j < review.rating ? "text-yellow-500 fill-yellow-500" : "text-gray-300"}/>
+                          ))}
+                          <span className="text-xs text-gray-500">{review.user_name}</span>
+                        </div>
+                        <p className="text-xs text-gray-600">{review.review_text}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <div className="flex justify-between items-center mt-4">
                 <span className="text-2xl font-bold text-teal-700">₪{selected.sale_price || selected.price}</span>
                 <Button onClick={() => { addToCart(selected); setSelected(null); }} className="bg-teal-600 hover:bg-teal-700">
