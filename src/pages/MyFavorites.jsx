@@ -20,11 +20,16 @@ export default function MyFavorites() {
   });
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
-      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
-        <ArrowLeft size={16} className="ml-2"/> חזור
-      </Button>
-      <h1 className="text-3xl font-bold mb-8">מועדפים</h1>
+    <div className="min-h-screen pb-24" style={{ backgroundColor: "#F5F1E8" }}>
+      <div className="bg-white border-b p-4">
+        <div className="flex items-center gap-3">
+          <button onClick={() => navigate(-1)}>
+            <ArrowLeft size={24}/>
+          </button>
+          <h1 className="text-xl font-bold">💚 מועדפים</h1>
+        </div>
+      </div>
+      <div className="max-w-3xl mx-auto px-4 py-6">
       {favorites.length === 0 ? (
         <div className="text-center py-20">
           <Heart size={48} className="text-gray-200 mx-auto mb-4"/>
@@ -40,6 +45,7 @@ export default function MyFavorites() {
         </div>
       )}
       </div>
+    </div>
     </div>
   );
 }
