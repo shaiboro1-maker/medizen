@@ -544,10 +544,10 @@ export default function AdminDashboard() {
           </DialogHeader>
           <div className="space-y-4">
             <div className="bg-blue-50 p-4 rounded-lg text-center">
-              <p className="text-sm font-medium mb-3">סרוק את הקוד או העתק את הקישור:</p>
+              <p className="text-sm font-medium mb-3">סרוק את הקוד:</p>
               <div className="bg-white p-4 rounded-lg inline-block">
                 <img 
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(appUrl)}`}
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(appUrl + '/Landing')}`}
                   alt="QR Code"
                   className="w-48 h-48"
                 />
@@ -557,9 +557,9 @@ export default function AdminDashboard() {
             <div>
               <Label>קישור לאפליקציה</Label>
               <div className="flex gap-2 mt-2">
-                <Input value={appUrl} readOnly className="text-sm"/>
+                <Input value={appUrl + '/Landing'} readOnly className="text-sm"/>
                 <Button onClick={() => {
-                  navigator.clipboard.writeText(appUrl);
+                  navigator.clipboard.writeText(appUrl + '/Landing');
                   alert('הקישור הועתק!');
                 }}>
                   העתק
@@ -570,7 +570,7 @@ export default function AdminDashboard() {
             <div className="bg-amber-50 p-4 rounded-lg">
               <h4 className="font-bold mb-2">הוראות התקנה:</h4>
               <ol className="text-sm space-y-2 list-decimal list-inside">
-                <li>פתח את הקישור בטלפון שלך (Safari/Chrome)</li>
+                <li>פתח את הקישור בטלפון (Safari/Chrome)</li>
                 <li><strong>אנדרואיד:</strong> תפריט ⋮ → "הוסף למסך הבית"</li>
                 <li><strong>אייפון:</strong> כפתור שיתוף 📤 → "הוסף למסך הבית"</li>
               </ol>
@@ -578,13 +578,17 @@ export default function AdminDashboard() {
 
             <Button 
               onClick={async () => {
-                const email = (await base44.auth.me()).email;
-                await base44.integrations.Core.SendEmail({
-                  to: email,
-                  subject: "קישור להורדת האפליקציה",
-                  body: `שלום,\n\nהנה הקישור להורדת האפליקציה שלך:\n${appUrl}\n\nפתח את הקישור בטלפון ועקוב אחרי ההוראות להתקנה.`
-                });
-                alert('הקישור נשלח למייל שלך!');
+                try {
+                  const email = (await base44.auth.me()).email;
+                  await base44.integrations.Core.SendEmail({
+                    to: email,
+                    subject: "קישור להורדת האפליקציה",
+                    body: `שלום,\n\nהנה הקישור להורדת האפליקציה שלך:\n${appUrl}/Landing\n\nפתח את הקישור בטלפון ועקוב אחרי ההוראות להתקנה.\n\nבברכה,\nצוות האפליקציה`
+                  });
+                  alert('הקישור נשלח למייל שלך!');
+                } catch (error) {
+                  alert('שגיאה בשליחת המייל');
+                }
               }}
               className="w-full bg-[#B8A393] hover:bg-[#C5B5A4]"
             >

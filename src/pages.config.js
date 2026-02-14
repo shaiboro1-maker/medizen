@@ -122,6 +122,7 @@ import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
 import ClientPortal from './pages/ClientPortal';
+import TherapistNotifications from './pages/TherapistNotifications';
 import __Layout from './Layout.jsx';
 
 
@@ -201,6 +202,7 @@ export const PAGES = {
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
     "ClientPortal": ClientPortal,
+    "TherapistNotifications": TherapistNotifications,
 }
 
 export const pagesConfig = {
