@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation, useQueryClient } from "@tantml:react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Search, Play, FileText, Share2, ArrowRight, Upload } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
