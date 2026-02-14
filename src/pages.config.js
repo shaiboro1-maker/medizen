@@ -51,7 +51,6 @@ import AIHealthAdvisor from './pages/AIHealthAdvisor';
 import Accessibility from './pages/Accessibility';
 import AdminBulletin from './pages/AdminBulletin';
 import AdminContent from './pages/AdminContent';
-import AdminDashboard from './pages/AdminDashboard';
 import AdminNotifications from './pages/AdminNotifications';
 import AdminOrders from './pages/AdminOrders';
 import AdminProducts from './pages/AdminProducts';
@@ -121,6 +120,7 @@ import AdminPromotions from './pages/AdminPromotions';
 import AIAdvisor from './pages/AIAdvisor';
 import AdminCampaigns from './pages/AdminCampaigns';
 import HealthTracker from './pages/HealthTracker';
+import AdminDashboard from './pages/AdminDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -129,7 +129,6 @@ export const PAGES = {
     "Accessibility": Accessibility,
     "AdminBulletin": AdminBulletin,
     "AdminContent": AdminContent,
-    "AdminDashboard": AdminDashboard,
     "AdminNotifications": AdminNotifications,
     "AdminOrders": AdminOrders,
     "AdminProducts": AdminProducts,
@@ -199,6 +198,7 @@ export const PAGES = {
     "AIAdvisor": AIAdvisor,
     "AdminCampaigns": AdminCampaigns,
     "HealthTracker": HealthTracker,
+    "AdminDashboard": AdminDashboard,
 }
 
 export const pagesConfig = {

@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Search, ShoppingCart, Tag, ArrowRight, Star, Sparkles } from "lucide-react";
+import { Search, ShoppingCart, Tag, ArrowRight, Star, Sparkles, CreditCard } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -225,7 +225,12 @@ export default function Shop() {
                     <span>סה"כ</span>
                     <span>₪{cartTotal.toFixed(0)}</span>
                   </div>
-                  <Button className="w-full bg-teal-600 hover:bg-teal-700">המשך לתשלום</Button>
+                  <div className="space-y-2">
+                    <Button className="w-full bg-teal-600 hover:bg-teal-700">
+                      <CreditCard size={16} className="ml-2"/> המשך לתשלום
+                    </Button>
+                    <p className="text-xs text-center text-gray-500">משלוח חינם מעל ₪300</p>
+                  </div>
                 </div>
               )}
             </>

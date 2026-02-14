@@ -50,10 +50,37 @@ export default function AdminDashboard() {
 
   const handleInstallPWA = async () => {
     if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        setDeferredPrompt(null);
+      try {
+        await deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          setDeferredPrompt(null);
+          alert('האפליקציה הותקנה בהצלחה!');
+        }
+      } catch (error) {
+        // Manual install instructions
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        const isAndroid = /Android/.test(navigator.userAgent);
+        
+        if (isIOS) {
+          alert('להתקנה: לחץ על כפתור השיתוף ובחר "הוסף למסך הבית"');
+        } else if (isAndroid) {
+          alert('להתקנה: פתח את התפריט של הדפדפן ובחר "הוסף למסך הבית" או "התקן אפליקציה"');
+        } else {
+          alert('להתקנה: השתמש באפשרות "התקן" בתפריט הדפדפן');
+        }
+      }
+    } else {
+      // No prompt available - show manual instructions
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isAndroid = /Android/.test(navigator.userAgent);
+      
+      if (isIOS) {
+        alert('להתקנה: לחץ על כפתור השיתוף 📤 ובחר "הוסף למסך הבית"');
+      } else if (isAndroid) {
+        alert('להתקנה: פתח את תפריט הדפדפן ⋮ ובחר "הוסף למסך הבית"');
+      } else {
+        alert('להתקנה: פתח את תפריט הדפדפן ובחר "התקן אפליקציה"');
       }
     }
   };
@@ -235,11 +262,9 @@ export default function AdminDashboard() {
           <Button onClick={() => setShowUploadDialog(true)} className="bg-[#B8A393] hover:bg-[#C5B5A4]">
             <Plus size={16} className="ml-2"/> העלה תוכן
           </Button>
-          {deferredPrompt && (
-            <Button onClick={handleInstallPWA} size="sm" className="bg-[#B8A393] hover:bg-[#C5B5A4]">
-              <Download size={16} className="ml-2"/> התקן אפליקציה
-            </Button>
-          )}
+          <Button onClick={handleInstallPWA} size="sm" className="bg-[#B8A393] hover:bg-[#C5B5A4]">
+            <Download size={16} className="ml-2"/> התקן PWA
+          </Button>
           <div className="relative">
             <Button 
               size="sm" 
