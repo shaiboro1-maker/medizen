@@ -143,19 +143,20 @@ export default function AppHome() {
       <div className="px-4 mt-6">
         <h2 className="text-xl font-bold mb-4 text-[#7C9885] text-right">פעולות מהירות</h2>
         <div className="grid grid-cols-2 gap-4">
-          <Link to={createPageUrl("TherapistSearch")}>
+          <Link to={createPageUrl("AIHealthAdvisor")}>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
+              className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32 border-2 border-purple-300"
             >
               <img 
                 src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=300&fit=crop" 
-                alt="מצא מטפל"
+                alt="יועץ AI"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-end p-4">
-                <p className="text-white text-lg font-bold text-right">מצא מטפל</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-purple-600/90 to-transparent flex flex-col items-end justify-end p-4">
+                <p className="text-white text-lg font-bold text-right">יועץ AI בריאותי</p>
+                <p className="text-white/70 text-[10px] text-right">* הייעוץ אינו תחליף לייעוץ רפואי</p>
               </div>
             </motion.div>
           </Link>
@@ -178,11 +179,29 @@ export default function AppHome() {
             </motion.div>
           </Link>
 
-          <Link to={createPageUrl("Shop")}>
+          <Link to={createPageUrl("Blog")}>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1 }}
+              className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
+            >
+              <img 
+                src="https://images.unsplash.com/photo-1455849318743-b2233052fcff?w=400&h=300&fit=crop" 
+                alt="בלוג"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-end p-4">
+                <p className="text-white text-lg font-bold text-right">בלוג לחיים בריאים</p>
+              </div>
+            </motion.div>
+          </Link>
+
+          <Link to={createPageUrl("Shop")}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.15 }}
               className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
             >
               <img 
@@ -192,24 +211,6 @@ export default function AppHome() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-end p-4">
                 <p className="text-white text-lg font-bold text-right">חנות</p>
-              </div>
-            </motion.div>
-          </Link>
-
-          <Link to={createPageUrl("Music")}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.15 }}
-              className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
-            >
-              <img 
-                src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=400&h=300&fit=crop" 
-                alt="מוזיקה"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-end p-4">
-                <p className="text-white text-lg font-bold text-right">מוזיקה</p>
               </div>
             </motion.div>
           </Link>
@@ -355,11 +356,11 @@ export default function AppHome() {
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-[#F5F1E8]/95 backdrop-blur-lg border-t border-[#A8947D]/20 px-2 z-50 shadow-lg" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <div className="flex justify-around items-center h-14">
-          <NavItem icon={<Search size={20}/>} label="חיפוש" to="TherapistSearch"/>
-          <NavItem icon={<Calendar size={20}/>} label="תורים" to="MyAppointments"/>
-          <NavItem icon={<Heart size={20}/>} label="מועדפים" to="MyFavorites"/>
-          <NavItem icon={<ShoppingBag size={20}/>} label="חנות" to="Shop"/>
-          <NavItem icon={<User size={20}/>} label="אישי" to="MyAccount"/>
+          <NavItem icon={<Search size={20}/>} label="חיפוש" to="TherapistSearch" color="#F5F1E8"/>
+          <NavItem icon={<Calendar size={20}/>} label="חדשות" to="HealthNews" color="#F5F1E8"/>
+          <NavItem icon={<Heart size={20}/>} label="מועדפים" to="MyFavorites" color="#F5F1E8"/>
+          <NavItem icon={<ShoppingBag size={20}/>} label="חנות" to="Shop" color="#F5F1E8"/>
+          <NavItem icon={<User size={20}/>} label="אישי" to="MyAccount" color="#F5F1E8"/>
         </div>
       </nav>
     </div>
@@ -368,7 +369,7 @@ export default function AppHome() {
 
 
 
-function NavItem({ icon, label, to }) {
+function NavItem({ icon, label, to, color }) {
   return (
     <Link to={createPageUrl(to)} className="flex flex-col items-center gap-0.5 text-[#7C9885] hover:text-[#A8947D] transition-colors py-1">
       {icon}
