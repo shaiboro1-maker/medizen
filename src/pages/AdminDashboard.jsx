@@ -1,17 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
-import { Users, Calendar, DollarSign, ShoppingBag, Video, TrendingUp, Bell, Download, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Users, Calendar, DollarSign, ShoppingBag, Video, TrendingUp, Bell, Download, CheckCircle, Clock, AlertCircle, Plus, Trash2, ArrowRight, Music as MusicIcon, FileText, Podcast as PodcastIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 
 export default function AdminDashboard() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [contentType, setContentType] = useState("exercise");
+  const [uploading, setUploading] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    category: "",
+    video_url: "",
+    thumbnail_url: "",
+    audio_url: "",
+    image_url: "",
+    content: "",
+    ingredients: "",
+    instructions: "",
+    difficulty: "easy",
+    duration_minutes: 0,
+    prep_time_minutes: 0
+  });
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e) => {
@@ -53,13 +79,28 @@ export default function AdminDashboard() {
   });
 
   const { data: exercises = [] } = useQuery({
-    queryKey: ["pendingExercises"],
-    queryFn: () => base44.entities.Exercise.filter({ is_approved: false }),
+    queryKey: ["adminExercises"],
+    queryFn: () => base44.entities.Exercise.list("-created_date"),
   });
 
   const { data: recipes = [] } = useQuery({
-    queryKey: ["pendingRecipes"],
-    queryFn: () => base44.entities.Recipe.filter({ is_approved: false }),
+    queryKey: ["adminRecipes"],
+    queryFn: () => base44.entities.Recipe.list("-created_date"),
+  });
+
+  const { data: music = [] } = useQuery({
+    queryKey: ["adminMusic"],
+    queryFn: () => base44.entities.Music.list("-created_date"),
+  });
+
+  const { data: bulletinPosts = [] } = useQuery({
+    queryKey: ["adminBulletin"],
+    queryFn: () => base44.entities.BulletinPost.list("-created_date"),
+  });
+
+  const { data: podcasts = [] } = useQuery({
+    queryKey: ["adminPodcasts"],
+    queryFn: () => base44.entities.Podcast.list("-created_date"),
   });
 
   const { data: userContent = [] } = useQuery({
@@ -67,17 +108,99 @@ export default function AdminDashboard() {
     queryFn: () => base44.entities.UserContent.filter({ is_approved: false }),
   });
 
-  const { data: bulletinPosts = [] } = useQuery({
-    queryKey: ["pendingBulletin"],
-    queryFn: () => base44.entities.BulletinPost.filter({ status: "pending" }),
-  });
-
   const approvedTherapists = therapists.filter(t => t.status === "approved").length;
   const pendingTherapists = therapists.filter(t => t.status === "pending").length;
   const totalRevenue = appointments.filter(a => a.status !== "cancelled").reduce((s, a) => s + (a.price || 0), 0);
   const totalSales = orders.reduce((s, o) => s + (o.total || 0), 0);
 
-  const pendingApprovals = pendingTherapists + exercises.length + recipes.length + userContent.length + bulletinPosts.length;
+  const pendingExercises = exercises.filter(e => !e.is_approved).length;
+  const pendingRecipes = recipes.filter(r => !r.is_approved).length;
+  const pendingBulletin = bulletinPosts.filter(b => b.status === "pending").length;
+  const pendingApprovals = pendingTherapists + pendingExercises + pendingRecipes + userContent.length + pendingBulletin;
+
+  const deleteExMutation = useMutation({
+    mutationFn: (id) => base44.entities.Exercise.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminExercises"] }),
+  });
+
+  const deleteRecMutation = useMutation({
+    mutationFn: (id) => base44.entities.Recipe.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminRecipes"] }),
+  });
+
+  const deleteMusicMutation = useMutation({
+    mutationFn: (id) => base44.entities.Music.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminMusic"] }),
+  });
+
+  const deleteBulletinMutation = useMutation({
+    mutationFn: (id) => base44.entities.BulletinPost.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminBulletin"] }),
+  });
+
+  const deleteWebinarMutation = useMutation({
+    mutationFn: (id) => base44.entities.Webinar.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["allWebinars"] }),
+  });
+
+  const deletePodcastMutation = useMutation({
+    mutationFn: (id) => base44.entities.Podcast.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminPodcasts"] }),
+  });
+
+  const createMutation = useMutation({
+    mutationFn: async (data) => {
+      if (contentType === "exercise") return base44.entities.Exercise.create(data);
+      if (contentType === "recipe") return base44.entities.Recipe.create(data);
+      if (contentType === "music") return base44.entities.Music.create(data);
+      if (contentType === "bulletin") return base44.entities.BulletinPost.create(data);
+      if (contentType === "webinar") return base44.entities.Webinar.create(data);
+      if (contentType === "podcast") return base44.entities.Podcast.create(data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+      setShowUploadDialog(false);
+      resetForm();
+    },
+  });
+
+  const handleFileUpload = async (e, field) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      setFormData(prev => ({ ...prev, [field]: file_url }));
+    } catch (error) {
+      alert("שגיאה בהעלאת קובץ");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      description: "",
+      category: "",
+      video_url: "",
+      thumbnail_url: "",
+      audio_url: "",
+      image_url: "",
+      content: "",
+      ingredients: "",
+      instructions: "",
+      difficulty: "easy",
+      duration_minutes: 0,
+      prep_time_minutes: 0
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = { ...formData, is_approved: true, status: "published" };
+    createMutation.mutate(data);
+  };
 
   // Real-time subscription to new therapist registrations
   useEffect(() => {
@@ -97,13 +220,21 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-4 md:p-8" style={{backgroundColor: '#F5F1E8'}}>
-      {/* Header with PWA Install and Notifications */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-[#7C9885]">🎯 דשבורד מנהל</h1>
-          <p className="text-[#A8947D]">ניהול מלא של המערכת</p>
+      {/* Header */}
+      <div className="flex justify-between items-start mb-6">
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" onClick={() => navigate(createPageUrl("Landing"))}>
+            <ArrowRight size={20}/>
+          </Button>
+          <div>
+            <h1 className="text-2xl font-bold text-[#7C9885]">🎯 דשבורד מנהל</h1>
+            <p className="text-[#A8947D]">ניהול מלא של המערכת</p>
+          </div>
         </div>
         <div className="flex gap-2">
+          <Button onClick={() => setShowUploadDialog(true)} className="bg-[#B8A393] hover:bg-[#C5B5A4]">
+            <Plus size={16} className="ml-2"/> העלה תוכן
+          </Button>
           {deferredPrompt && (
             <Button onClick={handleInstallPWA} size="sm" className="bg-[#B8A393] hover:bg-[#C5B5A4]">
               <Download size={16} className="ml-2"/> התקן אפליקציה
@@ -199,6 +330,123 @@ export default function AdminDashboard() {
         />
       </div>
 
+      {/* Content Management Section */}
+      <div className="mb-8">
+        <h2 className="text-xl font-bold mb-4 text-[#7C9885]">ניהול תוכן</h2>
+        <Tabs defaultValue="exercises" className="space-y-4">
+          <TabsList className="bg-white rounded-xl p-1 border border-[#E5DDD3]">
+            <TabsTrigger value="exercises">תרגילים ({exercises.length})</TabsTrigger>
+            <TabsTrigger value="recipes">מתכונים ({recipes.length})</TabsTrigger>
+            <TabsTrigger value="music">מוזיקה ({music.length})</TabsTrigger>
+            <TabsTrigger value="bulletin">לוח מודעות ({bulletinPosts.length})</TabsTrigger>
+            <TabsTrigger value="webinars">וובינרים ({webinars.length})</TabsTrigger>
+            <TabsTrigger value="podcasts">פודקאסטים ({podcasts.length})</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="exercises">
+            <div className="space-y-3">
+              {exercises.slice(0, 5).map(ex => (
+                <ContentCard
+                  key={ex.id}
+                  title={ex.title}
+                  subtitle={`${ex.category} · ${ex.therapist_name || "מערכת"}`}
+                  image={ex.thumbnail_url}
+                  onDelete={() => deleteExMutation.mutate(ex.id)}
+                />
+              ))}
+              <Link to={createPageUrl("AdminContent")}>
+                <Button variant="outline" className="w-full">ראה הכל</Button>
+              </Link>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="recipes">
+            <div className="space-y-3">
+              {recipes.slice(0, 5).map(r => (
+                <ContentCard
+                  key={r.id}
+                  title={r.title}
+                  subtitle={`${r.category} · ${r.therapist_name || "מערכת"}`}
+                  image={r.image_url}
+                  onDelete={() => deleteRecMutation.mutate(r.id)}
+                />
+              ))}
+              <Link to={createPageUrl("AdminContent")}>
+                <Button variant="outline" className="w-full">ראה הכל</Button>
+              </Link>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="music">
+            <div className="space-y-3">
+              {music.slice(0, 5).map(m => (
+                <ContentCard
+                  key={m.id}
+                  title={m.title}
+                  subtitle={`${m.category} · ${m.duration_minutes || 0} דק'`}
+                  image={m.image_url}
+                  onDelete={() => deleteMusicMutation.mutate(m.id)}
+                />
+              ))}
+              <Link to={createPageUrl("AdminContent")}>
+                <Button variant="outline" className="w-full">ראה הכל</Button>
+              </Link>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="bulletin">
+            <div className="space-y-3">
+              {bulletinPosts.slice(0, 5).map(b => (
+                <ContentCard
+                  key={b.id}
+                  title={b.title}
+                  subtitle={`${b.category} · ${b.therapist_name || "אנונימי"}`}
+                  image={b.image_urls?.[0]}
+                  onDelete={() => deleteBulletinMutation.mutate(b.id)}
+                />
+              ))}
+              <Link to={createPageUrl("AdminBulletin")}>
+                <Button variant="outline" className="w-full">ראה הכל</Button>
+              </Link>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="webinars">
+            <div className="space-y-3">
+              {webinars.slice(0, 5).map(w => (
+                <ContentCard
+                  key={w.id}
+                  title={w.title}
+                  subtitle={`${new Date(w.date).toLocaleDateString('he-IL')} · ${w.therapist_name || "מערכת"}`}
+                  image={w.image_url}
+                  onDelete={() => deleteWebinarMutation.mutate(w.id)}
+                />
+              ))}
+              <Link to={createPageUrl("AdminWebinars")}>
+                <Button variant="outline" className="w-full">ראה הכל</Button>
+              </Link>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="podcasts">
+            <div className="space-y-3">
+              {podcasts.slice(0, 5).map(p => (
+                <ContentCard
+                  key={p.id}
+                  title={p.title}
+                  subtitle={`${p.category} · ${p.duration_minutes || 0} דק'`}
+                  image={p.thumbnail_url}
+                  onDelete={() => deletePodcastMutation.mutate(p.id)}
+                />
+              ))}
+              <Link to={createPageUrl("AdminContent")}>
+                <Button variant="outline" className="w-full">ראה הכל</Button>
+              </Link>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+
       {/* Quick Actions */}
       <div className="grid md:grid-cols-3 gap-4 mb-8">
         <QuickActionCard
@@ -209,14 +457,6 @@ export default function AdminDashboard() {
           color="bg-teal-50 text-teal-600"
         />
         <QuickActionCard
-          title="תכנים לאישור"
-          description="תרגילים, מתכונים ותכנים"
-          link="AdminApprovals"
-          icon={<CheckCircle size={20}/>}
-          color="bg-amber-50 text-amber-600"
-          badge={exercises.length + recipes.length + userContent.length}
-        />
-        <QuickActionCard
           title="ניהול חנות"
           description="מוצרים והזמנות"
           link="AdminProducts"
@@ -224,25 +464,11 @@ export default function AdminDashboard() {
           color="bg-purple-50 text-purple-600"
         />
         <QuickActionCard
-          title="פופ-אפים והתראות"
-          description="ניהול הודעות למשתמשים"
-          link="AdminNotifications"
-          icon={<Bell size={20}/>}
-          color="bg-blue-50 text-blue-600"
-        />
-        <QuickActionCard
           title="CRM ולקוחות"
           description="ניהול קשרי לקוחות"
           link="AdminCRM"
           icon={<Users size={20}/>}
           color="bg-green-50 text-green-600"
-        />
-        <QuickActionCard
-          title="סליקה וחשבוניות"
-          description="ניהול תשלומים"
-          link="AdminPayments"
-          icon={<DollarSign size={20}/>}
-          color="bg-emerald-50 text-emerald-600"
         />
       </div>
 
@@ -282,6 +508,125 @@ export default function AdminDashboard() {
           </table>
         </div>
       </div>
+
+      {/* Upload Content Dialog */}
+      <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>העלה תוכן חדש</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label>סוג תוכן</Label>
+              <Select value={contentType} onValueChange={setContentType}>
+                <SelectTrigger>
+                  <SelectValue/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="exercise">תרגיל</SelectItem>
+                  <SelectItem value="recipe">מתכון</SelectItem>
+                  <SelectItem value="music">מוזיקה</SelectItem>
+                  <SelectItem value="bulletin">לוח מודעות</SelectItem>
+                  <SelectItem value="webinar">וובינר</SelectItem>
+                  <SelectItem value="podcast">פודקאסט</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label>כותרת</Label>
+              <Input
+                value={formData.title}
+                onChange={(e) => setFormData({...formData, title: e.target.value})}
+                required
+              />
+            </div>
+
+            <div>
+              <Label>תיאור</Label>
+              <Textarea
+                value={formData.description}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+              />
+            </div>
+
+            {contentType === "bulletin" && (
+              <div>
+                <Label>תוכן</Label>
+                <Textarea
+                  value={formData.content}
+                  onChange={(e) => setFormData({...formData, content: e.target.value})}
+                  rows={5}
+                />
+              </div>
+            )}
+
+            <div>
+              <Label>קטגוריה</Label>
+              <Input
+                value={formData.category}
+                onChange={(e) => setFormData({...formData, category: e.target.value})}
+                required
+              />
+            </div>
+
+            {(contentType === "exercise" || contentType === "webinar" || contentType === "podcast") && (
+              <div>
+                <Label>העלאת וידאו</Label>
+                <input type="file" accept="video/*" onChange={(e) => handleFileUpload(e, "video_url")} className="block w-full text-sm"/>
+                {formData.video_url && <p className="text-xs text-green-600 mt-1">✓ הועלה</p>}
+              </div>
+            )}
+
+            <div>
+              <Label>העלאת תמונה</Label>
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={(e) => handleFileUpload(e, contentType === "exercise" ? "thumbnail_url" : "image_url")} 
+                className="block w-full text-sm"
+              />
+              {(formData.thumbnail_url || formData.image_url) && <p className="text-xs text-green-600 mt-1">✓ הועלה</p>}
+            </div>
+
+            {contentType === "music" && (
+              <div>
+                <Label>העלאת קובץ אודיו</Label>
+                <input type="file" accept="audio/*" onChange={(e) => handleFileUpload(e, "audio_url")} className="block w-full text-sm"/>
+                {formData.audio_url && <p className="text-xs text-green-600 mt-1">✓ הועלה</p>}
+              </div>
+            )}
+
+            {contentType === "recipe" && (
+              <>
+                <div>
+                  <Label>מרכיבים</Label>
+                  <Textarea
+                    value={formData.ingredients}
+                    onChange={(e) => setFormData({...formData, ingredients: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <Label>הוראות הכנה</Label>
+                  <Textarea
+                    value={formData.instructions}
+                    onChange={(e) => setFormData({...formData, instructions: e.target.value})}
+                  />
+                </div>
+              </>
+            )}
+
+            <div className="flex justify-end gap-2 pt-4">
+              <Button type="button" variant="outline" onClick={() => setShowUploadDialog(false)} disabled={uploading}>
+                ביטול
+              </Button>
+              <Button type="submit" className="bg-[#B8A393] hover:bg-[#C5B5A4]" disabled={uploading}>
+                {uploading ? "מעלה..." : "צור תוכן"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
@@ -316,5 +661,22 @@ function QuickActionCard({ title, description, link, icon, color, badge }) {
         <p className="text-xs text-gray-500">{description}</p>
       </div>
     </Link>
+  );
+}
+
+function ContentCard({ title, subtitle, image, onDelete }) {
+  return (
+    <div className="bg-white rounded-xl border border-[#E5DDD3] p-4 flex items-start gap-4">
+      {image && (
+        <img src={image} alt="" className="w-16 h-16 rounded-lg object-cover"/>
+      )}
+      <div className="flex-1">
+        <h3 className="font-bold text-[#7C9885]">{title}</h3>
+        <p className="text-sm text-[#A8947D]">{subtitle}</p>
+      </div>
+      <Button variant="ghost" size="icon" onClick={onDelete} className="text-red-500">
+        <Trash2 size={16}/>
+      </Button>
+    </div>
   );
 }

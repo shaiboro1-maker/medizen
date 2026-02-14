@@ -2,7 +2,10 @@ import React from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useNavigate } from "react-router-dom";
 
 const STATUS_COLORS = {
   pending: "bg-yellow-100 text-yellow-800",
@@ -13,6 +16,7 @@ const STATUS_COLORS = {
 };
 
 export default function AdminOrders() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: orders = [] } = useQuery({
     queryKey: ["adminOrders"],
@@ -25,8 +29,13 @@ export default function AdminOrders() {
   });
 
   return (
-    <div className="p-6 md:p-8">
-      <h1 className="text-2xl font-bold mb-6">ניהול הזמנות</h1>
+    <div className="p-6 md:p-8" style={{backgroundColor: '#F5F1E8'}}>
+      <div className="flex items-center gap-3 mb-6">
+        <Button variant="ghost" onClick={() => navigate(-1)}>
+          <ArrowRight size={20}/>
+        </Button>
+        <h1 className="text-2xl font-bold text-[#7C9885]">ניהול הזמנות</h1>
+      </div>
       {orders.length === 0 ? (
         <p className="text-center text-gray-400 py-12">אין הזמנות</p>
       ) : (

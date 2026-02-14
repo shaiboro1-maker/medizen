@@ -1,10 +1,11 @@
 import React from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Check, X, User } from "lucide-react";
+import { Check, X, User, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useNavigate } from "react-router-dom";
 
 const STATUS_COLORS = {
   pending: "bg-yellow-100 text-yellow-800",
@@ -13,6 +14,7 @@ const STATUS_COLORS = {
 };
 
 export default function AdminTherapists() {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { data: therapists = [] } = useQuery({
@@ -30,8 +32,13 @@ export default function AdminTherapists() {
   const suspended = therapists.filter(t => t.status === "suspended");
 
   return (
-    <div className="p-6 md:p-8">
-      <h1 className="text-2xl font-bold mb-6">ניהול מטפלים</h1>
+    <div className="p-6 md:p-8" style={{backgroundColor: '#F5F1E8'}}>
+      <div className="flex items-center gap-3 mb-6">
+        <Button variant="ghost" onClick={() => navigate(-1)}>
+          <ArrowRight size={20}/>
+        </Button>
+        <h1 className="text-2xl font-bold text-[#7C9885]">ניהול מטפלים</h1>
+      </div>
 
       <Tabs defaultValue="pending">
         <TabsList className="bg-gray-100 rounded-xl p-1 mb-6">
