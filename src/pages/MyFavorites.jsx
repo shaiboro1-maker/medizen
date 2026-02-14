@@ -39,6 +39,7 @@ export default function MyFavorites() {
           ))}
         </div>
       )}
+      </div>
     </div>
   );
 }

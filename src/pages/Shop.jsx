@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import { Search, ShoppingCart, Tag, ArrowLeft } from "lucide-react";
+import { Search, ShoppingCart, Tag, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,9 +14,13 @@ const CATEGORIES = [
   { id: "insoles", label: "מדרסים" },
   { id: "massage_tools", label: "עיסוי" },
   { id: "supplements", label: "תוספים" },
+  { id: "formulas", label: "פורמולות" },
+  { id: "equipment", label: "מכשור" },
+  { id: "oils", label: "שמנים" },
   { id: "cosmetics", label: "קוסמטיקה" },
   { id: "sports_equipment", label: "ציוד ספורט" },
   { id: "therapeutic_jewelry", label: "תכשיטים" },
+  { id: "websites", label: "אתרים" },
   { id: "other", label: "אחר" },
 ];
 
@@ -51,60 +55,62 @@ export default function Shop() {
   const cartTotal = cart.reduce((sum, item) => sum + (item.sale_price || item.price) * item.qty, 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
-        <ArrowLeft size={16} className="ml-2"/> חזור
-      </Button>
-      <div className="flex justify-between items-start mb-8">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">חנות</h1>
-          <p className="text-gray-500">מוצרי בריאות וטיפול</p>
-        </div>
-        {cart.length > 0 && (
-          <Button variant="outline" className="relative" onClick={() => setSelected({ type: "cart" })}>
-            <ShoppingCart size={18}/>
-            <span className="absolute -top-2 -left-2 w-5 h-5 bg-teal-600 text-white rounded-full text-xs flex items-center justify-center">
-              {cart.reduce((s, i) => s + i.qty, 0)}
-            </span>
-          </Button>
-        )}
-      </div>
-
-      <div className="bg-white rounded-2xl border border-gray-100 p-4 mb-8 shadow-sm">
-        <div className="relative">
-          <Search size={18} className="absolute right-3 top-3 text-gray-400"/>
-          <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="חפש מוצר..." className="pr-10"/>
-        </div>
-        <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => setCategory(cat.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                category === cat.id ? "bg-teal-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-            >
-              {cat.label}
+    <div className="min-h-screen pb-24" style={{ backgroundColor: "#F5F1E8" }}>
+      <div className="bg-white border-b p-4">
+        <div className="flex items-center gap-3 justify-between">
+          <div className="flex items-center gap-3">
+            <button onClick={() => navigate(-1)}>
+              <ArrowRight size={24}/>
             </button>
-          ))}
+            <h1 className="text-xl font-bold">חנות</h1>
+          </div>
+          {cart.length > 0 && (
+            <Button variant="outline" className="relative" onClick={() => setSelected({ type: "cart" })}>
+              <ShoppingCart size={18}/>
+              <span className="absolute -top-2 -left-2 w-5 h-5 bg-teal-600 text-white rounded-full text-xs flex items-center justify-center">
+                {cart.reduce((s, i) => s + i.qty, 0)}
+              </span>
+            </Button>
+          )}
         </div>
       </div>
 
-      {isLoading ? (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">{Array(8).fill(0).map((_, i) => <Skeleton key={i} className="h-64 rounded-2xl"/>)}</div>
-      ) : filtered.length === 0 ? (
-        <div className="text-center py-20 text-gray-400">לא נמצאו מוצרים</div>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {filtered.map(p => (
-            <div key={p.id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all">
-              <div className="h-40 bg-gray-50 flex items-center justify-center cursor-pointer" onClick={() => setSelected(p)}>
-                {p.image_url ? (
-                  <img src={p.image_url} alt={p.name} className="w-full h-full object-cover"/>
-                ) : (
-                  <ShoppingCart size={32} className="text-gray-200"/>
-                )}
-              </div>
+      <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="bg-white rounded-2xl border border-gray-100 p-4 mb-6 shadow-sm">
+          <div className="relative">
+            <Search size={18} className="absolute right-3 top-3 text-gray-400"/>
+            <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="חפש מוצר..." className="pr-10"/>
+          </div>
+          <div className="flex gap-2 mt-4 overflow-x-auto pb-2">
+            {CATEGORIES.map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => setCategory(cat.id)}
+                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                  category === cat.id ? "bg-teal-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {isLoading ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">{Array(8).fill(0).map((_, i) => <Skeleton key={i} className="h-64 rounded-2xl"/>)}</div>
+        ) : filtered.length === 0 ? (
+          <div className="text-center py-20 text-gray-400">לא נמצאו מוצרים</div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {filtered.map(p => (
+              <div key={p.id} className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all">
+                <div className="h-40 bg-gray-50 flex items-center justify-center cursor-pointer" onClick={() => setSelected(p)}>
+                  {p.image_url ? (
+                    <img src={p.image_url} alt={p.name} className="w-full h-full object-cover"/>
+                  ) : (
+                    <Tag size={32} className="text-gray-200"/>
+                  )}
+                </div>
               <div className="p-4">
                 <h3 className="font-bold text-sm mb-2 line-clamp-2">{p.name}</h3>
                 <div className="flex items-center justify-between">
@@ -124,9 +130,10 @@ export default function Shop() {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Product / Cart Dialog */}
       <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
@@ -170,6 +177,7 @@ export default function Shop() {
           ) : null}
         </DialogContent>
       </Dialog>
+    </div>
     </div>
   );
 }

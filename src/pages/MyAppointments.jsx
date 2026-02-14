@@ -190,6 +190,7 @@ export default function MyAppointments() {
           </div>
         </Link>
       </div>
+      </div>
     </div>
   );
 }

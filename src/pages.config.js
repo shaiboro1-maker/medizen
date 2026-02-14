@@ -113,6 +113,7 @@ import AIHealthAdvisor from './pages/AIHealthAdvisor';
 import Blog from './pages/Blog';
 import HealthNews from './pages/HealthNews';
 import Inspirations from './pages/Inspirations';
+import AdminWeeklyPush from './pages/AdminWeeklyPush';
 import __Layout from './Layout.jsx';
 
 
@@ -183,6 +184,7 @@ export const PAGES = {
     "Blog": Blog,
     "HealthNews": HealthNews,
     "Inspirations": Inspirations,
+    "AdminWeeklyPush": AdminWeeklyPush,
 }
 
 export const pagesConfig = {
