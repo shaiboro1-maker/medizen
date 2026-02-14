@@ -24,6 +24,8 @@ export default function AdminDashboard() {
   const [showInstallHelp, setShowInstallHelp] = useState(false);
   const [contentType, setContentType] = useState("exercise");
   const [uploading, setUploading] = useState(false);
+  const [contentFilter, setContentFilter] = useState("");
+  const [editingContent, setEditingContent] = useState(null);
   const appUrl = window.location.origin;
   const [formData, setFormData] = useState({
     title: "",
