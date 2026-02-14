@@ -114,6 +114,7 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="AdminWebinars" icon={<Video size={18}/>} label="וובינרים" current={currentPageName}/>
               <AdminNavLink to="AdminUserContent" icon={<BookOpen size={18}/>} label="תוכן משתמשים" current={currentPageName}/>
               <AdminNavLink to="AdminNotifications" icon={<MessageCircle size={18}/>} label="התראות" current={currentPageName}/>
+              <AdminNavLink to="AdminWeeklyPush" icon={<TrendingUp size={18}/>} label="פוש שבועי" current={currentPageName}/>
             </nav>
             <div className="p-4 border-t">
               <Link to={createPageUrl("Landing")} className="text-sm text-gray-500 hover:text-teal-600">
