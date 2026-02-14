@@ -10,10 +10,11 @@ export default function HealthNews() {
   const navigate = useNavigate();
 
   const { data: news = [], isLoading } = useQuery({
-    queryKey: ["health-news"],
+    queryKey: ["health-news", new Date().toDateString()],
     queryFn: async () => {
+      const today = new Date().toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', year: 'numeric' });
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `תן לי 10 חדשות בריאות עדכניות ומעניינות מישראל והעולם מהשבוע האחרון.
+        prompt: `תן לי 10 חדשות בריאות עדכניות ומעניינות מישראל והעולם מהיום ${today}.
         
         החזר רשימה בפורמט JSON:
         [
@@ -22,7 +23,7 @@ export default function HealthNews() {
             "summary": "תקציר קצר של 2-3 שורות",
             "category": "תזונה/כושר/מחקר/טיפולים/מניעה",
             "source": "מקור החדשה",
-            "date": "תאריך"
+            "date": "${today}"
           }
         ]`,
         add_context_from_internet: true,
