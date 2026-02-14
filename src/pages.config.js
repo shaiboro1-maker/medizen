@@ -117,6 +117,8 @@ import Webinars from './pages/Webinars';
 import AdminApprovals from './pages/AdminApprovals';
 import AdminCRM from './pages/AdminCRM';
 import AdminPayments from './pages/AdminPayments';
+import AdminPromotions from './pages/AdminPromotions';
+import AIAdvisor from './pages/AIAdvisor';
 import __Layout from './Layout.jsx';
 
 
@@ -191,6 +193,8 @@ export const PAGES = {
     "AdminApprovals": AdminApprovals,
     "AdminCRM": AdminCRM,
     "AdminPayments": AdminPayments,
+    "AdminPromotions": AdminPromotions,
+    "AIAdvisor": AIAdvisor,
 }
 
 export const pagesConfig = {
