@@ -21,8 +21,10 @@ export default function AdminDashboard() {
   const [showNotifications, setShowNotifications] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showUploadDialog, setShowUploadDialog] = useState(false);
+  const [showInstallHelp, setShowInstallHelp] = useState(false);
   const [contentType, setContentType] = useState("exercise");
   const [uploading, setUploading] = useState(false);
+  const appUrl = window.location.origin;
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -262,8 +264,8 @@ export default function AdminDashboard() {
           <Button onClick={() => setShowUploadDialog(true)} className="bg-[#B8A393] hover:bg-[#C5B5A4]">
             <Plus size={16} className="ml-2"/> העלה תוכן
           </Button>
-          <Button onClick={handleInstallPWA} size="sm" className="bg-[#B8A393] hover:bg-[#C5B5A4]">
-            <Download size={16} className="ml-2"/> התקן PWA
+          <Button onClick={() => setShowInstallHelp(true)} size="sm" className="bg-[#B8A393] hover:bg-[#C5B5A4]">
+            <Download size={16} className="ml-2"/> הורד לטלפון
           </Button>
           <div className="relative">
             <Button 
@@ -533,6 +535,64 @@ export default function AdminDashboard() {
           </table>
         </div>
       </div>
+
+      {/* Install Help Dialog */}
+      <Dialog open={showInstallHelp} onOpenChange={setShowInstallHelp}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>הורד את האפליקציה לטלפון</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="bg-blue-50 p-4 rounded-lg text-center">
+              <p className="text-sm font-medium mb-3">סרוק את הקוד או העתק את הקישור:</p>
+              <div className="bg-white p-4 rounded-lg inline-block">
+                <img 
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(appUrl)}`}
+                  alt="QR Code"
+                  className="w-48 h-48"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <Label>קישור לאפליקציה</Label>
+              <div className="flex gap-2 mt-2">
+                <Input value={appUrl} readOnly className="text-sm"/>
+                <Button onClick={() => {
+                  navigator.clipboard.writeText(appUrl);
+                  alert('הקישור הועתק!');
+                }}>
+                  העתק
+                </Button>
+              </div>
+            </div>
+
+            <div className="bg-amber-50 p-4 rounded-lg">
+              <h4 className="font-bold mb-2">הוראות התקנה:</h4>
+              <ol className="text-sm space-y-2 list-decimal list-inside">
+                <li>פתח את הקישור בטלפון שלך (Safari/Chrome)</li>
+                <li><strong>אנדרואיד:</strong> תפריט ⋮ → "הוסף למסך הבית"</li>
+                <li><strong>אייפון:</strong> כפתור שיתוף 📤 → "הוסף למסך הבית"</li>
+              </ol>
+            </div>
+
+            <Button 
+              onClick={async () => {
+                const email = (await base44.auth.me()).email;
+                await base44.integrations.Core.SendEmail({
+                  to: email,
+                  subject: "קישור להורדת האפליקציה",
+                  body: `שלום,\n\nהנה הקישור להורדת האפליקציה שלך:\n${appUrl}\n\nפתח את הקישור בטלפון ועקוב אחרי ההוראות להתקנה.`
+                });
+                alert('הקישור נשלח למייל שלך!');
+              }}
+              className="w-full bg-[#B8A393] hover:bg-[#C5B5A4]"
+            >
+              <Mail size={16} className="ml-2"/> שלח קישור למייל
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Upload Content Dialog */}
       <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
