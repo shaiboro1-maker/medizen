@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
-import { User, Calendar, Heart, ShoppingBag, LogOut, ChevronLeft, Trash2 } from "lucide-react";
+import { User, Calendar, Heart, ShoppingBag, LogOut, ChevronLeft, Trash2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import Recommendations from "../components/Recommendations";
@@ -12,6 +12,7 @@ export default function MyAccount() {
   const [user, setUser] = useState(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [confirmText, setConfirmText] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(() => base44.auth.redirectToLogin());
@@ -36,14 +37,24 @@ export default function MyAccount() {
   ];
 
   return (
-    <div className="max-w-lg mx-auto px-4 py-8">
-      <div className="text-center mb-8">
-        <div className="w-20 h-20 rounded-full bg-teal-100 flex items-center justify-center mx-auto mb-4">
-          <User size={32} className="text-teal-700"/>
+    <div className="min-h-screen pb-24" style={{ backgroundColor: "#F5F1E8" }}>
+      <div className="bg-white border-b p-4">
+        <div className="flex items-center gap-3">
+          <button onClick={() => navigate(-1)}>
+            <ArrowRight size={24}/>
+          </button>
+          <h1 className="text-xl font-bold">אזור אישי</h1>
         </div>
-        <h1 className="text-2xl font-bold">{user.full_name}</h1>
-        <p className="text-gray-500">{user.email}</p>
       </div>
+      
+      <div className="max-w-lg mx-auto px-4 py-6">
+        <div className="text-center mb-8">
+          <div className="w-20 h-20 rounded-full bg-teal-100 flex items-center justify-center mx-auto mb-4">
+            <User size={32} className="text-teal-700"/>
+          </div>
+          <h2 className="text-2xl font-bold">{user.full_name}</h2>
+          <p className="text-gray-500">{user.email}</p>
+        </div>
 
       <Recommendations userType="client" userId={user.email}/>
 
@@ -119,6 +130,7 @@ export default function MyAccount() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   );
 }

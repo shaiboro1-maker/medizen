@@ -47,9 +47,9 @@ export default function Landing() {
   };
 
   return (
-    <div className="bg-[#F5F1E8] min-h-screen">
+    <div style={{ backgroundColor: "#F5F1E8" }} className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-[#F5F1E8] overflow-hidden">
+      <section className="relative overflow-hidden" style={{ backgroundColor: "#F5F1E8" }}>
         <div className="max-w-7xl mx-auto px-4 py-16 md:py-24 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
