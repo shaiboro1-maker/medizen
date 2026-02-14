@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Calendar as CalendarIcon, TrendingUp, Smile, Meh, Frown } from "lucide-react";
+import { Plus, Calendar as CalendarIcon, TrendingUp, Smile, Meh, Frown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 import { he } from "date-fns/locale";
+import { useNavigate } from "react-router-dom";
 
 const MOODS = [
   { id: "excellent", label: "מצוין", emoji: "😄", color: "text-green-600 bg-green-100" },
@@ -22,6 +23,7 @@ const MOODS = [
 ];
 
 export default function Diary() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -59,19 +61,29 @@ export default function Diary() {
   });
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6 min-h-screen pb-24" style={{backgroundColor: '#F5F1E8'}}>
-      <div className="flex justify-between items-center mb-6">
-        <div className="text-right">
-          <h1 className="text-xl font-bold mb-1 text-[#7C9885]">📔 יומן אישי</h1>
-          <p className="text-sm text-[#A8947D]">עקוב אחר מצב הרוח שלך</p>
+    <div className="min-h-screen pb-24" style={{backgroundColor: '#F5F1E8'}}>
+      <div className="bg-white border-b p-4">
+        <div className="flex items-center gap-3">
+          <button onClick={() => navigate(-1)}>
+            <ArrowRight size={24}/>
+          </button>
+          <h1 className="text-xl font-bold">יומן אישי</h1>
         </div>
-        <Button
-          onClick={() => setShowDialog(true)}
-          className="bg-[#B8A393] hover:bg-[#C5B5A4] text-white rounded-full text-sm px-4 py-2"
-        >
-          <Plus size={16} className="ml-2"/> רשומה חדשה
-        </Button>
       </div>
+
+      <div className="max-w-4xl mx-auto px-4 py-6">
+        <div className="flex justify-between items-center mb-6">
+          <div className="text-right">
+            <h2 className="text-lg font-bold mb-1 text-[#7C9885]">עקוב אחר מצב הרוח שלך</h2>
+            <p className="text-sm text-[#A8947D]">שמור רשומות יומיות</p>
+          </div>
+          <Button
+            onClick={() => setShowDialog(true)}
+            className="bg-[#B8A393] hover:bg-[#C5B5A4] text-white rounded-full text-sm px-4 py-2"
+          >
+            <Plus size={16} className="ml-2"/> רשומה חדשה
+          </Button>
+        </div>
 
       {isLoading ? (
         <div className="space-y-4">
@@ -217,6 +229,7 @@ export default function Diary() {
           </div>
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   );
 }

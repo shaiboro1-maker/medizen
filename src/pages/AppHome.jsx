@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Search, Calendar, BookOpen, Heart, User, Music as MusicIcon, ShoppingBag, Camera } from "lucide-react";
+import { Search, Calendar, BookOpen, Heart, User, Music as MusicIcon, ShoppingBag, Camera, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
@@ -15,6 +15,27 @@ export default function AppHome() {
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const fileInputRef = useRef(null);
   const queryClient = useQueryClient();
+
+  const toggleFavorite = async (item) => {
+    if (!user) return;
+    try {
+      const favorites = await base44.entities.Favorite.filter({ user_email: user.email, item_id: item.id, item_type: item.type });
+      if (favorites.length > 0) {
+        await base44.entities.Favorite.delete(favorites[0].id);
+        toast.success("הוסר מהמועדפים");
+      } else {
+        await base44.entities.Favorite.create({
+          user_email: user.email,
+          item_id: item.id,
+          item_type: item.type,
+          item_name: item.name
+        });
+        toast.success("נוסף למועדפים");
+      }
+    } catch (error) {
+      toast.error("שגיאה בשמירת מועדף");
+    }
+  };
 
   useEffect(() => {
     base44.auth.isAuthenticated().then(auth => {
@@ -217,12 +238,37 @@ export default function AppHome() {
         </div>
       </div>
 
+      {/* Therapist Categories */}
+      <div className="px-4 mt-6">
+        <div className="flex justify-between items-center mb-4">
+          <Link to={createPageUrl("TherapistSearch")} className="text-[#7C9885] hover:text-[#A8947D]">
+            <ArrowRight size={20}/>
+          </Link>
+          <h2 className="text-xl font-bold text-[#7C9885] text-right">מצא מטפל</h2>
+        </div>
+        <div className="flex gap-3 overflow-x-auto pb-2">
+          {[
+            { label: "נטרופתיה", to: "TherapistSearch?category=naturopathy" },
+            { label: "טווינה", to: "TherapistSearch?category=tuina" },
+            { label: "שיאצו", to: "TherapistSearch?category=shiatsu" },
+            { label: "רפלקסולוגיה", to: "TherapistSearch?category=reflexology" },
+            { label: "אוסטאופתיה", to: "TherapistSearch?category=osteopathy" },
+          ].map((cat, i) => (
+            <Link key={i} to={createPageUrl(cat.to)}>
+              <button className="px-4 py-2 bg-white rounded-full whitespace-nowrap text-sm font-medium text-[#7C9885] border border-[#E5DDD3] hover:bg-[#7C9885] hover:text-white transition-all">
+                {cat.label}
+              </button>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* Content Sections */}
       <div className="px-4 mt-6">
         <h2 className="text-xl font-bold mb-4 text-[#7C9885] text-right">תוכן לגוף ולנפש</h2>
         <div className="grid grid-cols-2 gap-4">
-          <Link to={createPageUrl("Exercises")}>
-            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+          <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+            <Link to={createPageUrl("Exercises")}>
               <img 
                 src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=400&h=300&fit=crop" 
                 alt="תרגילים"
@@ -234,11 +280,17 @@ export default function AppHome() {
                   <p className="text-white/80 text-sm">מקצועיים</p>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+            <button
+              onClick={() => toggleFavorite({ id: "exercises", type: "category", name: "תרגילים" })}
+              className="absolute top-2 left-2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all"
+            >
+              <Heart size={16} className="text-red-500"/>
+            </button>
+          </div>
 
-          <Link to={createPageUrl("Recipes")}>
-            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+          <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+            <Link to={createPageUrl("Recipes")}>
               <img 
                 src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" 
                 alt="מתכונים"
@@ -250,11 +302,17 @@ export default function AppHome() {
                   <p className="text-white/80 text-sm">בריאים</p>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+            <button
+              onClick={() => toggleFavorite({ id: "recipes", type: "category", name: "מתכונים" })}
+              className="absolute top-2 left-2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all"
+            >
+              <Heart size={16} className="text-red-500"/>
+            </button>
+          </div>
 
-          <Link to={createPageUrl("Music?category=body_mind")}>
-            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+          <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+            <Link to={createPageUrl("Music?category=body_mind")}>
               <img 
                 src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop" 
                 alt="גוף ונפש"
@@ -266,11 +324,17 @@ export default function AppHome() {
                   <p className="text-white/80 text-sm">ריפוי והרמוניה</p>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+            <button
+              onClick={() => toggleFavorite({ id: "body_mind", type: "music_category", name: "גוף ונפש" })}
+              className="absolute top-2 left-2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all"
+            >
+              <Heart size={16} className="text-red-500"/>
+            </button>
+          </div>
 
-          <Link to={createPageUrl("Music?category=sleep")}>
-            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+          <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+            <Link to={createPageUrl("Music?category=sleep")}>
               <img 
                 src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=400&h=300&fit=crop" 
                 alt="שינה רגועה"
@@ -282,11 +346,17 @@ export default function AppHome() {
                   <p className="text-white/80 text-sm">תדרי שינה</p>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+            <button
+              onClick={() => toggleFavorite({ id: "sleep", type: "music_category", name: "שינה רגועה" })}
+              className="absolute top-2 left-2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all"
+            >
+              <Heart size={16} className="text-red-500"/>
+            </button>
+          </div>
 
-          <Link to={createPageUrl("Music?category=breathing")}>
-            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+          <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+            <Link to={createPageUrl("Music?category=breathing")}>
               <img 
                 src="https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?w=400&h=300&fit=crop" 
                 alt="תרגילי נשימה"
@@ -298,11 +368,17 @@ export default function AppHome() {
                   <p className="text-white/80 text-sm">טכניקות הרגעה</p>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+            <button
+              onClick={() => toggleFavorite({ id: "breathing", type: "music_category", name: "תרגילי נשימה" })}
+              className="absolute top-2 left-2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all"
+            >
+              <Heart size={16} className="text-red-500"/>
+            </button>
+          </div>
 
-          <Link to={createPageUrl("Music?category=life_stories")}>
-            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+          <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+            <Link to={createPageUrl("Music?category=life_stories")}>
               <img 
                 src="https://images.unsplash.com/photo-1516534775068-ba3e7458af70?w=400&h=300&fit=crop" 
                 alt="סיפורים לחיים"
@@ -314,11 +390,17 @@ export default function AppHome() {
                   <p className="text-white/80 text-sm">השראה</p>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+            <button
+              onClick={() => toggleFavorite({ id: "life_stories", type: "music_category", name: "סיפורים לחיים" })}
+              className="absolute top-2 left-2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all"
+            >
+              <Heart size={16} className="text-red-500"/>
+            </button>
+          </div>
 
-          <Link to={createPageUrl("Music?category=jokes")}>
-            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+          <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+            <Link to={createPageUrl("Music?category=jokes")}>
               <img 
                 src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=400&h=300&fit=crop" 
                 alt="בדיחות"
@@ -330,11 +412,17 @@ export default function AppHome() {
                   <p className="text-white/80 text-sm">העלאת מורל</p>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+            <button
+              onClick={() => toggleFavorite({ id: "jokes", type: "music_category", name: "בדיחות מצחיקות" })}
+              className="absolute top-2 left-2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all"
+            >
+              <Heart size={16} className="text-red-500"/>
+            </button>
+          </div>
 
-          <Link to={createPageUrl("Diary")}>
-            <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+          <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-40">
+            <Link to={createPageUrl("Diary")}>
               <img 
                 src="https://images.unsplash.com/photo-1517842645767-c639042777db?w=400&h=300&fit=crop" 
                 alt="יומן אישי"
@@ -346,8 +434,14 @@ export default function AppHome() {
                   <p className="text-white/80 text-sm">מעקב יומי</p>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+            <button
+              onClick={() => toggleFavorite({ id: "diary", type: "category", name: "יומן אישי" })}
+              className="absolute top-2 left-2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all"
+            >
+              <Heart size={16} className="text-red-500"/>
+            </button>
+          </div>
         </div>
       </div>
       
