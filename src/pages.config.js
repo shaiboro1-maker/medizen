@@ -75,10 +75,12 @@ import Recipes from './pages/Recipes';
 import Shop from './pages/Shop';
 import SubmitContent from './pages/SubmitContent';
 import Support from './pages/Support';
+import TherapistAIWriter from './pages/TherapistAIWriter';
 import TherapistApp from './pages/TherapistApp';
 import TherapistAppointments from './pages/TherapistAppointments';
 import TherapistAvailability from './pages/TherapistAvailability';
 import TherapistBulletin from './pages/TherapistBulletin';
+import TherapistCRM from './pages/TherapistCRM';
 import TherapistCampaigns from './pages/TherapistCampaigns';
 import TherapistChat from './pages/TherapistChat';
 import TherapistClients from './pages/TherapistClients';
@@ -88,12 +90,15 @@ import TherapistCourses from './pages/TherapistCourses';
 import TherapistDashboard from './pages/TherapistDashboard';
 import TherapistFinance from './pages/TherapistFinance';
 import TherapistIntegrations from './pages/TherapistIntegrations';
+import TherapistInvoices from './pages/TherapistInvoices';
 import TherapistLeadBot from './pages/TherapistLeadBot';
 import TherapistMiniSite from './pages/TherapistMiniSite';
 import TherapistMiniSiteManager from './pages/TherapistMiniSiteManager';
 import TherapistMiniSiteSettings from './pages/TherapistMiniSiteSettings';
 import TherapistNewsletter from './pages/TherapistNewsletter';
+import TherapistPayments from './pages/TherapistPayments';
 import TherapistPodcasts from './pages/TherapistPodcasts';
+import TherapistPopups from './pages/TherapistPopups';
 import TherapistPricing from './pages/TherapistPricing';
 import TherapistProducts from './pages/TherapistProducts';
 import TherapistProfile from './pages/TherapistProfile';
@@ -104,11 +109,9 @@ import TherapistServices from './pages/TherapistServices';
 import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
-import TherapistCRM from './pages/TherapistCRM';
-import TherapistPopups from './pages/TherapistPopups';
-import TherapistPayments from './pages/TherapistPayments';
-import TherapistInvoices from './pages/TherapistInvoices';
-import TherapistAIWriter from './pages/TherapistAIWriter';
+import AIHealthAdvisor from './pages/AIHealthAdvisor';
+import Blog from './pages/Blog';
+import HealthNews from './pages/HealthNews';
 import __Layout from './Layout.jsx';
 
 
@@ -141,10 +144,12 @@ export const PAGES = {
     "Shop": Shop,
     "SubmitContent": SubmitContent,
     "Support": Support,
+    "TherapistAIWriter": TherapistAIWriter,
     "TherapistApp": TherapistApp,
     "TherapistAppointments": TherapistAppointments,
     "TherapistAvailability": TherapistAvailability,
     "TherapistBulletin": TherapistBulletin,
+    "TherapistCRM": TherapistCRM,
     "TherapistCampaigns": TherapistCampaigns,
     "TherapistChat": TherapistChat,
     "TherapistClients": TherapistClients,
@@ -154,12 +159,15 @@ export const PAGES = {
     "TherapistDashboard": TherapistDashboard,
     "TherapistFinance": TherapistFinance,
     "TherapistIntegrations": TherapistIntegrations,
+    "TherapistInvoices": TherapistInvoices,
     "TherapistLeadBot": TherapistLeadBot,
     "TherapistMiniSite": TherapistMiniSite,
     "TherapistMiniSiteManager": TherapistMiniSiteManager,
     "TherapistMiniSiteSettings": TherapistMiniSiteSettings,
     "TherapistNewsletter": TherapistNewsletter,
+    "TherapistPayments": TherapistPayments,
     "TherapistPodcasts": TherapistPodcasts,
+    "TherapistPopups": TherapistPopups,
     "TherapistPricing": TherapistPricing,
     "TherapistProducts": TherapistProducts,
     "TherapistProfile": TherapistProfile,
@@ -170,11 +178,9 @@ export const PAGES = {
     "TherapistTeam": TherapistTeam,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
-    "TherapistCRM": TherapistCRM,
-    "TherapistPopups": TherapistPopups,
-    "TherapistPayments": TherapistPayments,
-    "TherapistInvoices": TherapistInvoices,
-    "TherapistAIWriter": TherapistAIWriter,
+    "AIHealthAdvisor": AIHealthAdvisor,
+    "Blog": Blog,
+    "HealthNews": HealthNews,
 }
 
 export const pagesConfig = {
