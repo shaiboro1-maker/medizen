@@ -318,7 +318,7 @@ export default function AdminDashboard() {
           <Button onClick={() => setShowUploadDialog(true)} className="bg-[#B8A393] hover:bg-[#C5B5A4]">
             <Plus size={16} className="ml-2"/> העלה תוכן
           </Button>
-          <Button onClick={() => window.open(appUrl, '_blank')} size="sm" className="bg-[#B8A393] hover:bg-[#C5B5A4]">
+          <Button onClick={() => window.open(window.location.origin + createPageUrl("Landing"), '_blank')} size="sm" className="bg-[#B8A393] hover:bg-[#C5B5A4]">
             <Download size={16} className="ml-2"/> הורד לטלפון
           </Button>
           <div className="relative">
