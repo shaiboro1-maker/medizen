@@ -47,13 +47,20 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import AIAdvisor from './pages/AIAdvisor';
 import AIHealthAdvisor from './pages/AIHealthAdvisor';
 import Accessibility from './pages/Accessibility';
+import AdminApprovals from './pages/AdminApprovals';
 import AdminBulletin from './pages/AdminBulletin';
+import AdminCRM from './pages/AdminCRM';
+import AdminCampaigns from './pages/AdminCampaigns';
 import AdminContent from './pages/AdminContent';
+import AdminDashboard from './pages/AdminDashboard';
 import AdminNotifications from './pages/AdminNotifications';
 import AdminOrders from './pages/AdminOrders';
+import AdminPayments from './pages/AdminPayments';
 import AdminProducts from './pages/AdminProducts';
+import AdminPromotions from './pages/AdminPromotions';
 import AdminTherapists from './pages/AdminTherapists';
 import AdminUserContent from './pages/AdminUserContent';
 import AdminWebinars from './pages/AdminWebinars';
@@ -65,6 +72,7 @@ import BulletinBoard from './pages/BulletinBoard';
 import Diary from './pages/Diary';
 import Exercises from './pages/Exercises';
 import HealthNews from './pages/HealthNews';
+import HealthTracker from './pages/HealthTracker';
 import Inspirations from './pages/Inspirations';
 import Landing from './pages/Landing';
 import MiniSite from './pages/MiniSite';
@@ -113,25 +121,25 @@ import TherapistServices from './pages/TherapistServices';
 import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
-import AdminApprovals from './pages/AdminApprovals';
-import AdminCRM from './pages/AdminCRM';
-import AdminPayments from './pages/AdminPayments';
-import AdminPromotions from './pages/AdminPromotions';
-import AIAdvisor from './pages/AIAdvisor';
-import AdminCampaigns from './pages/AdminCampaigns';
-import HealthTracker from './pages/HealthTracker';
-import AdminDashboard from './pages/AdminDashboard';
+import ClientPortal from './pages/ClientPortal';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "AIAdvisor": AIAdvisor,
     "AIHealthAdvisor": AIHealthAdvisor,
     "Accessibility": Accessibility,
+    "AdminApprovals": AdminApprovals,
     "AdminBulletin": AdminBulletin,
+    "AdminCRM": AdminCRM,
+    "AdminCampaigns": AdminCampaigns,
     "AdminContent": AdminContent,
+    "AdminDashboard": AdminDashboard,
     "AdminNotifications": AdminNotifications,
     "AdminOrders": AdminOrders,
+    "AdminPayments": AdminPayments,
     "AdminProducts": AdminProducts,
+    "AdminPromotions": AdminPromotions,
     "AdminTherapists": AdminTherapists,
     "AdminUserContent": AdminUserContent,
     "AdminWebinars": AdminWebinars,
@@ -143,6 +151,7 @@ export const PAGES = {
     "Diary": Diary,
     "Exercises": Exercises,
     "HealthNews": HealthNews,
+    "HealthTracker": HealthTracker,
     "Inspirations": Inspirations,
     "Landing": Landing,
     "MiniSite": MiniSite,
@@ -191,14 +200,7 @@ export const PAGES = {
     "TherapistTeam": TherapistTeam,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
-    "AdminApprovals": AdminApprovals,
-    "AdminCRM": AdminCRM,
-    "AdminPayments": AdminPayments,
-    "AdminPromotions": AdminPromotions,
-    "AIAdvisor": AIAdvisor,
-    "AdminCampaigns": AdminCampaigns,
-    "HealthTracker": HealthTracker,
-    "AdminDashboard": AdminDashboard,
+    "ClientPortal": ClientPortal,
 }
 
 export const pagesConfig = {

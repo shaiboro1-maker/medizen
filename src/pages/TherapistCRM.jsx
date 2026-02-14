@@ -1,19 +1,32 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
-import { Search, Filter, Tag, User, Phone, Mail, Calendar, DollarSign, Eye, Edit, Plus, Download } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Search, Filter, Tag, User, Phone, Mail, Calendar, DollarSign, Eye, Edit, Plus, Download, Send, Target, Bell } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import moment from "moment";
 
 export default function TherapistCRM() {
+  const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedContact, setSelectedContact] = useState(null);
+  const [showCampaign, setShowCampaign] = useState(false);
+  const [showTagDialog, setShowTagDialog] = useState(false);
+  const [campaignData, setCampaignData] = useState({
+    name: "",
+    target_type: "last_appointment",
+    days_threshold: 30,
+    message: "",
+    delivery_method: "popup"
+  });
+  const [newTag, setNewTag] = useState("");
 
   const { data: therapist } = useQuery({
     queryKey: ["current-therapist"],
@@ -36,6 +49,32 @@ export default function TherapistCRM() {
     enabled: !!therapist,
   });
 
+  const updateContactMutation = useMutation({
+    mutationFn: ({ id, data }) => base44.entities.CRMContact.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["crm-contacts"] });
+      setShowTagDialog(false);
+    },
+  });
+
+  const createCampaignMutation = useMutation({
+    mutationFn: (data) => base44.entities.PopupNotification.create({
+      therapist_id: therapist.id,
+      title: data.name,
+      message: data.message,
+      target_type: "specific_clients",
+      target_emails: data.target_emails,
+      action_type: "general",
+      scheduled_date: new Date().toISOString(),
+      status: "scheduled"
+    }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+      setShowCampaign(false);
+      alert("הקמפיין נוצר בהצלחה!");
+    },
+  });
+
   const filteredContacts = contacts.filter(c => {
     const matchSearch = !searchQuery || 
       c.client_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -45,6 +84,40 @@ export default function TherapistCRM() {
     return matchSearch && matchStatus;
   });
 
+  const getTargetedContacts = () => {
+    if (campaignData.target_type === "last_appointment") {
+      const threshold = moment().subtract(campaignData.days_threshold, 'days');
+      return contacts.filter(c => 
+        c.last_appointment_date && moment(c.last_appointment_date).isBefore(threshold)
+      );
+    }
+    if (campaignData.target_type === "no_appointments") {
+      return contacts.filter(c => !c.last_appointment_date || c.total_appointments === 0);
+    }
+    if (campaignData.target_type === "vip") {
+      return contacts.filter(c => c.status === "vip");
+    }
+    return contacts;
+  };
+
+  const handleCreateCampaign = () => {
+    const targetContacts = getTargetedContacts();
+    createCampaignMutation.mutate({
+      ...campaignData,
+      target_emails: targetContacts.map(c => c.client_email)
+    });
+  };
+
+  const handleAddTag = (contact) => {
+    if (!newTag) return;
+    const currentTags = contact.tags || [];
+    updateContactMutation.mutate({
+      id: contact.id,
+      data: { tags: [...currentTags, newTag] }
+    });
+    setNewTag("");
+  };
+
   const statusColors = {
     lead: "bg-blue-100 text-blue-800",
     active: "bg-green-100 text-green-800",
@@ -53,20 +126,25 @@ export default function TherapistCRM() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6" style={{backgroundColor: '#F5F1E8'}}>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">CRM - ניהול לקוחות</h1>
-          <p className="text-gray-500">נהל את קשרי הלקוחות שלך במקום אחד</p>
+          <h1 className="text-3xl font-bold text-[#7C9885]">CRM - ניהול לקוחות מתקדם</h1>
+          <p className="text-[#A8947D]">נהל את קשרי הלקוחות שלך במקום אחד</p>
         </div>
-        <Button className="bg-teal-600 hover:bg-teal-700">
-          <Plus size={16} className="ml-2"/> לקוח חדש
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => setShowCampaign(true)} className="bg-purple-600 hover:bg-purple-700">
+            <Target size={16} className="ml-2"/> קמפיין חדש
+          </Button>
+          <Button className="bg-teal-600 hover:bg-teal-700">
+            <Plus size={16} className="ml-2"/> לקוח חדש
+          </Button>
+        </div>
       </div>
 
       {/* Stats */}
       <div className="grid md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-xl p-4 border">
+        <div className="bg-white rounded-xl p-4 border border-[#E5DDD3]">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
               <User size={20} className="text-blue-600"/>
@@ -77,7 +155,7 @@ export default function TherapistCRM() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-4 border">
+        <div className="bg-white rounded-xl p-4 border border-[#E5DDD3]">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
               <User size={20} className="text-green-600"/>
@@ -88,7 +166,7 @@ export default function TherapistCRM() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-4 border">
+        <div className="bg-white rounded-xl p-4 border border-[#E5DDD3]">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
               <User size={20} className="text-amber-600"/>
@@ -99,7 +177,7 @@ export default function TherapistCRM() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-4 border">
+        <div className="bg-white rounded-xl p-4 border border-[#E5DDD3]">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
               <DollarSign size={20} className="text-purple-600"/>
@@ -113,7 +191,7 @@ export default function TherapistCRM() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl border p-4 mb-6">
+      <div className="bg-white rounded-xl border border-[#E5DDD3] p-4 mb-6">
         <div className="flex flex-wrap gap-3">
           <div className="flex-1 min-w-[200px]">
             <div className="relative">
@@ -145,25 +223,26 @@ export default function TherapistCRM() {
       </div>
 
       {/* Contacts Table */}
-      <div className="bg-white rounded-xl border">
+      <div className="bg-white rounded-xl border border-[#E5DDD3]">
         <table className="w-full text-right">
-          <thead className="border-b bg-gray-50">
+          <thead className="border-b bg-[#F5F1E8]">
             <tr>
-              <th className="px-4 py-3 text-sm font-semibold">שם</th>
-              <th className="px-4 py-3 text-sm font-semibold">אימייל</th>
-              <th className="px-4 py-3 text-sm font-semibold">טלפון</th>
-              <th className="px-4 py-3 text-sm font-semibold">סטטוס</th>
-              <th className="px-4 py-3 text-sm font-semibold">תורים</th>
-              <th className="px-4 py-3 text-sm font-semibold">הכנסות</th>
-              <th className="px-4 py-3 text-sm font-semibold">תור אחרון</th>
-              <th className="px-4 py-3 text-sm font-semibold">פעולות</th>
+              <th className="px-4 py-3 text-sm font-semibold text-[#7C9885]">שם</th>
+              <th className="px-4 py-3 text-sm font-semibold text-[#7C9885]">אימייל</th>
+              <th className="px-4 py-3 text-sm font-semibold text-[#7C9885]">טלפון</th>
+              <th className="px-4 py-3 text-sm font-semibold text-[#7C9885]">סטטוס</th>
+              <th className="px-4 py-3 text-sm font-semibold text-[#7C9885]">תגיות</th>
+              <th className="px-4 py-3 text-sm font-semibold text-[#7C9885]">תורים</th>
+              <th className="px-4 py-3 text-sm font-semibold text-[#7C9885]">הכנסות</th>
+              <th className="px-4 py-3 text-sm font-semibold text-[#7C9885]">תור אחרון</th>
+              <th className="px-4 py-3 text-sm font-semibold text-[#7C9885]">פעולות</th>
             </tr>
           </thead>
           <tbody>
             {isLoading ? (
-              <tr><td colSpan={8} className="text-center py-8 text-gray-400">טוען...</td></tr>
+              <tr><td colSpan={9} className="text-center py-8 text-gray-400">טוען...</td></tr>
             ) : filteredContacts.length === 0 ? (
-              <tr><td colSpan={8} className="text-center py-8 text-gray-400">אין לקוחות</td></tr>
+              <tr><td colSpan={9} className="text-center py-8 text-gray-400">אין לקוחות</td></tr>
             ) : (
               filteredContacts.map((contact) => (
                 <tr key={contact.id} className="border-b hover:bg-gray-50">
@@ -185,10 +264,21 @@ export default function TherapistCRM() {
                       {contact.status === "vip" && "VIP"}
                     </Badge>
                   </td>
+                  <td className="px-4 py-3">
+                    <div className="flex gap-1 flex-wrap">
+                      {contact.tags?.slice(0, 2).map((tag, i) => (
+                        <Badge key={i} variant="outline" className="text-xs">{tag}</Badge>
+                      ))}
+                      {contact.tags?.length > 2 && <Badge variant="outline" className="text-xs">+{contact.tags.length - 2}</Badge>}
+                      <Button variant="ghost" size="sm" onClick={() => { setSelectedContact(contact); setShowTagDialog(true); }}>
+                        <Tag size={12}/>
+                      </Button>
+                    </div>
+                  </td>
                   <td className="px-4 py-3 text-sm">{contact.total_appointments || 0}</td>
                   <td className="px-4 py-3 text-sm font-medium">₪{(contact.total_revenue || 0).toLocaleString()}</td>
                   <td className="px-4 py-3 text-sm text-gray-600">
-                    {contact.last_appointment_date ? new Date(contact.last_appointment_date).toLocaleDateString('he-IL') : "-"}
+                    {contact.last_appointment_date ? moment(contact.last_appointment_date).fromNow() : "-"}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
@@ -208,7 +298,7 @@ export default function TherapistCRM() {
       </div>
 
       {/* Contact Details Dialog */}
-      {selectedContact && (
+      {selectedContact && !showTagDialog && (
         <Dialog open={!!selectedContact} onOpenChange={() => setSelectedContact(null)}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
@@ -252,6 +342,16 @@ export default function TherapistCRM() {
                   <p className="font-medium">₪{(selectedContact.total_revenue || 0).toLocaleString()}</p>
                 </div>
               </div>
+              {selectedContact.tags?.length > 0 && (
+                <div>
+                  <Label>תגיות</Label>
+                  <div className="flex gap-2 flex-wrap mt-2">
+                    {selectedContact.tags.map((tag, i) => (
+                      <Badge key={i}>{tag}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
               {selectedContact.notes && (
                 <div>
                   <Label>הערות</Label>
@@ -262,6 +362,84 @@ export default function TherapistCRM() {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Tag Dialog */}
+      <Dialog open={showTagDialog} onOpenChange={setShowTagDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>ניהול תגיות - {selectedContact?.client_name}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>תגיות קיימות</Label>
+              <div className="flex gap-2 flex-wrap mt-2">
+                {selectedContact?.tags?.map((tag, i) => (
+                  <Badge key={i} className="cursor-pointer" onClick={() => {
+                    const newTags = selectedContact.tags.filter((_, idx) => idx !== i);
+                    updateContactMutation.mutate({ id: selectedContact.id, data: { tags: newTags } });
+                  }}>
+                    {tag} ×
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            <div>
+              <Label>הוסף תגית חדשה</Label>
+              <div className="flex gap-2 mt-2">
+                <Input value={newTag} onChange={(e) => setNewTag(e.target.value)} placeholder="למשל: לקוח מיוחד, חדש, וכו'"/>
+                <Button onClick={() => handleAddTag(selectedContact)}>
+                  <Plus size={16}/>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Campaign Dialog */}
+      <Dialog open={showCampaign} onOpenChange={setShowCampaign}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>צור קמפיין ממוקד</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>שם הקמפיין</Label>
+              <Input value={campaignData.name} onChange={(e) => setCampaignData({...campaignData, name: e.target.value})}/>
+            </div>
+            <div>
+              <Label>קהל יעד</Label>
+              <Select value={campaignData.target_type} onValueChange={(v) => setCampaignData({...campaignData, target_type: v})}>
+                <SelectTrigger>
+                  <SelectValue/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="last_appointment">לקוחות שלא הגיעו מזמן</SelectItem>
+                  <SelectItem value="no_appointments">לקוחות ללא תורים</SelectItem>
+                  <SelectItem value="vip">לקוחות VIP</SelectItem>
+                  <SelectItem value="all">כל הלקוחות</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {campaignData.target_type === "last_appointment" && (
+              <div>
+                <Label>כמה ימים מאז התור האחרון?</Label>
+                <Input type="number" value={campaignData.days_threshold} onChange={(e) => setCampaignData({...campaignData, days_threshold: parseInt(e.target.value)})}/>
+              </div>
+            )}
+            <div>
+              <Label>תוכן ההודעה</Label>
+              <Textarea rows={4} value={campaignData.message} onChange={(e) => setCampaignData({...campaignData, message: e.target.value})}/>
+            </div>
+            <div className="bg-blue-50 p-3 rounded-lg">
+              <p className="text-sm font-medium">קהל יעד: {getTargetedContacts().length} לקוחות</p>
+            </div>
+            <Button onClick={handleCreateCampaign} className="w-full bg-purple-600 hover:bg-purple-700">
+              <Send size={16} className="ml-2"/> צור קמפיין ושלח
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
