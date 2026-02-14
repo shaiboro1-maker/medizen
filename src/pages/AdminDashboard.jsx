@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Users, Calendar, DollarSign, ShoppingBag, Video, TrendingUp, Bell, Download, CheckCircle, Clock, AlertCircle, Plus, Trash2, ArrowRight, Music as MusicIcon, FileText, Podcast as PodcastIcon, Mail } from "lucide-react";
+import { Users, Calendar, DollarSign, ShoppingBag, Video, TrendingUp, Bell, Download, CheckCircle, Clock, AlertCircle, Plus, Trash2, ArrowRight, Music as MusicIcon, FileText, Podcast as PodcastIcon, Mail, Edit2, XCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -371,14 +371,36 @@ export default function AdminDashboard() {
           </TabsList>
 
           <TabsContent value="exercises">
+            <div className="mb-3">
+              <Input
+                placeholder="חפש תרגיל..."
+                value={contentFilter}
+                onChange={(e) => setContentFilter(e.target.value)}
+              />
+            </div>
             <div className="space-y-3">
-              {exercises.slice(0, 5).map(ex => (
+              {exercises.filter(ex => 
+                !contentFilter || 
+                ex.title?.toLowerCase().includes(contentFilter.toLowerCase()) ||
+                ex.category?.toLowerCase().includes(contentFilter.toLowerCase())
+              ).slice(0, 10).map(ex => (
                 <ContentCard
                   key={ex.id}
                   title={ex.title}
                   subtitle={`${ex.category} · ${ex.therapist_name || "מערכת"}`}
                   image={ex.thumbnail_url}
+                  isApproved={ex.is_approved}
                   onDelete={() => deleteExMutation.mutate(ex.id)}
+                  onEdit={() => {
+                    setEditingContent({ ...ex, type: 'exercise' });
+                    setFormData(ex);
+                    setShowUploadDialog(true);
+                  }}
+                  onToggleStatus={() => {
+                    base44.entities.Exercise.update(ex.id, { is_approved: !ex.is_approved }).then(() => {
+                      queryClient.invalidateQueries({ queryKey: ["adminExercises"] });
+                    });
+                  }}
                 />
               ))}
               <Link to={createPageUrl("AdminContent")}>
@@ -388,14 +410,36 @@ export default function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="recipes">
+            <div className="mb-3">
+              <Input
+                placeholder="חפש מתכון..."
+                value={contentFilter}
+                onChange={(e) => setContentFilter(e.target.value)}
+              />
+            </div>
             <div className="space-y-3">
-              {recipes.slice(0, 5).map(r => (
+              {recipes.filter(r => 
+                !contentFilter || 
+                r.title?.toLowerCase().includes(contentFilter.toLowerCase()) ||
+                r.category?.toLowerCase().includes(contentFilter.toLowerCase())
+              ).slice(0, 10).map(r => (
                 <ContentCard
                   key={r.id}
                   title={r.title}
                   subtitle={`${r.category} · ${r.therapist_name || "מערכת"}`}
                   image={r.image_url}
+                  isApproved={r.is_approved}
                   onDelete={() => deleteRecMutation.mutate(r.id)}
+                  onEdit={() => {
+                    setEditingContent({ ...r, type: 'recipe' });
+                    setFormData(r);
+                    setShowUploadDialog(true);
+                  }}
+                  onToggleStatus={() => {
+                    base44.entities.Recipe.update(r.id, { is_approved: !r.is_approved }).then(() => {
+                      queryClient.invalidateQueries({ queryKey: ["adminRecipes"] });
+                    });
+                  }}
                 />
               ))}
               <Link to={createPageUrl("AdminContent")}>
@@ -753,19 +797,38 @@ function QuickActionCard({ title, description, link, icon, color, badge }) {
   );
 }
 
-function ContentCard({ title, subtitle, image, onDelete }) {
+function ContentCard({ title, subtitle, image, isApproved, onDelete, onEdit, onToggleStatus }) {
   return (
     <div className="bg-white rounded-xl border border-[#E5DDD3] p-4 flex items-start gap-4">
       {image && (
         <img src={image} alt="" className="w-16 h-16 rounded-lg object-cover"/>
       )}
       <div className="flex-1">
-        <h3 className="font-bold text-[#7C9885]">{title}</h3>
+        <div className="flex items-center gap-2 mb-1">
+          <h3 className="font-bold text-[#7C9885]">{title}</h3>
+          <Badge className={isApproved ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}>
+            {isApproved ? "פורסם" : "ממתין"}
+          </Badge>
+        </div>
         <p className="text-sm text-[#A8947D]">{subtitle}</p>
       </div>
-      <Button variant="ghost" size="icon" onClick={onDelete} className="text-red-500">
-        <Trash2 size={16}/>
-      </Button>
+      <div className="flex gap-1">
+        <Button variant="ghost" size="icon" onClick={onEdit} title="ערוך">
+          <Edit2 size={16}/>
+        </Button>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={onToggleStatus}
+          title={isApproved ? "הסר פרסום" : "פרסם"}
+          className={isApproved ? "text-amber-500" : "text-green-500"}
+        >
+          {isApproved ? <XCircle size={16}/> : <CheckCircle size={16}/>}
+        </Button>
+        <Button variant="ghost" size="icon" onClick={onDelete} className="text-red-500" title="מחק">
+          <Trash2 size={16}/>
+        </Button>
+      </div>
     </div>
   );
 }
