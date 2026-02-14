@@ -5,7 +5,7 @@ import { base44 } from "@/api/base44Client";
 import {
   Home, Search, Calendar, BookOpen, User, Menu, X, 
   LogOut, Shield, Heart, ShoppingBag, Mic, Video,
-  ClipboardList, ChevronDown, TrendingUp, Globe, MessageCircle, ArrowRight, Tag, Users
+  ClipboardList, ChevronDown, TrendingUp, Globe, MessageCircle, ArrowRight, Tag, Users, Sparkles
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -77,7 +77,8 @@ export default function Layout({ children, currentPageName }) {
     "TherapistAvailability", "TherapistClients", "TherapistAIWriter", "TherapistContent", 
     "TherapistProducts", "TherapistCourses", "TherapistBulletin", "TherapistWebinars",
     "TherapistPodcasts", "TherapistProfile", "TherapistChat", "TherapistPopups", "TherapistCampaigns",
-    "TherapistPayments", "TherapistInvoices", "TherapistMiniSite"
+    "TherapistPayments", "TherapistInvoices", "TherapistMiniSite", "TherapistContentRecommendations",
+    "TherapistNotifications"
   ];
   const isTherapistPage = therapistPages.includes(currentPageName);
   const isAppHomePage = currentPageName === "AppHome";
@@ -165,6 +166,7 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="TherapistMiniSiteSettings" icon={<Globe size={18}/>} label="עיצוב מיני-סייט" current={currentPageName}/>
               <AdminNavLink to="TherapistReminders" icon={<Globe size={18}/>} label="תזכורות" current={currentPageName}/>
               <AdminNavLink to="TherapistIntegrations" icon={<Globe size={18}/>} label="אינטגרציות" current={currentPageName}/>
+              <AdminNavLink to="TherapistContentRecommendations" icon={<Sparkles size={18}/>} label="המלצות תוכן" current={currentPageName}/>
               <AdminNavLink to="TherapistTeam" icon={<User size={18}/>} label="ניהול צוות" current={currentPageName}/>
               <AdminNavLink to="TherapistPricing" icon={<TrendingUp size={18}/>} label="שדרוג חבילה" current={currentPageName}/>
             </nav>
