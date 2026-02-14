@@ -47,6 +47,7 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import AIHealthAdvisor from './pages/AIHealthAdvisor';
 import Accessibility from './pages/Accessibility';
 import AdminBulletin from './pages/AdminBulletin';
 import AdminContent from './pages/AdminContent';
@@ -57,11 +58,15 @@ import AdminProducts from './pages/AdminProducts';
 import AdminTherapists from './pages/AdminTherapists';
 import AdminUserContent from './pages/AdminUserContent';
 import AdminWebinars from './pages/AdminWebinars';
+import AdminWeeklyPush from './pages/AdminWeeklyPush';
 import AppHome from './pages/AppHome';
+import Blog from './pages/Blog';
 import BookAppointment from './pages/BookAppointment';
 import BulletinBoard from './pages/BulletinBoard';
 import Diary from './pages/Diary';
 import Exercises from './pages/Exercises';
+import HealthNews from './pages/HealthNews';
+import Inspirations from './pages/Inspirations';
 import Landing from './pages/Landing';
 import MiniSite from './pages/MiniSite';
 import Music from './pages/Music';
@@ -109,11 +114,6 @@ import TherapistServices from './pages/TherapistServices';
 import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
-import AIHealthAdvisor from './pages/AIHealthAdvisor';
-import Blog from './pages/Blog';
-import HealthNews from './pages/HealthNews';
-import Inspirations from './pages/Inspirations';
-import AdminWeeklyPush from './pages/AdminWeeklyPush';
 import AdminApprovals from './pages/AdminApprovals';
 import AdminCRM from './pages/AdminCRM';
 import AdminPayments from './pages/AdminPayments';
@@ -121,6 +121,7 @@ import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "AIHealthAdvisor": AIHealthAdvisor,
     "Accessibility": Accessibility,
     "AdminBulletin": AdminBulletin,
     "AdminContent": AdminContent,
@@ -131,11 +132,15 @@ export const PAGES = {
     "AdminTherapists": AdminTherapists,
     "AdminUserContent": AdminUserContent,
     "AdminWebinars": AdminWebinars,
+    "AdminWeeklyPush": AdminWeeklyPush,
     "AppHome": AppHome,
+    "Blog": Blog,
     "BookAppointment": BookAppointment,
     "BulletinBoard": BulletinBoard,
     "Diary": Diary,
     "Exercises": Exercises,
+    "HealthNews": HealthNews,
+    "Inspirations": Inspirations,
     "Landing": Landing,
     "MiniSite": MiniSite,
     "Music": Music,
@@ -183,11 +188,6 @@ export const PAGES = {
     "TherapistTeam": TherapistTeam,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
-    "AIHealthAdvisor": AIHealthAdvisor,
-    "Blog": Blog,
-    "HealthNews": HealthNews,
-    "Inspirations": Inspirations,
-    "AdminWeeklyPush": AdminWeeklyPush,
     "AdminApprovals": AdminApprovals,
     "AdminCRM": AdminCRM,
     "AdminPayments": AdminPayments,

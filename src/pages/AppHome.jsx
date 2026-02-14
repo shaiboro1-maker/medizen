@@ -182,23 +182,38 @@ export default function AppHome() {
             </motion.div>
           </Link>
 
-          <Link to={createPageUrl("TherapistSearch")}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.05 }}
-              className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
-            >
-              <img 
-                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=300&fit=crop" 
-                alt="מצא מטפל"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-end p-4">
-                <p className="text-white text-lg font-bold text-right">מצא מטפל</p>
-              </div>
-            </motion.div>
-          </Link>
+          <div className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32">
+            <Link to={createPageUrl("TherapistSearch")}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.05 }}
+                className="h-full"
+              >
+                <img 
+                  src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=300&fit=crop" 
+                  alt="מצא מטפל"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-3">
+                  <p className="text-white text-base font-bold text-right mb-2">מצא מטפל</p>
+                  <div className="flex gap-1 overflow-x-auto pb-1">
+                    {[
+                      { label: "נטרופתיה", to: "TherapistSearch?category=naturopathy" },
+                      { label: "טווינה", to: "TherapistSearch?category=tuina" },
+                      { label: "שיאצו", to: "TherapistSearch?category=shiatsu" },
+                    ].map((cat, i) => (
+                      <Link key={i} to={createPageUrl(cat.to)} onClick={(e) => e.stopPropagation()}>
+                        <button className="px-2 py-1 bg-white/20 backdrop-blur-sm rounded-full whitespace-nowrap text-xs font-medium text-white border border-white/30 hover:bg-white/30 transition-all">
+                          {cat.label}
+                        </button>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </Link>
+          </div>
 
           <Link to={createPageUrl("Music")}>
             <motion.div
@@ -235,31 +250,6 @@ export default function AppHome() {
               </div>
             </motion.div>
           </Link>
-        </div>
-      </div>
-
-      {/* Therapist Categories */}
-      <div className="px-4 mt-6">
-        <div className="flex justify-between items-center mb-4">
-          <Link to={createPageUrl("TherapistSearch")} className="text-[#7C9885] hover:text-[#A8947D]">
-            <ArrowRight size={20}/>
-          </Link>
-          <h2 className="text-xl font-bold text-[#7C9885] text-right">מצא מטפל</h2>
-        </div>
-        <div className="flex gap-3 overflow-x-auto pb-2">
-          {[
-            { label: "נטרופתיה", to: "TherapistSearch?category=naturopathy" },
-            { label: "טווינה", to: "TherapistSearch?category=tuina" },
-            { label: "שיאצו", to: "TherapistSearch?category=shiatsu" },
-            { label: "רפלקסולוגיה", to: "TherapistSearch?category=reflexology" },
-            { label: "אוסטאופתיה", to: "TherapistSearch?category=osteopathy" },
-          ].map((cat, i) => (
-            <Link key={i} to={createPageUrl(cat.to)}>
-              <button className="px-4 py-2 bg-white rounded-full whitespace-nowrap text-sm font-medium text-[#7C9885] border border-[#E5DDD3] hover:bg-[#7C9885] hover:text-white transition-all">
-                {cat.label}
-              </button>
-            </Link>
-          ))}
         </div>
       </div>
 
