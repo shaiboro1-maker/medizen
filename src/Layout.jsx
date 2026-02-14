@@ -116,6 +116,7 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="AdminNotifications" icon={<MessageCircle size={18}/>} label="התראות" current={currentPageName}/>
               <AdminNavLink to="AdminWeeklyPush" icon={<TrendingUp size={18}/>} label="פוש שבועי" current={currentPageName}/>
               <AdminNavLink to="AdminPromotions" icon={<Tag size={18}/>} label="מבצעים והנחות" current={currentPageName}/>
+              <AdminNavLink to="AdminCampaigns" icon={<MessageCircle size={18}/>} label="קמפיינים שיווקיים" current={currentPageName}/>
               <AdminNavLink to="AdminCRM" icon={<Users size={18}/>} label="CRM מתקדם" current={currentPageName}/>
             </nav>
             <div className="p-4 border-t">
