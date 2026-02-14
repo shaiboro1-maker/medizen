@@ -5,7 +5,7 @@ import { base44 } from "@/api/base44Client";
 import {
   Home, Search, Calendar, BookOpen, User, Menu, X, 
   LogOut, Shield, Heart, ShoppingBag, Mic, Video,
-  ClipboardList, ChevronDown, TrendingUp, Globe, MessageCircle, ArrowRight
+  ClipboardList, ChevronDown, TrendingUp, Globe, MessageCircle, ArrowRight, Tag, Users
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -115,6 +115,8 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="AdminUserContent" icon={<BookOpen size={18}/>} label="תוכן משתמשים" current={currentPageName}/>
               <AdminNavLink to="AdminNotifications" icon={<MessageCircle size={18}/>} label="התראות" current={currentPageName}/>
               <AdminNavLink to="AdminWeeklyPush" icon={<TrendingUp size={18}/>} label="פוש שבועי" current={currentPageName}/>
+              <AdminNavLink to="AdminPromotions" icon={<Tag size={18}/>} label="מבצעים והנחות" current={currentPageName}/>
+              <AdminNavLink to="AdminCRM" icon={<Users size={18}/>} label="CRM מתקדם" current={currentPageName}/>
             </nav>
             <div className="p-4 border-t">
               <Link to={createPageUrl("Landing")} className="text-sm text-gray-500 hover:text-teal-600">
@@ -261,6 +263,9 @@ export default function Layout({ children, currentPageName }) {
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate(createPageUrl("SubmitContent"))}>
                     <BookOpen size={14} className="ml-2"/> שתף תוכן
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate(createPageUrl("AIAdvisor"))}>
+                    <TrendingUp size={14} className="ml-2"/> העוזר האישי
                   </DropdownMenuItem>
                   <DropdownMenuSeparator/>
                   {isTherapist && (
