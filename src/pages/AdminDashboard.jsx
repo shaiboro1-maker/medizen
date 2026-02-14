@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Users, Calendar, DollarSign, ShoppingBag, Video, TrendingUp, Bell, Download, CheckCircle, Clock, AlertCircle, Plus, Trash2, ArrowRight, Music as MusicIcon, FileText, Podcast as PodcastIcon, Mail, Edit2, XCircle } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Users, Calendar, DollarSign, ShoppingBag, Video, TrendingUp, Bell, Download, CheckCircle, Clock, AlertCircle, Plus, Trash2, ArrowRight, Music as MusicIcon, FileText, Podcast as PodcastIcon, Mail, Edit2, XCircle, Settings } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,8 +11,11 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
+import moment from "moment";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -26,6 +29,17 @@ export default function AdminDashboard() {
   const [uploading, setUploading] = useState(false);
   const [contentFilter, setContentFilter] = useState("");
   const [editingContent, setEditingContent] = useState(null);
+  const [showCustomize, setShowCustomize] = useState(false);
+  const [widgets, setWidgets] = useState(() => {
+    const saved = localStorage.getItem('admin_dashboard_widgets');
+    return saved ? JSON.parse(saved) : {
+      stats: true,
+      charts: true,
+      appointments: true,
+      content: true,
+      quickActions: true
+    };
+  });
   const appUrl = window.location.origin;
   const [formData, setFormData] = useState({
     title: "",
@@ -149,6 +163,41 @@ export default function AdminDashboard() {
   const pendingBulletin = bulletinPosts.filter(b => b.status === "pending").length;
   const pendingApprovals = pendingTherapists + pendingExercises + pendingRecipes + userContent.length + pendingBulletin;
 
+  // Advanced Stats
+  const last6MonthsRevenue = Array.from({length: 6}, (_, i) => {
+    const month = moment().subtract(5 - i, 'months');
+    const monthAppointments = appointments.filter(a => 
+      moment(a.date).format('YYYY-MM') === month.format('YYYY-MM') && a.status !== 'cancelled'
+    );
+    return {
+      month: month.format('MMM'),
+      revenue: monthAppointments.reduce((sum, a) => sum + (a.price || 0), 0)
+    };
+  });
+
+  const appointmentsByStatus = [
+    { name: 'מאושר', value: appointments.filter(a => a.status === 'confirmed').length, color: '#10b981' },
+    { name: 'ממתין', value: appointments.filter(a => a.status === 'pending').length, color: '#f59e0b' },
+    { name: 'בוטל', value: appointments.filter(a => a.status === 'cancelled').length, color: '#ef4444' },
+    { name: 'הושלם', value: appointments.filter(a => a.status === 'completed').length, color: '#3b82f6' }
+  ];
+
+  const newClientsLast6Months = Array.from({length: 6}, (_, i) => {
+    const month = moment().subtract(5 - i, 'months');
+    const newClients = appointments.filter(a => 
+      moment(a.created_date).format('YYYY-MM') === month.format('YYYY-MM')
+    ).length;
+    return {
+      month: month.format('MMM'),
+      clients: newClients
+    };
+  });
+
+  const saveWidgets = (newWidgets) => {
+    setWidgets(newWidgets);
+    localStorage.setItem('admin_dashboard_widgets', JSON.stringify(newWidgets));
+  };
+
   const deleteExMutation = useMutation({
     mutationFn: (id) => base44.entities.Exercise.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminExercises"] }),
@@ -263,6 +312,9 @@ export default function AdminDashboard() {
           </div>
         </div>
         <div className="flex gap-2">
+          <Button onClick={() => setShowCustomize(true)} variant="outline" size="sm">
+            <Settings size={16} className="ml-2"/> התאם אישית
+          </Button>
           <Button onClick={() => setShowUploadDialog(true)} className="bg-[#B8A393] hover:bg-[#C5B5A4]">
             <Plus size={16} className="ml-2"/> העלה תוכן
           </Button>
@@ -319,6 +371,7 @@ export default function AdminDashboard() {
       )}
 
       {/* Stats Grid */}
+      {widgets.stats && (
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
         <StatCard 
           icon={<Users className="text-teal-600"/>} 
@@ -358,8 +411,94 @@ export default function AdminDashboard() {
           bg="bg-pink-50"
         />
       </div>
+      )}
+
+      {/* Advanced Charts */}
+      {widgets.charts && (
+      <div className="grid md:grid-cols-2 gap-6 mb-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>הכנסות חודשיות</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={250}>
+              <LineChart data={last6MonthsRevenue}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="revenue" stroke="#10b981" strokeWidth={2} />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>התפלגות תורים לפי סטטוס</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={250}>
+              <PieChart>
+                <Pie data={appointmentsByStatus} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label>
+                  {appointmentsByStatus.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>לקוחות חדשים</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={250}>
+              <BarChart data={newClientsLast6Months}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="clients" fill="#3b82f6" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>קיצורי דרך מהירים</CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-2 gap-3">
+            <Button variant="outline" onClick={() => navigate(createPageUrl("AdminTherapists"))} className="justify-start">
+              <Users size={16} className="ml-2"/> מטפלים
+            </Button>
+            <Button variant="outline" onClick={() => navigate(createPageUrl("AdminOrders"))} className="justify-start">
+              <ShoppingBag size={16} className="ml-2"/> הזמנות
+            </Button>
+            <Button variant="outline" onClick={() => navigate(createPageUrl("AdminCRM"))} className="justify-start">
+              <Users size={16} className="ml-2"/> CRM
+            </Button>
+            <Button variant="outline" onClick={() => navigate(createPageUrl("AdminContent"))} className="justify-start">
+              <FileText size={16} className="ml-2"/> תוכן
+            </Button>
+            <Button variant="outline" onClick={() => navigate(createPageUrl("AdminCampaigns"))} className="justify-start">
+              <TrendingUp size={16} className="ml-2"/> קמפיינים
+            </Button>
+            <Button variant="outline" onClick={() => navigate(createPageUrl("AdminPromotions"))} className="justify-start">
+              <DollarSign size={16} className="ml-2"/> מבצעים
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+      )}
 
       {/* Content Management Section */}
+      {widgets.content && (
       <div className="mb-8">
         <h2 className="text-xl font-bold mb-4 text-[#7C9885]">ניהול תוכן</h2>
         <Tabs defaultValue="exercises" className="space-y-4">
@@ -519,8 +658,10 @@ export default function AdminDashboard() {
           </TabsContent>
         </Tabs>
       </div>
+      )}
 
       {/* Quick Actions */}
+      {widgets.quickActions && (
       <div className="grid md:grid-cols-3 gap-4 mb-8">
         <QuickActionCard
           title="ניהול מטפלים"
@@ -544,8 +685,11 @@ export default function AdminDashboard() {
           color="bg-green-50 text-green-600"
         />
       </div>
+      )}
 
       {/* Recent Appointments */}
+      {widgets.appointments && (
+      <>
       <h2 className="text-lg font-bold mb-4 text-[#7C9885]">תורים אחרונים</h2>
       <div className="bg-white rounded-2xl border border-[#E5DDD3] overflow-hidden">
         <div className="overflow-x-auto">
@@ -581,6 +725,39 @@ export default function AdminDashboard() {
           </table>
         </div>
       </div>
+      </>
+      )}
+
+      {/* Customize Dashboard Dialog */}
+      <Dialog open={showCustomize} onOpenChange={setShowCustomize}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>התאמה אישית של הדשבורד</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <Label>סטטיסטיקות כלליות</Label>
+              <Switch checked={widgets.stats} onCheckedChange={(v) => saveWidgets({...widgets, stats: v})} />
+            </div>
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <Label>גרפים וניתוחים</Label>
+              <Switch checked={widgets.charts} onCheckedChange={(v) => saveWidgets({...widgets, charts: v})} />
+            </div>
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <Label>ניהול תוכן</Label>
+              <Switch checked={widgets.content} onCheckedChange={(v) => saveWidgets({...widgets, content: v})} />
+            </div>
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <Label>קיצורי דרך</Label>
+              <Switch checked={widgets.quickActions} onCheckedChange={(v) => saveWidgets({...widgets, quickActions: v})} />
+            </div>
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <Label>תורים אחרונים</Label>
+              <Switch checked={widgets.appointments} onCheckedChange={(v) => saveWidgets({...widgets, appointments: v})} />
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Install Help Dialog */}
       <Dialog open={showInstallHelp} onOpenChange={setShowInstallHelp}>
