@@ -235,6 +235,11 @@ export default function AdminDashboard() {
           <Button onClick={() => setShowUploadDialog(true)} className="bg-[#B8A393] hover:bg-[#C5B5A4]">
             <Plus size={16} className="ml-2"/> העלה תוכן
           </Button>
+          {deferredPrompt && (
+            <Button onClick={handleInstallPWA} size="sm" className="bg-[#B8A393] hover:bg-[#C5B5A4]">
+              <Download size={16} className="ml-2"/> התקן אפליקציה
+            </Button>
+          )}
           <div className="relative">
             <Button 
               size="sm" 
@@ -265,22 +270,6 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
-
-      {/* PWA Install Banner */}
-      {deferredPrompt && (
-        <div className="bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200 rounded-xl p-4 mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Download className="text-teal-600" size={24}/>
-            <div>
-              <h3 className="font-bold text-teal-900">התקן אפליקציה</h3>
-              <p className="text-sm text-teal-700">התקן את דשבורד האדמין כאפליקציה בטלפון לגישה מהירה</p>
-            </div>
-          </div>
-          <Button onClick={handleInstallPWA} className="bg-teal-600 hover:bg-teal-700">
-            <Download size={16} className="ml-2"/> התקן עכשיו
-          </Button>
-        </div>
-      )}
 
       {/* Pending Approvals Alert */}
       {pendingApprovals > 0 && (
