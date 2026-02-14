@@ -178,6 +178,5 @@ export default function Shop() {
         </DialogContent>
       </Dialog>
     </div>
-    </div>
   );
 }
