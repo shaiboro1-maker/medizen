@@ -114,6 +114,9 @@ import Blog from './pages/Blog';
 import HealthNews from './pages/HealthNews';
 import Inspirations from './pages/Inspirations';
 import AdminWeeklyPush from './pages/AdminWeeklyPush';
+import AdminApprovals from './pages/AdminApprovals';
+import AdminCRM from './pages/AdminCRM';
+import AdminPayments from './pages/AdminPayments';
 import __Layout from './Layout.jsx';
 
 
@@ -185,6 +188,9 @@ export const PAGES = {
     "HealthNews": HealthNews,
     "Inspirations": Inspirations,
     "AdminWeeklyPush": AdminWeeklyPush,
+    "AdminApprovals": AdminApprovals,
+    "AdminCRM": AdminCRM,
+    "AdminPayments": AdminPayments,
 }
 
 export const pagesConfig = {
