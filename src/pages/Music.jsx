@@ -1,9 +1,16 @@
 import React, { useState, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
-import { Music as MusicIcon, Play, Pause } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { Music as MusicIcon, Play, Pause, ArrowRight, Share2, Upload } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { toast } from "react-hot-toast";
 
 const CATEGORIES = [
   { id: "all", label: "הכל", emoji: "🎵" },
@@ -26,6 +33,10 @@ export default function Music() {
   const initialCategory = urlParams.get('category') || 'all';
   const [category, setCategory] = useState(initialCategory);
   const [playing, setPlaying] = useState(null);
+  const [showUpload, setShowUpload] = useState(false);
+  const [form, setForm] = useState({ title: "", description: "", category: "meditation" });
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { data: tracks = [], isLoading } = useQuery({
     queryKey: ["music"],
@@ -44,11 +55,47 @@ export default function Music() {
     }
   };
 
+  const uploadMutation = useMutation({
+    mutationFn: async (data) => {
+      const user = await base44.auth.me();
+      return base44.entities.Music.create({
+        ...data,
+        therapist_id: user.id,
+        is_featured: false
+      });
+    },
+    onSuccess: () => {
+      toast.success("השיר נשלח לאישור!");
+      setShowUpload(false);
+      setForm({ title: "", description: "", category: "meditation" });
+    },
+  });
+
+  const handleShare = (track) => {
+    const text = `🎵 ${track.title}\n${track.description}\n\nהורד את אפליקציית MediZen לעוד מוזיקה מרגיעה:\n${window.location.origin}`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 pb-24" style={{backgroundColor: '#F5F1E8', minHeight: '100vh'}}>
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2 text-[#7C9885]">🎵 גוף ונפש - מוזיקה ומדיטציות</h1>
-        <p className="text-[#A8947D]">תדרים לריפוי, מוזיקה מרגיעה, מדיטציות מודרכות ועוד</p>
+    <div className="min-h-screen pb-24" style={{backgroundColor: '#F5F1E8'}}>
+      <div className="bg-white border-b p-4">
+        <div className="flex items-center gap-3 mb-2">
+          <button onClick={() => navigate(-1)}>
+            <ArrowRight size={24}/>
+          </button>
+          <h1 className="text-xl font-bold">🎵 מוזיקה ומדיטציות</h1>
+        </div>
+        <p className="text-sm text-gray-600 text-right">תדרים לריפוי, מוזיקה מרגיעה ומדיטציות</p>
+      </div>
+      
+      <div className="max-w-6xl mx-auto px-4 py-4">
+        <Button 
+          onClick={() => setShowUpload(true)}
+          className="w-full mb-4 bg-teal-600 hover:bg-teal-700"
+        >
+          <Upload size={16} className="ml-2"/> שתף מוזיקה משלך
+        </Button>
       </div>
 
       <div className="flex gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">
@@ -112,12 +159,20 @@ export default function Music() {
                   <p className="text-sm opacity-90 line-clamp-2 mb-3">{track.description}</p>
                 )}
                 
-                <button
-                  onClick={() => handlePlay(track.id)}
-                  className="w-12 h-12 rounded-full bg-white/90 hover:bg-white text-[#7C9885] flex items-center justify-center transition-all hover:scale-110"
-                >
-                  {playing === track.id ? <Pause size={20}/> : <Play size={20}/>}
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handlePlay(track.id)}
+                    className="w-12 h-12 rounded-full bg-white/90 hover:bg-white text-[#7C9885] flex items-center justify-center transition-all hover:scale-110"
+                  >
+                    {playing === track.id ? <Pause size={20}/> : <Play size={20}/>}
+                  </button>
+                  <button
+                    onClick={() => handleShare(track)}
+                    className="w-12 h-12 rounded-full bg-white/90 hover:bg-white text-[#7C9885] flex items-center justify-center transition-all hover:scale-110"
+                  >
+                    <Share2 size={16}/>
+                  </button>
+                </div>
               </div>
 
               {playing === track.id && track.audio_url && (
@@ -135,6 +190,40 @@ export default function Music() {
           ))}
         </div>
       )}
+
+      <Dialog open={showUpload} onOpenChange={setShowUpload}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>שתף מוזיקה</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>כותרת *</Label>
+              <Input
+                value={form.title}
+                onChange={(e) => setForm({...form, title: e.target.value})}
+                placeholder="שם השיר"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>תיאור</Label>
+              <Textarea
+                value={form.description}
+                onChange={(e) => setForm({...form, description: e.target.value})}
+                placeholder="תיאור המוזיקה..."
+                className="h-20"
+              />
+            </div>
+            <Button 
+              onClick={() => uploadMutation.mutate(form)}
+              disabled={!form.title || uploadMutation.isPending}
+              className="w-full bg-teal-600 hover:bg-teal-700"
+            >
+              שלח לאישור
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

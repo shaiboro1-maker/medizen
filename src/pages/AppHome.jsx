@@ -161,7 +161,7 @@ export default function AppHome() {
             </motion.div>
           </Link>
 
-          <Link to={createPageUrl("MyAppointments")}>
+          <Link to={createPageUrl("TherapistSearch")}>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -169,17 +169,17 @@ export default function AppHome() {
               className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
             >
               <img 
-                src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=300&fit=crop" 
-                alt="יומן תורים"
+                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=300&fit=crop" 
+                alt="מצא מטפל"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-end p-4">
-                <p className="text-white text-lg font-bold text-right">יומן תורים</p>
+                <p className="text-white text-lg font-bold text-right">מצא מטפל</p>
               </div>
             </motion.div>
           </Link>
 
-          <Link to={createPageUrl("Blog")}>
+          <Link to={createPageUrl("Music")}>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -187,17 +187,17 @@ export default function AppHome() {
               className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
             >
               <img 
-                src="https://images.unsplash.com/photo-1455849318743-b2233052fcff?w=400&h=300&fit=crop" 
-                alt="בלוג"
+                src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=400&h=300&fit=crop" 
+                alt="מוזיקה"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-end p-4">
-                <p className="text-white text-lg font-bold text-right">בלוג לחיים בריאים</p>
+                <p className="text-white text-lg font-bold text-right">מוזיקה</p>
               </div>
             </motion.div>
           </Link>
 
-          <Link to={createPageUrl("Shop")}>
+          <Link to={createPageUrl("Inspirations")}>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -205,12 +205,12 @@ export default function AppHome() {
               className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all h-32"
             >
               <img 
-                src="https://images.unsplash.com/photo-1556740758-90de374c12ad?w=400&h=300&fit=crop" 
-                alt="חנות"
+                src="https://images.unsplash.com/photo-1516534775068-ba3e7458af70?w=400&h=300&fit=crop" 
+                alt="משפטי השראה"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end justify-end p-4">
-                <p className="text-white text-lg font-bold text-right">חנות</p>
+                <p className="text-white text-lg font-bold text-right">משפטי השראה</p>
               </div>
             </motion.div>
           </Link>

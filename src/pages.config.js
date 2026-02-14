@@ -112,6 +112,7 @@ import Webinars from './pages/Webinars';
 import AIHealthAdvisor from './pages/AIHealthAdvisor';
 import Blog from './pages/Blog';
 import HealthNews from './pages/HealthNews';
+import Inspirations from './pages/Inspirations';
 import __Layout from './Layout.jsx';
 
 
@@ -181,6 +182,7 @@ export const PAGES = {
     "AIHealthAdvisor": AIHealthAdvisor,
     "Blog": Blog,
     "HealthNews": HealthNews,
+    "Inspirations": Inspirations,
 }
 
 export const pagesConfig = {
