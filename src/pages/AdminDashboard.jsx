@@ -318,7 +318,7 @@ export default function AdminDashboard() {
           <Button onClick={() => setShowUploadDialog(true)} className="bg-[#B8A393] hover:bg-[#C5B5A4]">
             <Plus size={16} className="ml-2"/> העלה תוכן
           </Button>
-          <Button onClick={() => navigate(createPageUrl("Landing"))} size="sm" className="bg-[#B8A393] hover:bg-[#C5B5A4]">
+          <Button onClick={() => setShowInstallHelp(true)} size="sm" className="bg-[#B8A393] hover:bg-[#C5B5A4]">
             <Download size={16} className="ml-2"/> הורד לטלפון
           </Button>
           <div className="relative">
