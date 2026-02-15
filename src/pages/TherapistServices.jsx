@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Home, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,7 +13,17 @@ export default function TherapistServices() {
   const [therapist, setTherapist] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState({ name: "", description: "", duration_minutes: 60, price: 0 });
+  const [form, setForm] = useState({ 
+    name: "", 
+    description: "", 
+    duration_minutes: 60, 
+    price: 0,
+    deposit_required: false,
+    deposit_amount: 100,
+    home_visit_available: false,
+    home_visit_price: 0,
+    treatment_series: []
+  });
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -47,13 +57,29 @@ export default function TherapistServices() {
   });
 
   const resetForm = () => {
-    setForm({ name: "", description: "", duration_minutes: 60, price: 0 });
+    setForm({ 
+      name: "", 
+      description: "", 
+      duration_minutes: 60, 
+      price: 0,
+      deposit_required: false,
+      deposit_amount: 100,
+      home_visit_available: false,
+      home_visit_price: 0,
+      treatment_series: []
+    });
     setEditing(null);
     setShowForm(false);
   };
 
   const handleSubmit = () => {
-    const data = { ...form, price: Number(form.price), duration_minutes: Number(form.duration_minutes) };
+    const data = { 
+      ...form, 
+      price: Number(form.price), 
+      duration_minutes: Number(form.duration_minutes),
+      deposit_amount: Number(form.deposit_amount),
+      home_visit_price: Number(form.home_visit_price)
+    };
     if (editing) {
       updateMutation.mutate({ id: editing.id, data });
     } else {
@@ -79,7 +105,19 @@ export default function TherapistServices() {
               <div>
                 <h3 className="font-bold">{s.name}</h3>
                 <p className="text-sm text-gray-500">{s.description}</p>
-                <p className="text-sm text-gray-400 mt-1">{s.duration_minutes} דקות · ₪{s.price}</p>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <span className="text-sm bg-blue-50 text-blue-700 px-2 py-1 rounded">{s.duration_minutes} דקות</span>
+                  <span className="text-sm bg-green-50 text-green-700 px-2 py-1 rounded font-bold">₪{s.price}</span>
+                  {s.deposit_required && (
+                    <span className="text-sm bg-orange-50 text-orange-700 px-2 py-1 rounded">דמי רצינות: ₪{s.deposit_amount}</span>
+                  )}
+                  {s.home_visit_available && (
+                    <span className="text-sm bg-purple-50 text-purple-700 px-2 py-1 rounded">ביקור בית: ₪{s.home_visit_price}</span>
+                  )}
+                  {s.treatment_series?.length > 0 && (
+                    <span className="text-sm bg-teal-50 text-teal-700 px-2 py-1 rounded">{s.treatment_series.length} סדרות טיפול</span>
+                  )}
+                </div>
               </div>
               <div className="flex gap-2">
                 <Button variant="ghost" size="icon" onClick={() => { setEditing(s); setForm(s); setShowForm(true); }}>
@@ -116,8 +154,57 @@ export default function TherapistServices() {
                 <Input type="number" value={form.price} onChange={(e) => setForm({...form, price: e.target.value})}/>
               </div>
             </div>
+
+            <div className="border-t pt-4 space-y-4">
+              <h4 className="font-semibold flex items-center gap-2">
+                <DollarSign size={16}/>
+                דמי רצינות לאבחון ראשון
+              </h4>
+              <div className="flex items-center justify-between">
+                <Label>דרוש תשלום מקדמה</Label>
+                <Switch 
+                  checked={form.deposit_required} 
+                  onCheckedChange={(checked) => setForm({...form, deposit_required: checked})}
+                />
+              </div>
+              {form.deposit_required && (
+                <div className="space-y-2">
+                  <Label>סכום דמי רצינות (₪)</Label>
+                  <Input 
+                    type="number" 
+                    value={form.deposit_amount} 
+                    onChange={(e) => setForm({...form, deposit_amount: e.target.value})}
+                  />
+                </div>
+              )}
+            </div>
+
+            <div className="border-t pt-4 space-y-4">
+              <h4 className="font-semibold flex items-center gap-2">
+                <Home size={16}/>
+                ביקור בית
+              </h4>
+              <div className="flex items-center justify-between">
+                <Label>אפשר ביקורי בית</Label>
+                <Switch 
+                  checked={form.home_visit_available} 
+                  onCheckedChange={(checked) => setForm({...form, home_visit_available: checked})}
+                />
+              </div>
+              {form.home_visit_available && (
+                <div className="space-y-2">
+                  <Label>מחיר ביקור בית (₪)</Label>
+                  <Input 
+                    type="number" 
+                    value={form.home_visit_price} 
+                    onChange={(e) => setForm({...form, home_visit_price: e.target.value})}
+                  />
+                </div>
+              )}
+            </div>
+
             <Button onClick={handleSubmit} className="w-full bg-teal-600 hover:bg-teal-700">
-              {editing ? "עדכן" : "צור שירות"}
+              {editing ? "עדכן שירות" : "צור שירות"}
             </Button>
           </div>
         </DialogContent>

@@ -178,8 +178,8 @@ export default function TherapistRegister() {
             </div>
           </div>
           <div className="grid md:grid-cols-2 gap-3 mb-6">
-            <Button onClick={() => navigate(createPageUrl("TherapistMiniSite") + "?id=" + success.id)} className="bg-gradient-to-l from-[#7C9885] to-[#B8A393] hover:opacity-90 px-6 py-6 text-lg font-bold">
-              🏠 בנה את המיני-סייט שלך
+            <Button onClick={() => navigate(createPageUrl("TherapistOnboarding"))} className="bg-gradient-to-l from-[#7C9885] to-[#B8A393] hover:opacity-90 px-6 py-6 text-lg font-bold">
+              🚀 התחל הגדרה מודרכת
             </Button>
             <Button onClick={() => navigate(createPageUrl("TherapistPricing"))} variant="outline" className="border-2 border-[#7C9885] text-[#7C9885] hover:bg-[#7C9885] hover:text-white px-6 py-6 text-lg font-bold">
               ⭐ שדרג חבילה
