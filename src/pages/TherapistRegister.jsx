@@ -513,9 +513,15 @@ export default function TherapistRegister() {
         </div>
 
         <Button
-          onClick={() => createMutation.mutate(form)}
-          disabled={!form.full_name || !form.phone || form.categories.length === 0 || !form.specializations || createMutation.isPending}
-          className="w-full bg-gradient-to-l from-[#7C9885] to-[#B8A393] hover:opacity-90 py-6 text-lg font-bold text-white"
+          onClick={() => {
+            if (!form.full_name || !form.phone || form.categories.length === 0 || !form.specializations) {
+              alert("אנא מלא את כל השדות החובה");
+              return;
+            }
+            createMutation.mutate(form);
+          }}
+          disabled={createMutation.isPending}
+          className="w-full bg-gradient-to-l from-[#7C9885] to-[#B8A393] hover:opacity-90 py-6 text-lg font-bold text-white disabled:opacity-50"
         >
           {createMutation.isPending ? "שולח..." : "🚀 המשך בניית המיני-סייט"}
         </Button>
