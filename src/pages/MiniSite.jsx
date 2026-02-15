@@ -15,6 +15,10 @@ export default function MiniSite() {
   const urlParams = new URLSearchParams(window.location.search);
   const slug = urlParams.get("slug");
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
+
   const { data: therapist, isLoading } = useQuery({
     queryKey: ["miniSiteTherapist", slug],
     queryFn: async () => {
@@ -23,6 +27,25 @@ export default function MiniSite() {
     },
     enabled: !!slug,
   });
+
+  // Set document title and meta tags
+  useEffect(() => {
+    if (therapist) {
+      const title = `${therapist.full_name} - ${therapist.specializations?.join(", ") || "מטפל מקצועי"} | MediZen`;
+      const description = therapist.bio ? therapist.bio.substring(0, 160) : `${therapist.full_name} - מטפל מקצועי ב${therapist.city || "ישראל"}`;
+      
+      document.title = title;
+      
+      // Update meta description
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.name = "description";
+        document.head.appendChild(metaDesc);
+      }
+      metaDesc.content = description;
+    }
+  }, [therapist]);
 
   const { data: services = [] } = useQuery({
     queryKey: ["miniSiteServices", therapist?.id],
@@ -112,6 +135,16 @@ export default function MiniSite() {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 -mt-16 relative z-10">
+        
+        {/* Professional Title & Tagline - כרטיס ביקור */}
+        {therapist.therapeutic_approach && (
+          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 text-center border-4 border-teal-100">
+            <p className="text-xl md:text-2xl font-semibold text-gray-800 italic">
+              "{therapist.therapeutic_approach}"
+            </p>
+          </div>
+        )}
+
         {/* Video Intro */}
         {therapist.video_intro_url && (
           <div className="mb-8">
@@ -137,15 +170,84 @@ export default function MiniSite() {
           </div>
         </div>
 
-        {/* Bio */}
+        {/* Bio & Credentials */}
         {therapist.bio && (
           <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
-            <h2 className="text-2xl font-bold mb-4">אודות</h2>
-            <p className="text-gray-600 leading-relaxed whitespace-pre-line">{therapist.bio}</p>
-            <div className="flex gap-4 mt-6 text-gray-500">
-              {therapist.city && <span className="flex items-center gap-1"><MapPin size={16}/> {therapist.city}</span>}
-              {therapist.phone && <a href={`tel:${therapist.phone}`} className="flex items-center gap-1 text-teal-600"><Phone size={16}/> {therapist.phone}</a>}
-              {therapist.website && <a href={therapist.website} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-teal-600"><Globe size={16}/> אתר</a>}
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+              <div className="w-2 h-8 bg-teal-600 rounded-full"></div>
+              אודות והכשרה מקצועית
+            </h2>
+            <p className="text-gray-700 leading-relaxed whitespace-pre-line text-lg mb-6">{therapist.bio}</p>
+            
+            {/* Years of Experience */}
+            {therapist.years_experience && (
+              <div className="bg-teal-50 rounded-xl p-4 mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                    {therapist.years_experience}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">שנות ניסיון מקצועי</p>
+                    <p className="text-sm text-gray-600">טיפול והכשרה</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Certifications */}
+            {therapist.certifications && therapist.certifications.length > 0 && (
+              <div className="mb-6">
+                <h3 className="font-bold text-lg mb-3">הסמכות ותעודות</h3>
+                <div className="space-y-2">
+                  {therapist.certifications.map((cert, i) => (
+                    <div key={i} className="flex items-start gap-2 p-3 bg-gray-50 rounded-lg">
+                      <Badge className="bg-teal-600 text-white mt-1">✓</Badge>
+                      <div>
+                        <p className="font-semibold">{cert.name}</p>
+                        {cert.institution && <p className="text-sm text-gray-600">{cert.institution} {cert.year && `· ${cert.year}`}</p>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Specialties */}
+            {therapist.specializations && therapist.specializations.length > 0 && (
+              <div className="mb-6">
+                <h3 className="font-bold text-lg mb-3">תחומי התמחות</h3>
+                <div className="flex flex-wrap gap-2">
+                  {therapist.specializations.map((spec, i) => (
+                    <Badge key={i} variant="outline" className="border-teal-600 text-teal-700 px-3 py-1">
+                      {spec}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Contact Info */}
+            <div className="flex flex-wrap gap-4 mt-6 pt-6 border-t border-gray-200">
+              {therapist.city && therapist.address && (
+                <a 
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(therapist.address + ", " + therapist.city)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium"
+                >
+                  <MapPin size={18}/> {therapist.address}, {therapist.city}
+                </a>
+              )}
+              {therapist.phone && (
+                <a href={`tel:${therapist.phone}`} className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium">
+                  <Phone size={18}/> {therapist.phone}
+                </a>
+              )}
+              {therapist.website && (
+                <a href={therapist.website} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium">
+                  <Globe size={18}/> אתר אינטרנט
+                </a>
+              )}
             </div>
           </div>
         )}
@@ -169,35 +271,64 @@ export default function MiniSite() {
           </div>
         )}
 
-        {/* Services */}
+        {/* Pricing & Services */}
         {showServices && services.length > 0 && (
         <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
-          <h2 className="text-2xl font-bold mb-6">השירותים שלי</h2>
+          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+            <div className="w-2 h-8 bg-amber-500 rounded-full"></div>
+            מחירון וטיפולים
+          </h2>
           <div className="grid md:grid-cols-2 gap-6">
             {services.map(s => (
-              <div key={s.id} className="relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all">
-                <div className="aspect-video bg-gradient-to-br from-[#7C9885] to-[#9CB4A4] flex items-center justify-center">
-                  <img 
-                    src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop" 
-                    alt={s.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-5">
-                  <h3 className="font-bold text-xl text-white mb-1">{s.name}</h3>
-                  <p className="text-sm text-white/80 mb-2 line-clamp-2">{s.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-white">₪{s.price}</span>
-                    <Link to={createPageUrl(`BookAppointment?therapist=${therapist.id}&service=${s.id}`)}>
-                      <Button size="sm" className="bg-white/90 hover:bg-white text-[#7C9885]">
-                        <Calendar size={14} className="ml-1"/> קבע תור
-                      </Button>
-                    </Link>
+              <div key={s.id} className="border-2 border-gray-100 rounded-2xl p-6 hover:border-teal-300 hover:shadow-lg transition-all">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="font-bold text-xl text-gray-900 mb-2">{s.name}</h3>
+                    <p className="text-sm text-gray-600 mb-3">{s.description}</p>
+                    <div className="flex items-center gap-3 text-sm text-gray-500">
+                      <span>⏱️ {s.duration_minutes} דקות</span>
+                    </div>
                   </div>
                 </div>
+                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                  <div>
+                    <span className="text-3xl font-bold text-teal-600">₪{s.price}</span>
+                    {s.deposit_required && (
+                      <p className="text-xs text-gray-500 mt-1">דמי רצינות: ₪{s.deposit_amount}</p>
+                    )}
+                  </div>
+                  <Link to={createPageUrl(`BookAppointment?therapist=${therapist.id}&service=${s.id}`)}>
+                    <Button className="bg-teal-600 hover:bg-teal-700">
+                      <Calendar size={16} className="ml-1"/> קבע תור
+                    </Button>
+                  </Link>
+                </div>
+                {s.treatment_series && s.treatment_series.length > 0 && (
+                  <div className="mt-4 pt-4 border-t border-gray-100">
+                    <p className="text-sm font-semibold text-gray-700 mb-2">📦 סדרות טיפול מיוחדות:</p>
+                    {s.treatment_series.map((series, i) => (
+                      <div key={i} className="flex justify-between items-center text-sm py-2 px-3 bg-amber-50 rounded-lg mb-2">
+                        <span>{series.name} ({series.sessions} טיפולים)</span>
+                        <span className="font-bold text-amber-700">₪{series.total_price}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
+
+          {/* Cancellation Policy */}
+          {therapist.cancellation_policy && (
+            <div className="mt-6 p-4 bg-gray-50 rounded-xl">
+              <h3 className="font-bold text-sm mb-2">📋 מדיניות ביטולים</h3>
+              <p className="text-sm text-gray-600">
+                {therapist.cancellation_policy.allow_cancellation 
+                  ? `ניתן לבטל תור עד ${therapist.cancellation_policy.hours_before} שעות מראש${therapist.cancellation_policy.cancellation_fee ? ` (דמי ביטול: ₪${therapist.cancellation_policy.cancellation_fee})` : " ללא חיוב"}`
+                  : "אין אפשרות לבטל תור לאחר קביעה"}
+              </p>
+            </div>
+          )}
         </div>
         )}
 
