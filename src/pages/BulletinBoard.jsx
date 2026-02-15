@@ -10,10 +10,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 
 const CATEGORIES = [
   { id: "all", label: "הכל", emoji: "📌" },
-  { id: "collaboration", label: "שיתופי פעולה", emoji: "🤝" },
-  { id: "equipment_sale", label: "ציוד למכירה", emoji: "🛠" },
-  { id: "clinic_rental", label: "חדרים להשכרה", emoji: "🏥" },
+  { id: "real_estate_rent", label: "נדל\"ן להשכרה", emoji: "🏠" },
+  { id: "real_estate_sale", label: "נדל\"ן למכירה", emoji: "🏢" },
   { id: "jobs", label: "דרושים", emoji: "💼" },
+  { id: "collaboration", label: "שיתופי פעולה", emoji: "🤝" },
+  { id: "suppliers", label: "ספקים", emoji: "📦" },
+  { id: "courses", label: "קורסים", emoji: "📚" },
   { id: "other", label: "אחר", emoji: "📋" },
 ];
 
@@ -37,7 +39,7 @@ export default function BulletinBoard() {
         <ArrowLeft size={16} className="ml-2"/> חזור
       </Button>
       <h1 className="text-3xl font-bold mb-2">לוח מודעות מקצועי</h1>
-      <p className="text-gray-500 mb-8">שיתופי פעולה, ציוד, חדרים ומשרות</p>
+      <p className="text-gray-500 mb-8">נדל"ן, דרושים, שיתופי פעולה, ספקים וקורסים</p>
 
       <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
         {CATEGORIES.map(cat => (
