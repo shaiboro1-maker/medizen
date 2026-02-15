@@ -53,6 +53,7 @@ export default function TherapistOnboarding() {
   const [completedSteps, setCompletedSteps] = useState([]);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
     const init = async () => {
       const user = await base44.auth.me();
       const therapists = await base44.entities.Therapist.filter({ user_email: user.email });

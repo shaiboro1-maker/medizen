@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
@@ -30,6 +30,7 @@ const CATEGORIES = [
 ];
 
 export default function Landing() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
   const { data: featuredTherapists = [] } = useQuery({
@@ -385,11 +386,15 @@ export default function Landing() {
           <p className="text-gray-700 text-base mb-6 max-w-2xl mx-auto">
             קבל עמוד אישי מעוצב, מערכת תורים אוטומטית, חנות, וובינרים ועוד
           </p>
-          <Link to={createPageUrl("TherapistRegister")}>
-            <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-8 py-6 text-base font-semibold">
-              הרשמה כמטפל
-            </Button>
-          </Link>
+          <Button 
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              setTimeout(() => navigate(createPageUrl("TherapistRegister")), 300);
+            }}
+            className="bg-teal-600 hover:bg-teal-700 text-white rounded-full px-8 py-6 text-base font-semibold"
+          >
+            הרשמה כמטפל
+          </Button>
         </div>
       </section>
     </div>

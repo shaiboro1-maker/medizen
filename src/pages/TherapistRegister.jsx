@@ -61,6 +61,7 @@ export default function TherapistRegister() {
   const [galleryImages, setGalleryImages] = useState([]);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
     base44.auth.me().then(u => {
       setUser(u);
       setForm(prev => ({ ...prev, full_name: u.full_name || "" }));
