@@ -261,19 +261,7 @@ export default function TherapistRegister() {
           ))}
         </div>
 
-        {/* PWA Download */}
-        <div className="bg-white rounded-2xl border border-[#E5DDD3] p-6 mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#7C9885] to-[#B8A393] rounded-xl flex items-center justify-center">
-              <Globe size={24} className="text-white"/>
-            </div>
-            <div className="flex-1 text-right">
-              <h3 className="font-bold text-lg text-gray-900">הורד את אפליקציית המטפלים</h3>
-              <p className="text-sm text-gray-600">PWA - התקן ישירות מהדפדפן ללא App Store</p>
-            </div>
-          </div>
-          <AppDownload variant="compact"/>
-        </div>
+
 
         {/* Registration Form */}
         <div className="bg-white rounded-2xl border border-[#E5DDD3] p-6 md:p-8 space-y-6">
@@ -529,7 +517,7 @@ export default function TherapistRegister() {
           disabled={!form.full_name || !form.phone || form.categories.length === 0 || !form.specializations || createMutation.isPending}
           className="w-full bg-gradient-to-l from-[#7C9885] to-[#B8A393] hover:opacity-90 py-6 text-lg font-bold text-white"
         >
-          {createMutation.isPending ? "שולח..." : "📨 שלח בקשת הרשמה"}
+          {createMutation.isPending ? "שולח..." : "🚀 המשך בניית המיני-סייט"}
         </Button>
 
         <p className="text-xs text-gray-500 text-center">

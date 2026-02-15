@@ -378,6 +378,7 @@ export default function AdminDashboard() {
           label="מטפלים פעילים" 
           value={approvedTherapists} 
           bg="bg-teal-50"
+          link="AdminTherapists"
         />
         <StatCard 
           icon={<Clock className="text-amber-600"/>} 
@@ -391,24 +392,28 @@ export default function AdminDashboard() {
           label="סה״כ תורים" 
           value={appointments.length} 
           bg="bg-blue-50"
+          onClick={() => navigate(createPageUrl("AdminAppointments"))}
         />
         <StatCard 
           icon={<DollarSign className="text-green-600"/>} 
           label="הכנסות תורים" 
           value={`₪${totalRevenue.toLocaleString()}`} 
           bg="bg-green-50"
+          onClick={() => navigate(createPageUrl("AdminPayments"))}
         />
         <StatCard 
           icon={<ShoppingBag className="text-purple-600"/>} 
           label="מכירות חנות" 
           value={`₪${totalSales.toLocaleString()}`} 
           bg="bg-purple-50"
+          onClick={() => navigate(createPageUrl("AdminOrders"))}
         />
         <StatCard 
           icon={<Video className="text-pink-600"/>} 
           label="וובינרים" 
           value={webinars.length} 
           bg="bg-pink-50"
+          onClick={() => navigate(createPageUrl("AdminWebinars"))}
         />
       </div>
       )}
@@ -943,9 +948,9 @@ export default function AdminDashboard() {
   );
 }
 
-function StatCard({ icon, label, value, bg, link }) {
+function StatCard({ icon, label, value, bg, link, onClick }) {
   const content = (
-    <Card className="border-0 shadow-sm hover:shadow-md transition-all">
+    <Card className="border-0 shadow-sm hover:shadow-md transition-all cursor-pointer">
       <CardContent className="p-5">
         <div className={`w-10 h-10 ${bg} rounded-xl flex items-center justify-center mb-3`}>{icon}</div>
         <p className="text-2xl font-bold">{value}</p>
@@ -954,7 +959,9 @@ function StatCard({ icon, label, value, bg, link }) {
     </Card>
   );
 
-  return link ? <Link to={createPageUrl(link)}>{content}</Link> : content;
+  if (link) return <Link to={createPageUrl(link)}>{content}</Link>;
+  if (onClick) return <div onClick={onClick}>{content}</div>;
+  return content;
 }
 
 function QuickActionCard({ title, description, link, icon, color, badge }) {

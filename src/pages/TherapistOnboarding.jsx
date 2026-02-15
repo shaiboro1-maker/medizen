@@ -8,15 +8,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
+import AppDownload from "../components/AppDownload";
 
 const ONBOARDING_STEPS = [
   {
-    id: "profile",
-    title: "השלם את הפרופיל שלך",
-    description: "תמונת פרופיל, לוגו, גלריה ומידע אישי",
-    icon: <Image size={20}/>,
+    id: "minisite",
+    title: "השלם את המיני-סייט שלך",
+    description: "תמונת פרופיל, לוגו, עיצוב וגלריה",
+    icon: <Globe size={20}/>,
     page: "TherapistMiniSiteSettings",
-    checkField: (therapist) => therapist?.profile_image && therapist?.bio
+    checkField: (therapist) => therapist?.profile_image && therapist?.minisite_settings
   },
   {
     id: "services",
@@ -34,14 +35,7 @@ const ONBOARDING_STEPS = [
     page: "TherapistAvailability",
     checkEntity: "Availability"
   },
-  {
-    id: "minisite",
-    title: "התאם את המיני-סייט",
-    description: "עיצוב, צבעים ותוכן",
-    icon: <Globe size={20}/>,
-    page: "TherapistMiniSiteSettings",
-    checkField: (therapist) => therapist?.minisite_settings
-  },
+
   {
     id: "pricing",
     title: "בחר חבילת מנוי",
@@ -80,10 +74,9 @@ export default function TherapistOnboarding() {
   const checkCompletedSteps = (therapist, servs, avail) => {
     const completed = [];
     
-    if (therapist?.profile_image && therapist?.bio) completed.push("profile");
+    if (therapist?.profile_image && therapist?.minisite_settings) completed.push("minisite");
     if (servs?.length > 0) completed.push("services");
     if (avail?.length > 0) completed.push("availability");
-    if (therapist?.minisite_settings) completed.push("minisite");
     if (therapist?.subscription_type !== "free") completed.push("pricing");
     
     setCompletedSteps(completed);
@@ -170,6 +163,19 @@ export default function TherapistOnboarding() {
               </motion.div>
             );
           })}
+        </div>
+
+        <div className="bg-white rounded-2xl border border-[#E5DDD3] p-6 mb-8">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#7C9885] to-[#B8A393] rounded-xl flex items-center justify-center">
+              <Globe size={24} className="text-white"/>
+            </div>
+            <div className="flex-1 text-right">
+              <h3 className="font-bold text-lg text-gray-900">הורד את אפליקציית המטפלים</h3>
+              <p className="text-sm text-gray-600">PWA - התקן ישירות מהדפדפן ללא App Store</p>
+            </div>
+          </div>
+          <AppDownload variant="compact"/>
         </div>
 
         <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200">

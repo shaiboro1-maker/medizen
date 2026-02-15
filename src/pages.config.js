@@ -110,6 +110,7 @@ import TherapistMiniSite from './pages/TherapistMiniSite';
 import TherapistMiniSiteSettings from './pages/TherapistMiniSiteSettings';
 import TherapistNewsletter from './pages/TherapistNewsletter';
 import TherapistNotifications from './pages/TherapistNotifications';
+import TherapistOnboarding from './pages/TherapistOnboarding';
 import TherapistPayments from './pages/TherapistPayments';
 import TherapistPodcasts from './pages/TherapistPodcasts';
 import TherapistPopups from './pages/TherapistPopups';
@@ -118,13 +119,13 @@ import TherapistProducts from './pages/TherapistProducts';
 import TherapistProfile from './pages/TherapistProfile';
 import TherapistRegister from './pages/TherapistRegister';
 import TherapistReminders from './pages/TherapistReminders';
+import TherapistScheduleManager from './pages/TherapistScheduleManager';
 import TherapistSearch from './pages/TherapistSearch';
 import TherapistServices from './pages/TherapistServices';
 import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
-import TherapistOnboarding from './pages/TherapistOnboarding';
-import TherapistScheduleManager from './pages/TherapistScheduleManager';
+import AdminAppointments from './pages/AdminAppointments';
 import __Layout from './Layout.jsx';
 
 
@@ -192,6 +193,7 @@ export const PAGES = {
     "TherapistMiniSiteSettings": TherapistMiniSiteSettings,
     "TherapistNewsletter": TherapistNewsletter,
     "TherapistNotifications": TherapistNotifications,
+    "TherapistOnboarding": TherapistOnboarding,
     "TherapistPayments": TherapistPayments,
     "TherapistPodcasts": TherapistPodcasts,
     "TherapistPopups": TherapistPopups,
@@ -200,13 +202,13 @@ export const PAGES = {
     "TherapistProfile": TherapistProfile,
     "TherapistRegister": TherapistRegister,
     "TherapistReminders": TherapistReminders,
+    "TherapistScheduleManager": TherapistScheduleManager,
     "TherapistSearch": TherapistSearch,
     "TherapistServices": TherapistServices,
     "TherapistTeam": TherapistTeam,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
-    "TherapistOnboarding": TherapistOnboarding,
-    "TherapistScheduleManager": TherapistScheduleManager,
+    "AdminAppointments": AdminAppointments,
 }
 
 export const pagesConfig = {
