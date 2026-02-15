@@ -131,6 +131,16 @@ export default function TherapistRegister() {
 
 
 
+  useEffect(() => {
+    if (success) {
+      // Auto-navigate to onboarding after 2 seconds
+      const timer = setTimeout(() => {
+        navigate(createPageUrl("TherapistOnboarding"));
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, navigate]);
+
   if (success) {
     return (
       <div className="min-h-screen bg-[#F5F1E8] py-16 px-4">
@@ -185,9 +195,9 @@ export default function TherapistRegister() {
               ⭐ שדרג חבילה
             </Button>
           </div>
-          <Button onClick={() => navigate(createPageUrl("Landing"))} variant="ghost" className="w-full">
-            חזרה לדף הבית
-          </Button>
+          <p className="text-sm text-gray-500 animate-pulse">
+            מעביר אותך אוטומטית תוך 3 שניות...
+          </p>
         </motion.div>
       </div>
     );
