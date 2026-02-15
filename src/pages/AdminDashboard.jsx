@@ -775,7 +775,7 @@ export default function AdminDashboard() {
               <p className="text-sm font-medium mb-3">סרוק את הקוד:</p>
               <div className="bg-white p-4 rounded-lg inline-block">
                 <img 
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(appUrl + '/Landing')}`}
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(window.location.origin)}`}
                   alt="QR Code"
                   className="w-48 h-48"
                 />
@@ -785,9 +785,9 @@ export default function AdminDashboard() {
             <div>
               <Label>קישור לאפליקציה</Label>
               <div className="flex gap-2 mt-2">
-                <Input value={appUrl + '/Landing'} readOnly className="text-sm"/>
+                <Input value={window.location.origin} readOnly className="text-sm"/>
                 <Button onClick={() => {
-                  navigator.clipboard.writeText(appUrl + '/Landing');
+                  navigator.clipboard.writeText(window.location.origin);
                   alert('הקישור הועתק!');
                 }}>
                   העתק
@@ -811,7 +811,7 @@ export default function AdminDashboard() {
                   await base44.integrations.Core.SendEmail({
                     to: email,
                     subject: "קישור להורדת האפליקציה",
-                    body: `שלום,\n\nהנה הקישור להורדת האפליקציה שלך:\n${appUrl}/Landing\n\nפתח את הקישור בטלפון ועקוב אחרי ההוראות להתקנה.\n\nבברכה,\nצוות האפליקציה`
+                    body: `שלום,\n\nהנה הקישור להורדת האפליקציה שלך:\n${window.location.origin}\n\nפתח את הקישור בטלפון ועקוב אחרי ההוראות להתקנה.\n\nבברכה,\nצוות האפליקציה`
                   });
                   alert('הקישור נשלח למייל שלך!');
                 } catch (error) {
