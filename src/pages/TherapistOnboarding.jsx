@@ -39,7 +39,8 @@ const ONBOARDING_STEPS = [
     title: "התאם את המיני-סייט",
     description: "עיצוב, צבעים ותוכן",
     icon: <Globe size={20}/>,
-    page: "TherapistMiniSiteSettings"
+    page: "TherapistMiniSiteSettings",
+    checkField: (therapist) => therapist?.minisite_settings
   },
   {
     id: "pricing",

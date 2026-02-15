@@ -107,7 +107,6 @@ import TherapistIntegrations from './pages/TherapistIntegrations';
 import TherapistInvoices from './pages/TherapistInvoices';
 import TherapistLeadBot from './pages/TherapistLeadBot';
 import TherapistMiniSite from './pages/TherapistMiniSite';
-import TherapistMiniSiteManager from './pages/TherapistMiniSiteManager';
 import TherapistMiniSiteSettings from './pages/TherapistMiniSiteSettings';
 import TherapistNewsletter from './pages/TherapistNewsletter';
 import TherapistNotifications from './pages/TherapistNotifications';
@@ -125,6 +124,7 @@ import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
 import TherapistOnboarding from './pages/TherapistOnboarding';
+import TherapistScheduleManager from './pages/TherapistScheduleManager';
 import __Layout from './Layout.jsx';
 
 
@@ -189,7 +189,6 @@ export const PAGES = {
     "TherapistInvoices": TherapistInvoices,
     "TherapistLeadBot": TherapistLeadBot,
     "TherapistMiniSite": TherapistMiniSite,
-    "TherapistMiniSiteManager": TherapistMiniSiteManager,
     "TherapistMiniSiteSettings": TherapistMiniSiteSettings,
     "TherapistNewsletter": TherapistNewsletter,
     "TherapistNotifications": TherapistNotifications,
@@ -207,6 +206,7 @@ export const PAGES = {
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
     "TherapistOnboarding": TherapistOnboarding,
+    "TherapistScheduleManager": TherapistScheduleManager,
 }
 
 export const pagesConfig = {

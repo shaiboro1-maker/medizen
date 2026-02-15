@@ -108,14 +108,25 @@ export default function TherapistRegister() {
       });
     },
     onSuccess: async (createdTherapist) => {
-      // Send notification to admin
-      await base44.entities.Notification.create({
-        user_email: "admin",
-        title: "בקשת הרשמה חדשה ממטפל",
-        message: `${createdTherapist.full_name} ביקש להצטרף כמטפל. נא לבדוק ולאשר.`,
-        type: "therapist",
-        link_url: `/AdminTherapists`
-      });
+      try {
+        // Get all admin users
+        const allUsers = await base44.entities.User.list();
+        const adminUsers = allUsers.filter(u => u.role === 'admin');
+        
+        // Send notification to each admin
+        for (const admin of adminUsers) {
+          await base44.entities.Notification.create({
+            recipient_email: admin.email,
+            user_email: admin.email,
+            title: "בקשת הרשמה חדשה ממטפל ⭐",
+            message: `${createdTherapist.full_name} ביקש להצטרף כמטפל. נא לבדוק ולאשר בלוח הבקרה.`,
+            type: "therapist",
+            link_url: createPageUrl("AdminTherapists")
+          });
+        }
+      } catch (error) {
+        console.log("Failed to send admin notifications:", error);
+      }
       setSuccess(createdTherapist);
     },
   });

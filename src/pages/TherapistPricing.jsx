@@ -17,6 +17,7 @@ const PACKAGES = [
     period: "לחודש",
     icon: <Star size={24}/>,
     color: "from-blue-400 to-cyan-400",
+    image: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=800&h=400&fit=crop",
     features: [
       "כרטיס ביקור דיגיטלי מותאם אישית",
       "גלריית תמונות ווידאו",
@@ -35,6 +36,7 @@ const PACKAGES = [
     period: "לחודש",
     icon: <Zap size={24}/>,
     color: "from-purple-400 to-pink-400",
+    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=400&fit=crop",
     popular: true,
     features: [
       "כל היכולות של החבילה הבסיסית",
@@ -54,6 +56,7 @@ const PACKAGES = [
     period: "לחודש",
     icon: <Crown size={24}/>,
     color: "from-amber-400 to-orange-400",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop",
     features: [
       "כל היכולות של חבילת Pro",
       "סליקת תשלומים והנהלת חשבוניות",
@@ -102,9 +105,12 @@ export default function TherapistPricing() {
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
             בחר את החבילה המתאימה לך
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-4">
             התחל עם החבילה הבסיסית ושדרג בכל עת למקסימום יכולות
           </p>
+          <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-6 py-3 rounded-full font-bold">
+            🎁 התנסות 14 יום חינם - ללא אשראי!
+          </div>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -117,22 +123,28 @@ export default function TherapistPricing() {
             >
               <Card className={`relative overflow-hidden ${pkg.popular ? 'border-4 border-purple-400 shadow-2xl' : 'border border-gray-200'}`}>
                 {pkg.popular && (
-                  <div className="absolute top-0 left-0 right-0">
+                  <div className="absolute top-0 left-0 right-0 z-10">
                     <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-center py-2 text-sm font-bold">
                       🔥 הכי פופולרי
                     </div>
                   </div>
                 )}
                 
-                <CardHeader className={`${pkg.popular ? 'pt-14' : 'pt-6'}`}>
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${pkg.color} flex items-center justify-center mx-auto mb-4`}>
+                <div className="relative h-48 overflow-hidden">
+                  <img src={pkg.image} alt={pkg.name} className="w-full h-full object-cover"/>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className={`absolute bottom-4 right-4 w-14 h-14 rounded-xl bg-white/90 backdrop-blur-sm flex items-center justify-center`}>
                     {pkg.icon}
                   </div>
+                </div>
+                
+                <CardHeader className="pt-6">
                   <CardTitle className="text-center text-2xl">{pkg.name}</CardTitle>
                   <div className="text-center mt-4">
                     <span className="text-5xl font-black text-gray-900">{pkg.price}</span>
                     <span className="text-2xl text-gray-600 mr-1">{pkg.currency}</span>
                     <div className="text-sm text-gray-500 mt-1">{pkg.period}</div>
+                    <div className="text-xs text-green-600 font-semibold mt-2">14 יום ניסיון חינם</div>
                   </div>
                 </CardHeader>
 

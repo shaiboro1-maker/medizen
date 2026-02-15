@@ -162,8 +162,7 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="TherapistNewsletter" icon={<TrendingUp size={18}/>} label="ניוזלטר" current={currentPageName}/>
               <AdminNavLink to="TherapistPayments" icon={<TrendingUp size={18}/>} label="תשלומים וסליקה" current={currentPageName}/>
               <AdminNavLink to="TherapistInvoices" icon={<TrendingUp size={18}/>} label="חשבוניות" current={currentPageName}/>
-              <AdminNavLink to="TherapistMiniSite" icon={<Globe size={18}/>} label="מיני-סייט" current={currentPageName}/>
-              <AdminNavLink to="TherapistMiniSiteSettings" icon={<Globe size={18}/>} label="עיצוב מיני-סייט" current={currentPageName}/>
+              <AdminNavLink to="TherapistMiniSiteSettings" icon={<Globe size={18}/>} label="מיני-סייט ועיצוב" current={currentPageName}/>
               <AdminNavLink to="TherapistReminders" icon={<Globe size={18}/>} label="תזכורות" current={currentPageName}/>
               <AdminNavLink to="TherapistIntegrations" icon={<Globe size={18}/>} label="אינטגרציות" current={currentPageName}/>
               <AdminNavLink to="TherapistContentRecommendations" icon={<Sparkles size={18}/>} label="המלצות תוכן" current={currentPageName}/>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Pencil, Trash2, Home, DollarSign } from "lucide-react";
+import { Plus, Pencil, Trash2, Home, DollarSign, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export default function TherapistServices() {
+  const navigate = useNavigate();
   const [therapist, setTherapist] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState(null);
@@ -89,8 +91,11 @@ export default function TherapistServices() {
 
   return (
     <div className="p-6 md:p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">השירותים שלי</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <Button variant="ghost" onClick={() => navigate(-1)}>
+          <ArrowRight size={20}/>
+        </Button>
+        <h1 className="text-2xl font-bold flex-1">השירותים שלי</h1>
         <Button onClick={() => setShowForm(true)} className="bg-teal-600 hover:bg-teal-700">
           <Plus size={16} className="ml-2"/> הוסף שירות
         </Button>
