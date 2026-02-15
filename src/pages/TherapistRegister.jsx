@@ -107,7 +107,15 @@ export default function TherapistRegister() {
         unique_slug: data.full_name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now()
       });
     },
-    onSuccess: (createdTherapist) => {
+    onSuccess: async (createdTherapist) => {
+      // Send notification to admin
+      await base44.entities.Notification.create({
+        user_email: "admin",
+        title: "בקשת הרשמה חדשה ממטפל",
+        message: `${createdTherapist.full_name} ביקש להצטרף כמטפל. נא לבדוק ולאשר.`,
+        type: "therapist",
+        link_url: `/AdminTherapists`
+      });
       setSuccess(createdTherapist);
     },
   });
