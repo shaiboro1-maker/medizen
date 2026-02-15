@@ -1,218 +1,171 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
-import { useMutation } from "@tanstack/react-query";
+import { Check, Crown, Zap, Star, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Check, Sparkles, Crown, Zap } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 
-const PLANS = [
-  {
-    id: "trial",
-    name: "ניסיון חינם",
-    price: "חינם",
-    duration: "14 יום",
-    features: [
-      "מיני-סייט בסיסי",
-      "עד 10 תורים בחודש",
-      "ניהול לקוחות בסיסי",
-      "תמיכה בדוא\"ל"
-    ],
-    cta: "התחל ניסיון חינם",
-    popular: false,
-    icon: <Zap className="text-blue-500" size={32}/>
-  },
+const PACKAGES = [
   {
     id: "basic",
-    name: "בסיסי",
-    price: "89",
-    duration: "לחודש",
+    name: "חבילה בסיסית",
+    price: "49",
+    currency: "₪",
+    period: "לחודש",
+    icon: <Star size={24}/>,
+    color: "from-blue-400 to-cyan-400",
     features: [
-      "כל מה שיש בחינם",
-      "תורים ללא הגבלה",
-      "מיני-סייט מותאם אישית",
-      "העלאת תכנים ומדיה",
-      "ניהול זמינות מתקדם",
-      "תזכורות אוטומטיות",
-      "בוט וואטסאפ",
-      "דוחות וסטטיסטיקות",
-      "תמיכה מהירה"
-    ],
-    cta: "התחל עכשיו",
+      "כרטיס ביקור דיגיטלי מותאם אישית",
+      "גלריית תמונות ווידאו",
+      "פרטי קשר ושעות פעילות",
+      "קישורים לרשתות חברתיות",
+      "דירוג וביקורות לקוחות",
+      "תיאור שירותים ומחירון",
+      "דף נחיתה עם הוראות הורדה",
+    ]
+  },
+  {
+    id: "pro",
+    name: "חבילת Pro",
+    price: "99",
+    currency: "₪",
+    period: "לחודש",
+    icon: <Zap size={24}/>,
+    color: "from-purple-400 to-pink-400",
     popular: true,
-    icon: <Sparkles className="text-amber-500" size={32}/>
+    features: [
+      "כל היכולות של החבילה הבסיסית",
+      "בוט חכם לניהול לידים וצ'אט אוטומטי",
+      "תזמון תורים אוטומטי",
+      "תזכורות ללקוחות באמצעות SMS",
+      "CRM מובנה לניהול לקוחות",
+      "לוח מודעות לפרסום אירועים וקורסים",
+      "העלאת תרגילים ומדיטציות ללקוחות",
+    ]
   },
   {
     id: "premium",
-    name: "פרימיום",
-    price: "199",
-    duration: "לחודש",
+    name: "חבילת Premium",
+    price: "149",
+    currency: "₪",
+    period: "לחודש",
+    icon: <Crown size={24}/>,
+    color: "from-amber-400 to-orange-400",
     features: [
-      "כל מה שיש בבסיסי",
-      "קידום בדף הבית",
-      "תג 'מומלץ' בכרטיס",
-      "עדיפות בתוצאות חיפוש",
-      "קמפיינים פרסומיים",
-      "ניהול 4 נציגויות",
-      "אוטומציה לחימום לידים",
-      "גישה למועדון מטפלים",
-      "תמיכה VIP 24/7"
-    ],
-    cta: "שדרג לפרימיום",
-    popular: false,
-    icon: <Crown className="text-purple-500" size={32}/>
-  }
+      "כל היכולות של חבילת Pro",
+      "סליקת תשלומים והנהלת חשבוניות",
+      "פופ-אפ בדף הבית 4 פעמים ביום",
+      "פוש אפ שבועי למנויים באיזור הרלוונטי",
+      "דשבורד פיננסי מתקדם",
+      "אנליטיקס ודוחות מפורטים",
+      "תמיכה ייעודית VIP 24/7",
+      "אפשרות לחנות מוצרים מקוונת",
+    ]
+  },
 ];
 
 export default function TherapistPricing() {
   const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [user, setUser] = useState(null);
+  const [therapist, setTherapist] = useState(null);
 
-  const subscribeMutation = useMutation({
-    mutationFn: async (planId) => {
-      const user = await base44.auth.me();
-      const therapists = await base44.entities.Therapist.filter({ user_email: user.email });
-      
-      if (therapists.length === 0) {
-        throw new Error("לא נמצא פרופיל מטפל");
-      }
+  useEffect(() => {
+    const init = async () => {
+      const me = await base44.auth.me();
+      setUser(me);
+      const therapists = await base44.entities.Therapist.filter({ user_email: me.email });
+      if (therapists[0]) setTherapist(therapists[0]);
+    };
+    init();
+  }, []);
 
-      const subscriptionType = planId === "trial" ? "free" : planId === "basic" ? "basic" : "premium";
-      const expiresDate = new Date();
-      expiresDate.setMonth(expiresDate.getMonth() + (planId === "trial" ? 0.5 : 1));
-
-      await base44.entities.Therapist.update(therapists[0].id, {
-        subscription_type: subscriptionType,
-        subscription_expires: expiresDate.toISOString().split('T')[0],
-        is_featured: planId === "premium",
-        status: "pending"
-      });
-
-      return { success: true };
-    },
-    onSuccess: () => {
-      setSelectedPlan("waiting_approval");
-    }
-  });
-
-  const handleSelectPlan = (planId) => {
-    setSelectedPlan(planId);
-    subscribeMutation.mutate(planId);
+  const handleSelectPackage = async (packageId) => {
+    // In production, this would integrate with payment gateway
+    alert(`בחרת בחבילת ${PACKAGES.find(p => p.id === packageId)?.name}. תכונה זו תהיה זמינה בקרוב!`);
   };
 
-  if (selectedPlan === "waiting_approval") {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50 to-emerald-50 flex items-center justify-center px-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="max-w-lg w-full bg-white rounded-3xl shadow-2xl p-12 text-center"
-        >
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2 }}
-            className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6"
-          >
-            <Check size={48} className="text-green-600"/>
-          </motion.div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">החבילה נבחרה בהצלחה!</h1>
-          <p className="text-gray-600 mb-6">
-            הפרופיל שלך נשלח לאישור מנהל המערכת.
-            <br/>
-            נחזור אליך בהקדם לאחר אישור הפרופיל.
-          </p>
-          <Button
-            onClick={() => navigate("/")}
-            className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-6 rounded-full text-lg"
-          >
-            חזרה לדף הבית
-          </Button>
-        </motion.div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50 to-emerald-50 py-16 px-4">
+    <div className="min-h-screen bg-[#F5F1E8] py-8 px-4">
       <div className="max-w-7xl mx-auto">
+        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6">
+          <ArrowRight size={16} className="ml-2"/> חזור
+        </Button>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
             בחר את החבילה המתאימה לך
           </h1>
-          <p className="text-lg text-gray-600">
-            כל החבילות כוללות ניסיון ללא התחייבות - אפשר לבטל בכל עת
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            התחל עם החבילה הבסיסית ושדרג בכל עת למקסימום יכולות
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {PLANS.map((plan, index) => (
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          {PACKAGES.map((pkg, i) => (
             <motion.div
-              key={plan.id}
-              initial={{ opacity: 0, y: 30 }}
+              key={pkg.id}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className={`relative bg-white rounded-3xl shadow-xl p-8 ${
-                plan.popular ? "ring-4 ring-teal-500 scale-105" : ""
-              }`}
+              transition={{ delay: i * 0.1 }}
             >
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-gradient-to-r from-teal-500 to-emerald-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
-                    הכי פופולרי
-                  </span>
-                </div>
-              )}
+              <Card className={`relative overflow-hidden ${pkg.popular ? 'border-4 border-purple-400 shadow-2xl' : 'border border-gray-200'}`}>
+                {pkg.popular && (
+                  <div className="absolute top-0 left-0 right-0">
+                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-center py-2 text-sm font-bold">
+                      🔥 הכי פופולרי
+                    </div>
+                  </div>
+                )}
+                
+                <CardHeader className={`${pkg.popular ? 'pt-14' : 'pt-6'}`}>
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${pkg.color} flex items-center justify-center mx-auto mb-4`}>
+                    {pkg.icon}
+                  </div>
+                  <CardTitle className="text-center text-2xl">{pkg.name}</CardTitle>
+                  <div className="text-center mt-4">
+                    <span className="text-5xl font-black text-gray-900">{pkg.price}</span>
+                    <span className="text-2xl text-gray-600 mr-1">{pkg.currency}</span>
+                    <div className="text-sm text-gray-500 mt-1">{pkg.period}</div>
+                  </div>
+                </CardHeader>
 
-              <div className="text-center mb-6">
-                <div className="mb-4">{plan.icon}</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-                <div className="flex items-baseline justify-center gap-2">
-                  <span className="text-4xl font-black text-teal-600">
-                    {plan.price}
-                  </span>
-                  {plan.price !== "חינם" && <span className="text-gray-500">₪</span>}
-                </div>
-                <p className="text-gray-500 text-sm mt-1">{plan.duration}</p>
-              </div>
+                <CardContent className="space-y-3 pb-8">
+                  {pkg.features.map((feature, idx) => (
+                    <div key={idx} className="flex items-start gap-2">
+                      <Check size={18} className="text-green-600 mt-0.5 flex-shrink-0"/>
+                      <span className="text-sm text-gray-700">{feature}</span>
+                    </div>
+                  ))}
 
-              <ul className="space-y-3 mb-8">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <Check className="text-teal-500 flex-shrink-0 mt-0.5" size={18}/>
-                    <span className="text-gray-700 text-sm">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <Button
-                onClick={() => handleSelectPlan(plan.id)}
-                disabled={subscribeMutation.isPending && selectedPlan === plan.id}
-                className={`w-full rounded-full py-6 font-bold text-base ${
-                  plan.popular
-                    ? "bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white"
-                    : "bg-gray-100 hover:bg-gray-200 text-gray-900"
-                }`}
-              >
-                {subscribeMutation.isPending && selectedPlan === plan.id ? "מעבד..." : plan.cta}
-              </Button>
-
-              {plan.id === "trial" && (
-                <p className="text-center text-xs text-gray-500 mt-4">
-                  ללא צורך בפרטי אשראי
-                </p>
-              )}
+                  <Button
+                    onClick={() => handleSelectPackage(pkg.id)}
+                    className={`w-full mt-6 ${
+                      pkg.popular
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'
+                        : `bg-gradient-to-r ${pkg.color} hover:opacity-90`
+                    } text-white font-bold py-6`}
+                  >
+                    {therapist?.subscription_type === pkg.id ? "החבילה הנוכחית" : "בחר חבילה"}
+                  </Button>
+                </CardContent>
+              </Card>
             </motion.div>
           ))}
         </div>
 
-        <div className="mt-16 text-center">
-          <p className="text-gray-600 mb-4">יש לך שאלות? אנחנו כאן לעזור</p>
-          <Button variant="outline" onClick={() => navigate("/Support")}>
+        <div className="bg-white rounded-3xl p-8 border border-gray-200 text-center">
+          <h2 className="text-2xl font-bold mb-3">שאלות? צריך עזרה בבחירה?</h2>
+          <p className="text-gray-600 mb-6">
+            הצוות שלנו כאן כדי לעזור לך למצוא את החבילה המושלמת עבורך
+          </p>
+          <Button className="bg-[#7C9885] hover:bg-[#6A8573] px-8 py-6 text-lg">
             צור קשר עם התמיכה
           </Button>
         </div>

@@ -107,8 +107,8 @@ export default function TherapistRegister() {
         unique_slug: data.full_name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now()
       });
     },
-    onSuccess: () => {
-      setSuccess(true);
+    onSuccess: (createdTherapist) => {
+      setSuccess(createdTherapist);
     },
   });
 
@@ -134,32 +134,50 @@ export default function TherapistRegister() {
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <Check size={40} className="text-green-600"/>
           </div>
-          <h1 className="text-3xl font-black text-gray-900 mb-4">הבקשה נשלחה בהצלחה! 🎉</h1>
-          <p className="text-gray-600 mb-6 text-lg">
-            תודה על ההרשמה! נבדוק את הפרטים ונחזור אליך תוך 24 שעות
+          <h1 className="text-3xl font-black text-gray-900 mb-4">ברוך הבא ל-MediZen! 🎉</h1>
+          <p className="text-gray-600 mb-6 text-lg leading-relaxed">
+            תודה על ההרשמה! נרשמת לפלטפורמה שתקשר אותך עם לקוחות פוטנציאליים, 
+            תיתן לך גב תמיכה של קהילה, קשר ישיר עם מטפלים ומטופלים לחיזוק המותג שלך, 
+            כולל במה להעלאת תכנים
           </p>
           <div className="bg-[#F5F1E8] rounded-2xl p-6 mb-6 text-right">
-            <h3 className="font-bold text-lg mb-3 text-[#7C9885]">מה הלאה?</h3>
-            <div className="space-y-2 text-sm text-gray-600">
+            <h3 className="font-bold text-lg mb-3 text-[#7C9885]">מה קיבלת בהרשמה:</h3>
+            <div className="space-y-2 text-sm text-gray-700">
               <div className="flex items-start gap-2">
                 <Check size={16} className="text-[#7C9885] mt-1"/>
-                <span>נבדוק את הפרטים שהזנת</span>
+                <span>כרטיס ביקור דיגיטלי מותאם אישית</span>
               </div>
               <div className="flex items-start gap-2">
                 <Check size={16} className="text-[#7C9885] mt-1"/>
-                <span>תקבל אישור למייל</span>
+                <span>לוח מודעות לפרסום אירועים וקורסים</span>
               </div>
               <div className="flex items-start gap-2">
                 <Check size={16} className="text-[#7C9885] mt-1"/>
-                <span>תוכל להתחיל לנהל את הפרופיל שלך</span>
+                <span>העלאת תרגילים ומדיטציות ללקוחות</span>
               </div>
               <div className="flex items-start gap-2">
                 <Check size={16} className="text-[#7C9885] mt-1"/>
-                <span>תקבל קישור למיני-סייט ואפליקציה מותאמת אישית</span>
+                <span>מוזיקה וסאונד לקליניקה</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <Check size={16} className="text-[#7C9885] mt-1"/>
+                <span>בוט חכם לחימום לידים ויצירת קשר עם לקוחות</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <Check size={16} className="text-[#7C9885] mt-1"/>
+                <span>קהילת מטפלים ותמיכה מקצועית</span>
               </div>
             </div>
           </div>
-          <Button onClick={() => navigate(createPageUrl("Landing"))} className="bg-[#7C9885] hover:bg-[#6A8573] px-8">
+          <div className="grid md:grid-cols-2 gap-3 mb-6">
+            <Button onClick={() => navigate(createPageUrl("TherapistMiniSite") + "?id=" + success.id)} className="bg-gradient-to-l from-[#7C9885] to-[#B8A393] hover:opacity-90 px-6 py-6 text-lg font-bold">
+              🏠 בנה את המיני-סייט שלך
+            </Button>
+            <Button onClick={() => navigate(createPageUrl("TherapistPricing"))} variant="outline" className="border-2 border-[#7C9885] text-[#7C9885] hover:bg-[#7C9885] hover:text-white px-6 py-6 text-lg font-bold">
+              ⭐ שדרג חבילה
+            </Button>
+          </div>
+          <Button onClick={() => navigate(createPageUrl("Landing"))} variant="ghost" className="w-full">
             חזרה לדף הבית
           </Button>
         </motion.div>
@@ -191,8 +209,8 @@ export default function TherapistRegister() {
             { icon: <MessageCircle size={24}/>, title: "בוט ווטסאפ", desc: "שיחות אוטומטיות עם לקוחות", img: "https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=400&h=200&fit=crop" },
             { icon: <Globe size={24}/>, title: "מיני-סייט", desc: "אתר אישי מעוצב", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop" },
             { icon: <ShoppingBag size={24}/>, title: "חנות מוצרים", desc: "מכור מוצרים לקליניקה", img: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=200&fit=crop" },
-            { icon: <TrendingUp size={24}/>, title: "דשבורד פיננסי", desc: "מעקב הכנסות והוצאות", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop" },
-            { icon: <Image size={24}/>, title: "גלריה מקצועית", desc: "הצג את עבודותיך", img: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=400&h=200&fit=crop" },
+            { icon: <TrendingUp size={24}/>, title: "לוח מודעות", desc: "פרסם אירועים וקורסים", img: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=400&h=200&fit=crop" },
+            { icon: <Image size={24}/>, title: "תרגילים ומדיטציות", desc: "העלה תוכן ללקוחות", img: "https://images.unsplash.com/photo-1545389336-cf090694435e?w=400&h=200&fit=crop" },
           ].map((feature, i) => (
             <motion.div
               key={i}
@@ -235,13 +253,13 @@ export default function TherapistRegister() {
           <div className="grid md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label>תמונת פרופיל</Label>
-              <div className="w-full h-32 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300 cursor-pointer hover:border-[#7C9885] transition">
+              <div className="w-full aspect-square rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300 cursor-pointer hover:border-[#7C9885] transition">
                 {profileImage ? (
                   <img src={URL.createObjectURL(profileImage)} alt="" className="w-full h-full object-cover"/>
                 ) : (
                   <div className="text-center">
                     <Upload size={24} className="text-gray-400 mx-auto mb-1"/>
-                    <span className="text-xs text-gray-500">העלה תמונה</span>
+                    <span className="text-xs text-gray-500">1080x1080</span>
                   </div>
                 )}
                 <input type="file" accept="image/*" onChange={(e) => setProfileImage(e.target.files[0])} className="hidden"/>
@@ -253,13 +271,13 @@ export default function TherapistRegister() {
 
             <div className="space-y-2">
               <Label>תמונת כיסוי</Label>
-              <div className="w-full h-32 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300">
+              <div className="w-full aspect-square rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300">
                 {coverImage ? (
                   <img src={URL.createObjectURL(coverImage)} alt="" className="w-full h-full object-cover"/>
                 ) : (
                   <div className="text-center">
                     <Upload size={24} className="text-gray-400 mx-auto mb-1"/>
-                    <span className="text-xs text-gray-500">רקע למיני-סייט</span>
+                    <span className="text-xs text-gray-500">1080x1080</span>
                   </div>
                 )}
               </div>
@@ -270,13 +288,13 @@ export default function TherapistRegister() {
 
             <div className="space-y-2">
               <Label>לוגו</Label>
-              <div className="w-full h-32 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300">
+              <div className="w-full aspect-square rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300">
                 {logoImage ? (
                   <img src={URL.createObjectURL(logoImage)} alt="" className="w-full h-full object-cover"/>
                 ) : (
                   <div className="text-center">
                     <Upload size={24} className="text-gray-400 mx-auto mb-1"/>
-                    <span className="text-xs text-gray-500">לוגו אישי</span>
+                    <span className="text-xs text-gray-500">1080x1080</span>
                   </div>
                 )}
               </div>
@@ -287,16 +305,17 @@ export default function TherapistRegister() {
           </div>
 
           <div className="mt-4 space-y-2">
-            <Label>גלריית תמונות (עד 6)</Label>
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+            <Label>גלריית תמונות (עד 6) - תמונות עומדות</Label>
+            <div className="grid grid-cols-3 gap-3">
               {galleryImages.map((img, i) => (
-                <div key={i} className="w-full h-20 rounded-lg overflow-hidden border border-gray-200">
+                <div key={i} className="w-full aspect-[9/16] rounded-lg overflow-hidden border border-gray-200">
                   <img src={URL.createObjectURL(img)} alt="" className="w-full h-full object-cover"/>
                 </div>
               ))}
               {galleryImages.length < 6 && (
-                <label className="w-full h-20 rounded-lg bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300 cursor-pointer hover:border-[#7C9885] transition">
-                  <Upload size={16} className="text-gray-400"/>
+                <label className="w-full aspect-[9/16] rounded-lg bg-gray-100 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 cursor-pointer hover:border-[#7C9885] transition">
+                  <Upload size={20} className="text-gray-400 mb-1"/>
+                  <span className="text-xs text-gray-500">9:16</span>
                   <input type="file" accept="image/*" onChange={(e) => setGalleryImages([...galleryImages, e.target.files[0]])} className="hidden"/>
                 </label>
               )}
