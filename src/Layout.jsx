@@ -148,6 +148,7 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="TherapistAppointments" icon={<Calendar size={18}/>} label="תורים" current={currentPageName}/>
               <AdminNavLink to="TherapistServices" icon={<ClipboardList size={18}/>} label="שירותים" current={currentPageName}/>
               <AdminNavLink to="TherapistAvailability" icon={<Calendar size={18}/>} label="זמינות" current={currentPageName}/>
+              <AdminNavLink to="TherapistScheduleManager" icon={<Calendar size={18}/>} label="יומן שעות" current={currentPageName}/>
               <AdminNavLink to="TherapistAIWriter" icon={<BookOpen size={18}/>} label="AI כתיבת מאמרים" current={currentPageName}/>
               <AdminNavLink to="TherapistContent" icon={<BookOpen size={18}/>} label="תוכן" current={currentPageName}/>
               <AdminNavLink to="TherapistProducts" icon={<ShoppingBag size={18}/>} label="חנות" current={currentPageName}/>

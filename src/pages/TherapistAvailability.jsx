@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Trash2, Calendar, Clock } from "lucide-react";
+import { Plus, Trash2, Calendar, Clock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +20,7 @@ const DAYS = [
 ];
 
 export default function TherapistAvailability() {
+  const navigate = useNavigate();
   const [therapist, setTherapist] = useState(null);
   const [newSlot, setNewSlot] = useState({ day_of_week: 0, start_time: "09:00", end_time: "17:00", service_id: "" });
   const [newBlock, setNewBlock] = useState({ date: "", start_time: "09:00", end_time: "10:00", reason: "" });
@@ -84,7 +86,12 @@ export default function TherapistAvailability() {
 
   return (
     <div className="p-6 md:p-8 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">ניהול זמינות ותורים</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <Button variant="ghost" onClick={() => navigate(-1)}>
+          <ArrowRight size={20}/>
+        </Button>
+        <h1 className="text-2xl font-bold flex-1">ניהול זמינות ותורים</h1>
+      </div>
 
       <Tabs defaultValue="regular" className="space-y-6">
         <TabsList className="grid w-full max-w-md grid-cols-2">
