@@ -85,6 +85,11 @@ export default function TherapistOnboarding() {
   const progress = (completedSteps.length / ONBOARDING_STEPS.length) * 100;
 
   const handleSkip = () => {
+    // Check if all steps are completed
+    if (completedSteps.length < ONBOARDING_STEPS.length) {
+      alert("יש להשלים את כל השלבים לפני המעבר לדשבורד");
+      return;
+    }
     navigate(createPageUrl("TherapistDashboard"));
   };
 
@@ -186,6 +191,11 @@ export default function TherapistOnboarding() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
+            <div className="bg-green-50 border-2 border-green-400 p-4 rounded-lg mb-3 text-center">
+              <Badge className="bg-green-500 mb-2">🎁 ניסיון חינם</Badge>
+              <h4 className="font-bold text-lg mb-1">14 יום ללא עלות</h4>
+              <p className="text-xs text-gray-600">ללא כרטיס אשראי • ביטול בכל עת</p>
+            </div>
             <div className="grid md:grid-cols-3 gap-3">
               <div className="bg-white p-4 rounded-lg">
                 <h4 className="font-bold mb-2">בסיסית - ₪49</h4>
@@ -211,19 +221,21 @@ export default function TherapistOnboarding() {
         </Card>
 
         <div className="mt-8 flex justify-center gap-4">
-          <Button 
-            onClick={handleSkip}
-            variant="outline"
-            className="px-8"
-          >
-            דלג לדשבורד
-          </Button>
-          {progress === 100 && (
+          {progress === 100 ? (
             <Button 
               onClick={() => navigate(createPageUrl("TherapistDashboard"))}
               className="bg-gradient-to-l from-[#7C9885] to-[#B8A393] px-8"
             >
               סיימתי! לדשבורד <Check size={16} className="mr-2"/>
+            </Button>
+          ) : (
+            <Button 
+              onClick={handleSkip}
+              variant="outline"
+              className="px-8 opacity-50 cursor-not-allowed"
+              disabled
+            >
+              יש להשלים את כל השלבים
             </Button>
           )}
         </div>
