@@ -613,10 +613,37 @@ export default function TherapistRegister() {
 
         <Button
           onClick={() => {
-            if (!form.full_name || !form.phone || form.categories.length === 0 || !form.specializations) {
-              alert("אנא מלא את כל השדות החובה");
+            // Validation with specific error messages
+            const errors = [];
+            
+            if (!form.full_name) {
+              errors.push("שם מלא");
+            }
+            if (!form.phone) {
+              errors.push("מספר טלפון");
+            }
+            if (form.categories.length === 0) {
+              errors.push("תחומי טיפול (בחר לפחות תחום אחד)");
+            }
+            if (!form.specializations) {
+              errors.push("התמחויות");
+            }
+            if (!form.area) {
+              errors.push("אזור");
+            }
+            if (!form.city) {
+              errors.push("עיר");
+            }
+            
+            if (errors.length > 0) {
+              const errorMessage = "נא להשלים את השדות הבאים:\n\n" + errors.map(e => `• ${e}`).join('\n');
+              alert(errorMessage);
+              
+              // Scroll to top of form
+              window.scrollTo({ top: 0, behavior: 'smooth' });
               return;
             }
+            
             createMutation.mutate(form);
           }}
           disabled={createMutation.isPending}
