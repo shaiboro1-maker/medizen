@@ -12,6 +12,19 @@ import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import AppDownload from "../components/AppDownload";
 
+const FONTS = [
+  { value: "Heebo", label: "העברי (Heebo)" },
+  { value: "Assistant", label: "אסיסטנט (Assistant)" },
+  { value: "Rubik", label: "רוביק (Rubik)" },
+  { value: "Alef", label: "אלף (Alef)" },
+];
+
+const LAYOUTS = [
+  { value: "default", label: "ברירת מחדל", desc: "עיצוב מסורתי ונקי" },
+  { value: "modern", label: "מודרני", desc: "עיצוב עכשווי עם אנימציות" },
+  { value: "minimal", label: "מינימליסטי", desc: "פשוט ונקי" },
+];
+
 const CATEGORIES = [
   { id: "acupuncture", label: "דיקור סיני", emoji: "🪡" },
   { id: "physio", label: "פיזיותרפיה", emoji: "🦴" },
