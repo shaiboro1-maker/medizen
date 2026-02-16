@@ -154,9 +154,14 @@ export default function TherapistRegister() {
       } catch (error) {
         console.log("Failed to send admin notifications:", error);
       }
-      setSuccess(createdTherapist);
-      navigate(createPageUrl("ThankYou"));
+      
+      // Navigate to thank you page
+      window.location.href = createPageUrl("ThankYou");
     },
+    onError: (error) => {
+      console.error("Registration error:", error);
+      alert("אירעה שגיאה בהרשמה. אנא נסה שוב.");
+    }
   });
 
   const toggleCategory = (id) => {
