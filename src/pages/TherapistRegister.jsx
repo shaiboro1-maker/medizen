@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { motion } from "framer-motion";
 import AppDownload from "../components/AppDownload";
 
@@ -65,6 +67,17 @@ export default function TherapistRegister() {
       instagram: "",
       tiktok: "",
       whatsapp: ""
+    },
+    minisite_settings: {
+      primary_color: "#0F766E",
+      secondary_color: "#F59E0B",
+      font_family: "Heebo",
+      layout: "default",
+      show_gallery: true,
+      show_services: true,
+      show_courses: true,
+      show_blog: true,
+      show_reviews: true,
     }
   });
   const [success, setSuccess] = useState(false);
@@ -177,11 +190,12 @@ export default function TherapistRegister() {
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <Check size={40} className="text-green-600"/>
           </div>
-          <h1 className="text-3xl font-black text-gray-900 mb-4">ברוך הבא ל-MediZen! 🎉</h1>
+          <h1 className="text-3xl font-black text-gray-900 mb-4">תודה שנרשמת לאפליקציית MediZen! 🎉</h1>
           <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-            תודה על ההרשמה! נרשמת לפלטפורמה שתקשר אותך עם לקוחות פוטנציאליים, 
-            תיתן לך גב תמיכה של קהילה, קשר ישיר עם מטפלים ומטופלים לחיזוק המותג שלך, 
-            כולל במה להעלאת תכנים
+            מהיום תוכל לקבל לקוחות חדשים בקלות ולנהל את הקליניקה שלך בצורה קלה ומקצועית
+          </p>
+          <p className="text-sm text-gray-500 mb-6">
+            פרטייך נשלחו לאישור האדמין. נעדכן אותך ב-48 שעות הקרובות.
           </p>
           <div className="bg-[#F5F1E8] rounded-2xl p-6 mb-6 text-right">
             <h3 className="font-bold text-lg mb-3 text-[#7C9885]">מה קיבלת בהרשמה:</h3>
@@ -441,6 +455,142 @@ export default function TherapistRegister() {
             placeholder="ספר על עצמך, הגישה הטיפולית שלך, והניסיון המקצועי שלך..."
             className="h-32"
           />
+        </div>
+
+        {/* Mini-Site Customization Section */}
+        <div className="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-2xl p-6 border-2 border-teal-200">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+            <Globe size={24} className="text-teal-600"/>
+            עיצוב המיני-סייט שלך 🎨
+          </h2>
+          <p className="text-gray-600 mb-6">התאם אישית את כרטיס הביקור הדיגיטלי שלך</p>
+
+          {/* Colors */}
+          <div className="bg-white rounded-xl p-5 mb-4">
+            <h3 className="font-bold mb-4 flex items-center gap-2 text-lg">
+              <Palette size={20} className="text-teal-600"/>
+              צבעי העיצוב
+            </h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>צבע ראשי</Label>
+                <div className="flex gap-3 items-center">
+                  <Input 
+                    type="color" 
+                    value={form.minisite_settings.primary_color} 
+                    onChange={(e) => setForm({...form, minisite_settings: {...form.minisite_settings, primary_color: e.target.value}})}
+                    className="w-20 h-12 cursor-pointer"
+                  />
+                  <Input 
+                    value={form.minisite_settings.primary_color} 
+                    onChange={(e) => setForm({...form, minisite_settings: {...form.minisite_settings, primary_color: e.target.value}})}
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>צבע משני</Label>
+                <div className="flex gap-3 items-center">
+                  <Input 
+                    type="color" 
+                    value={form.minisite_settings.secondary_color} 
+                    onChange={(e) => setForm({...form, minisite_settings: {...form.minisite_settings, secondary_color: e.target.value}})}
+                    className="w-20 h-12 cursor-pointer"
+                  />
+                  <Input 
+                    value={form.minisite_settings.secondary_color} 
+                    onChange={(e) => setForm({...form, minisite_settings: {...form.minisite_settings, secondary_color: e.target.value}})}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Typography & Layout */}
+          <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <div className="bg-white rounded-xl p-5">
+              <h3 className="font-bold mb-3 flex items-center gap-2">
+                <Type size={18} className="text-teal-600"/>
+                גופן
+              </h3>
+              <Select 
+                value={form.minisite_settings.font_family} 
+                onValueChange={(v) => setForm({...form, minisite_settings: {...form.minisite_settings, font_family: v}})}
+              >
+                <SelectTrigger>
+                  <SelectValue/>
+                </SelectTrigger>
+                <SelectContent>
+                  {FONTS.map(f => (
+                    <SelectItem key={f.value} value={f.value} style={{ fontFamily: f.value }}>
+                      {f.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="bg-white rounded-xl p-5">
+              <h3 className="font-bold mb-3 flex items-center gap-2">
+                <LayoutIcon size={18} className="text-teal-600"/>
+                סגנון עיצוב
+              </h3>
+              <Select 
+                value={form.minisite_settings.layout} 
+                onValueChange={(v) => setForm({...form, minisite_settings: {...form.minisite_settings, layout: v}})}
+              >
+                <SelectTrigger>
+                  <SelectValue/>
+                </SelectTrigger>
+                <SelectContent>
+                  {LAYOUTS.map(l => (
+                    <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Section Visibility */}
+          <div className="bg-white rounded-xl p-5">
+            <h3 className="font-bold mb-3">איזה מקטעים להציג?</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between py-2 border-b">
+                <Label>גלריית תמונות</Label>
+                <Switch 
+                  checked={form.minisite_settings.show_gallery} 
+                  onCheckedChange={(v) => setForm({...form, minisite_settings: {...form.minisite_settings, show_gallery: v}})}
+                />
+              </div>
+              <div className="flex items-center justify-between py-2 border-b">
+                <Label>שירותים</Label>
+                <Switch 
+                  checked={form.minisite_settings.show_services} 
+                  onCheckedChange={(v) => setForm({...form, minisite_settings: {...form.minisite_settings, show_services: v}})}
+                />
+              </div>
+              <div className="flex items-center justify-between py-2 border-b">
+                <Label>קורסים</Label>
+                <Switch 
+                  checked={form.minisite_settings.show_courses} 
+                  onCheckedChange={(v) => setForm({...form, minisite_settings: {...form.minisite_settings, show_courses: v}})}
+                />
+              </div>
+              <div className="flex items-center justify-between py-2 border-b">
+                <Label>בלוג</Label>
+                <Switch 
+                  checked={form.minisite_settings.show_blog} 
+                  onCheckedChange={(v) => setForm({...form, minisite_settings: {...form.minisite_settings, show_blog: v}})}
+                />
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <Label>ביקורות</Label>
+                <Switch 
+                  checked={form.minisite_settings.show_reviews} 
+                  onCheckedChange={(v) => setForm({...form, minisite_settings: {...form.minisite_settings, show_reviews: v}})}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         <div>
