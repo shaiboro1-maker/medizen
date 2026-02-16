@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
 import AppDownload from "../components/AppDownload";
 
@@ -82,7 +81,6 @@ export default function TherapistRegister() {
     }
   });
   const [success, setSuccess] = useState(false);
-  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
   const [logoImage, setLogoImage] = useState(null);
@@ -157,7 +155,7 @@ export default function TherapistRegister() {
         console.log("Failed to send admin notifications:", error);
       }
       setSuccess(createdTherapist);
-      setShowSuccessDialog(true);
+      navigate(createPageUrl("ThankYou"));
     },
   });
 
@@ -172,78 +170,7 @@ export default function TherapistRegister() {
 
 
 
-  useEffect(() => {
-    if (success) {
-      // Auto-navigate to onboarding after 2 seconds
-      const timer = setTimeout(() => {
-        navigate(createPageUrl("TherapistOnboarding"));
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [success, navigate]);
 
-  if (success) {
-    return (
-      <div className="min-h-screen bg-[#F5F1E8] py-16 px-4">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="max-w-2xl mx-auto bg-white rounded-3xl shadow-xl p-8 text-center"
-        >
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Check size={40} className="text-green-600"/>
-          </div>
-          <h1 className="text-3xl font-black text-gray-900 mb-4">תודה שנרשמת לאפליקציית MediZen! 🎉</h1>
-          <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-            מהיום תוכל לקבל לקוחות חדשים בקלות ולנהל את הקליניקה שלך בצורה קלה ומקצועית
-          </p>
-          <p className="text-sm text-gray-500 mb-6">
-            פרטייך נשלחו לאישור האדמין. נעדכן אותך ב-48 שעות הקרובות.
-          </p>
-          <div className="bg-[#F5F1E8] rounded-2xl p-6 mb-6 text-right">
-            <h3 className="font-bold text-lg mb-3 text-[#7C9885]">מה קיבלת בהרשמה:</h3>
-            <div className="space-y-2 text-sm text-gray-700">
-              <div className="flex items-start gap-2">
-                <Check size={16} className="text-[#7C9885] mt-1"/>
-                <span>כרטיס ביקור דיגיטלי מותאם אישית</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <Check size={16} className="text-[#7C9885] mt-1"/>
-                <span>לוח מודעות לפרסום אירועים וקורסים</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <Check size={16} className="text-[#7C9885] mt-1"/>
-                <span>העלאת תרגילים ומדיטציות ללקוחות</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <Check size={16} className="text-[#7C9885] mt-1"/>
-                <span>מוזיקה וסאונד לקליניקה</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <Check size={16} className="text-[#7C9885] mt-1"/>
-                <span>בוט חכם לחימום לידים ויצירת קשר עם לקוחות</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <Check size={16} className="text-[#7C9885] mt-1"/>
-                <span>קהילת מטפלים ותמיכה מקצועית</span>
-              </div>
-            </div>
-          </div>
-          <div className="grid md:grid-cols-2 gap-3 mb-6">
-            <Button onClick={() => navigate(createPageUrl("TherapistOnboarding"))} className="bg-gradient-to-l from-[#7C9885] to-[#B8A393] hover:opacity-90 px-6 py-6 text-lg font-bold">
-              🚀 התחל הגדרה מודרכת
-            </Button>
-            <Button onClick={() => navigate(createPageUrl("TherapistPricing"))} variant="outline" className="border-2 border-[#7C9885] text-[#7C9885] hover:bg-[#7C9885] hover:text-white px-6 py-6 text-lg font-bold">
-              ⭐ שדרג חבילה
-            </Button>
-          </div>
-          <p className="text-sm text-gray-500 animate-pulse">
-            מעביר אותך אוטומטית תוך 3 שניות...
-          </p>
-        </motion.div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-[#F5F1E8] py-8 px-4">
@@ -692,46 +619,6 @@ export default function TherapistRegister() {
         >
           {createMutation.isPending ? "שולח..." : "סיום הרישום ושליחה לאישור ✅"}
         </Button>
-
-        {/* Success Dialog */}
-        <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Check size={40} className="text-green-600"/>
-              </div>
-              <DialogTitle className="text-2xl font-bold text-center mb-2">תודה שנרשמת לאפליקציית MediZen! 🎉</DialogTitle>
-            </DialogHeader>
-            <div className="text-center space-y-4">
-              <p className="text-gray-700 text-lg leading-relaxed">
-                מהיום תוכל לקבל לקוחות חדשים בקלות ולנהל את הקליניקה שלך בצורה קלה ומקצועית
-              </p>
-              <p className="text-sm text-gray-500">
-                פרטייך נשלחו לאישור. נעדכן אותך ב-48 שעות הקרובות.
-              </p>
-              <div className="flex gap-3 justify-center pt-4">
-                <Button 
-                  onClick={() => {
-                    setShowSuccessDialog(false);
-                    navigate(createPageUrl("TherapistOnboarding"));
-                  }} 
-                  className="bg-gradient-to-l from-[#7C9885] to-[#B8A393]"
-                >
-                  🚀 התחל הגדרה
-                </Button>
-                <Button 
-                  onClick={() => {
-                    setShowSuccessDialog(false);
-                    navigate(createPageUrl("Landing"));
-                  }} 
-                  variant="outline"
-                >
-                  חזרה לדף הבית
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
 
         <p className="text-xs text-gray-500 text-center">
           לאחר האישור תקבל גישה לדשבורד מלא, מיני-סייט אישי, ואפליקציה ייעודית
