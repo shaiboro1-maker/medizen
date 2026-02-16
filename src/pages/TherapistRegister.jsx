@@ -81,6 +81,7 @@ export default function TherapistRegister() {
     }
   });
   const [success, setSuccess] = useState(false);
+  const [errors, setErrors] = useState({});
   const [profileImage, setProfileImage] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
   const [logoImage, setLogoImage] = useState(null);
@@ -171,6 +172,7 @@ export default function TherapistRegister() {
         ? prev.categories.filter(c => c !== id)
         : [...prev.categories, id]
     }));
+    setErrors({...errors, categories: false});
   };
 
 
@@ -307,18 +309,37 @@ export default function TherapistRegister() {
           <h2 className="text-xl font-bold text-gray-900 mb-4 text-right">פרטים אישיים</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label>שם מלא *</Label>
-              <Input value={form.full_name} onChange={(e) => setForm({...form, full_name: e.target.value})} placeholder="שם מלא"/>
+              <Label className={errors.full_name ? "text-red-600" : ""}>שם מלא *</Label>
+              <Input 
+                value={form.full_name} 
+                onChange={(e) => {
+                  setForm({...form, full_name: e.target.value});
+                  setErrors({...errors, full_name: false});
+                }} 
+                placeholder="שם מלא"
+                className={errors.full_name ? "border-red-500 focus:ring-red-500" : ""}
+              />
+              {errors.full_name && <p className="text-xs text-red-600">⚠️ שדה חובה</p>}
             </div>
             <div className="space-y-2">
-              <Label>טלפון *</Label>
-              <Input value={form.phone} onChange={(e) => setForm({...form, phone: e.target.value})} placeholder="050-1234567"/>
+              <Label className={errors.phone ? "text-red-600" : ""}>טלפון *</Label>
+              <Input 
+                value={form.phone} 
+                onChange={(e) => {
+                  setForm({...form, phone: e.target.value});
+                  setErrors({...errors, phone: false});
+                }} 
+                placeholder="050-1234567"
+                className={errors.phone ? "border-red-500 focus:ring-red-500" : ""}
+              />
+              {errors.phone && <p className="text-xs text-red-600">⚠️ שדה חובה</p>}
             </div>
           </div>
         </div>
 
         <div>
-          <h2 className="text-xl font-bold text-gray-900 mb-4 text-right">תחומי טיפול *</h2>
+          <h2 className={`text-xl font-bold mb-4 text-right ${errors.categories ? "text-red-600" : "text-gray-900"}`}>תחומי טיפול *</h2>
+          {errors.categories && <p className="text-sm text-red-600 mb-2">⚠️ בחר לפחות תחום אחד</p>}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {CATEGORIES.map(cat => (
               <button
@@ -340,26 +361,50 @@ export default function TherapistRegister() {
         </div>
 
         <div className="space-y-2">
-          <Label>התמחויות *</Label>
+          <Label className={errors.specializations ? "text-red-600" : ""}>התמחויות *</Label>
           <Textarea
             value={form.specializations}
-            onChange={(e) => setForm({...form, specializations: e.target.value})}
+            onChange={(e) => {
+              setForm({...form, specializations: e.target.value});
+              setErrors({...errors, specializations: false});
+            }}
             placeholder="דוגמה: טיפול בכאבי גב וצוואר, שיקום פציעות ספורט, טיפול בנשים בהריון"
-            className="h-20"
+            className={`h-20 ${errors.specializations ? "border-red-500 focus:ring-red-500" : ""}`}
           />
-          <p className="text-xs text-gray-500 text-right">פרט את התמחויותיך (לא צריך פסיקים)</p>
+          {errors.specializations ? 
+            <p className="text-xs text-red-600">⚠️ שדה חובה</p> : 
+            <p className="text-xs text-gray-500 text-right">פרט את התמחויותיך (לא צריך פסיקים)</p>
+          }
         </div>
 
         <div>
           <h2 className="text-xl font-bold text-gray-900 mb-4 text-right">מיקום</h2>
           <div className="grid md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label>אזור *</Label>
-              <Input value={form.area} onChange={(e) => setForm({...form, area: e.target.value})} placeholder="מרכז / צפון / דרום"/>
+              <Label className={errors.area ? "text-red-600" : ""}>אזור *</Label>
+              <Input 
+                value={form.area} 
+                onChange={(e) => {
+                  setForm({...form, area: e.target.value});
+                  setErrors({...errors, area: false});
+                }} 
+                placeholder="מרכז / צפון / דרום"
+                className={errors.area ? "border-red-500 focus:ring-red-500" : ""}
+              />
+              {errors.area && <p className="text-xs text-red-600">⚠️ שדה חובה</p>}
             </div>
             <div className="space-y-2">
-              <Label>עיר *</Label>
-              <Input value={form.city} onChange={(e) => setForm({...form, city: e.target.value})} placeholder="תל אביב"/>
+              <Label className={errors.city ? "text-red-600" : ""}>עיר *</Label>
+              <Input 
+                value={form.city} 
+                onChange={(e) => {
+                  setForm({...form, city: e.target.value});
+                  setErrors({...errors, city: false});
+                }} 
+                placeholder="תל אביב"
+                className={errors.city ? "border-red-500 focus:ring-red-500" : ""}
+              />
+              {errors.city && <p className="text-xs text-red-600">⚠️ שדה חובה</p>}
             </div>
             <div className="space-y-2">
               <Label>כתובת</Label>
@@ -613,34 +658,19 @@ export default function TherapistRegister() {
 
         <Button
           onClick={() => {
-            // Validation with specific error messages
-            const errors = [];
+            const newErrors = {};
             
-            if (!form.full_name) {
-              errors.push("שם מלא");
-            }
-            if (!form.phone) {
-              errors.push("מספר טלפון");
-            }
-            if (form.categories.length === 0) {
-              errors.push("תחומי טיפול (בחר לפחות תחום אחד)");
-            }
-            if (!form.specializations) {
-              errors.push("התמחויות");
-            }
-            if (!form.area) {
-              errors.push("אזור");
-            }
-            if (!form.city) {
-              errors.push("עיר");
-            }
+            if (!form.full_name) newErrors.full_name = true;
+            if (!form.phone) newErrors.phone = true;
+            if (form.categories.length === 0) newErrors.categories = true;
+            if (!form.specializations) newErrors.specializations = true;
+            if (!form.area) newErrors.area = true;
+            if (!form.city) newErrors.city = true;
             
-            if (errors.length > 0) {
-              const errorMessage = "נא להשלים את השדות הבאים:\n\n" + errors.map(e => `• ${e}`).join('\n');
-              alert(errorMessage);
-              
-              // Scroll to top of form
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (Object.keys(newErrors).length > 0) {
+              setErrors(newErrors);
+              window.scrollTo({ top: 200, behavior: 'smooth' });
+              alert("אנא מלא את כל השדות המסומנים באדום ⚠️");
               return;
             }
             
