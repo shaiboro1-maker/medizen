@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { motion } from "framer-motion";
 import AppDownload from "../components/AppDownload";
 
@@ -81,6 +82,7 @@ export default function TherapistRegister() {
     }
   });
   const [success, setSuccess] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
   const [logoImage, setLogoImage] = useState(null);
@@ -155,6 +157,7 @@ export default function TherapistRegister() {
         console.log("Failed to send admin notifications:", error);
       }
       setSuccess(createdTherapist);
+      setShowSuccessDialog(true);
     },
   });
 
@@ -687,8 +690,48 @@ export default function TherapistRegister() {
           disabled={createMutation.isPending}
           className="w-full bg-gradient-to-l from-[#7C9885] to-[#B8A393] hover:opacity-90 py-6 text-lg font-bold text-white disabled:opacity-50"
         >
-          {createMutation.isPending ? "שולח..." : "🚀 המשך בניית המיני-סייט"}
+          {createMutation.isPending ? "שולח..." : "סיום הרישום ושליחה לאישור ✅"}
         </Button>
+
+        {/* Success Dialog */}
+        <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Check size={40} className="text-green-600"/>
+              </div>
+              <DialogTitle className="text-2xl font-bold text-center mb-2">תודה שנרשמת לאפליקציית MediZen! 🎉</DialogTitle>
+            </DialogHeader>
+            <div className="text-center space-y-4">
+              <p className="text-gray-700 text-lg leading-relaxed">
+                מהיום תוכל לקבל לקוחות חדשים בקלות ולנהל את הקליניקה שלך בצורה קלה ומקצועית
+              </p>
+              <p className="text-sm text-gray-500">
+                פרטייך נשלחו לאישור. נעדכן אותך ב-48 שעות הקרובות.
+              </p>
+              <div className="flex gap-3 justify-center pt-4">
+                <Button 
+                  onClick={() => {
+                    setShowSuccessDialog(false);
+                    navigate(createPageUrl("TherapistOnboarding"));
+                  }} 
+                  className="bg-gradient-to-l from-[#7C9885] to-[#B8A393]"
+                >
+                  🚀 התחל הגדרה
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setShowSuccessDialog(false);
+                    navigate(createPageUrl("Landing"));
+                  }} 
+                  variant="outline"
+                >
+                  חזרה לדף הבית
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         <p className="text-xs text-gray-500 text-center">
           לאחר האישור תקבל גישה לדשבורד מלא, מיני-סייט אישי, ואפליקציה ייעודית
