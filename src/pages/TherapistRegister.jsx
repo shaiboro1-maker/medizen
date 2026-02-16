@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
 import { useMutation } from "@tanstack/react-query";
-import { Check, Upload, ArrowLeft, Calendar, MessageCircle, TrendingUp, Globe, Image, ShoppingBag, Facebook, Instagram, Bot, Link as LinkIcon } from "lucide-react";
+import { Check, Upload, ArrowLeft, Calendar, MessageCircle, TrendingUp, Globe, Image, ShoppingBag, Facebook, Instagram, Bot, Link as LinkIcon, Palette, Type, Layout as LayoutIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
