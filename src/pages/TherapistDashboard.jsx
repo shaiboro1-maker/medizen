@@ -150,7 +150,7 @@ export default function TherapistDashboard() {
           <Button variant="outline" size="sm" onClick={() => setShowCustomize(true)}>
             <Settings size={16} className="ml-1"/> התאם
           </Button>
-          <Link to={createPageUrl("TherapistProfile")}>
+          <Link to={createPageUrl("TherapistMiniSiteSettings")}>
             <Button variant="outline">ערוך פרופיל</Button>
           </Link>
         </div>
@@ -346,20 +346,58 @@ export default function TherapistDashboard() {
 
       {user && <Recommendations userType="therapist" userId={user.email}/>}
 
+      {/* Business Card Section */}
       <div className="my-6">
         <div className="bg-gradient-to-br from-teal-50 to-emerald-50 border border-teal-200 rounded-2xl p-6">
           <div className="flex items-start justify-between mb-4">
-            <div>
+            <div className="flex-1">
               <h3 className="font-bold text-lg text-gray-900 mb-2">💼 כרטיס ביקור דיגיטלי</h3>
               <p className="text-sm text-gray-600 mb-3">
-                הורד את האפליקציה שלך ותקבל מיני-סייט מקצועי ישירות בטלפון
+                שלח ללקוחות קישור או QR code למיני-סייט שלך
               </p>
-              <ul className="text-xs text-gray-600 space-y-1 mb-4">
-                <li>✓ ניהול תורים בקליק</li>
-                <li>✓ צ'אט עם לקוחות</li>
-                <li>✓ מיני-סייט מעוצב</li>
-                <li>✓ סטטיסטיקות בזמן אמת</li>
-              </ul>
+              <div className="flex flex-wrap gap-2 mb-4">
+                <Button
+                  onClick={() => {
+                    if (therapist?.unique_slug) {
+                      const url = `${window.location.origin}${createPageUrl(`MiniSite?slug=${therapist.unique_slug}`)}`;
+                      navigator.clipboard.writeText(url);
+                      alert("הקישור הועתק ללוח! 📋");
+                    }
+                  }}
+                  variant="outline"
+                  size="sm"
+                  className="bg-white"
+                >
+                  📋 העתק קישור
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (therapist?.unique_slug) {
+                      const url = `${window.location.origin}${createPageUrl(`MiniSite?slug=${therapist.unique_slug}`)}`;
+                      const whatsappText = encodeURIComponent(`היי! 👋\n\nהנה כרטיס הביקור הדיגיטלי שלי:\n${url}`);
+                      window.open(`https://wa.me/?text=${whatsappText}`, '_blank');
+                    }
+                  }}
+                  variant="outline"
+                  size="sm"
+                  className="bg-white"
+                >
+                  📱 שתף בווטסאפ
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (therapist?.unique_slug) {
+                      const url = `${window.location.origin}${createPageUrl(`MiniSite?slug=${therapist.unique_slug}`)}`;
+                      window.open(`https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(url)}`, '_blank');
+                    }
+                  }}
+                  variant="outline"
+                  size="sm"
+                  className="bg-white"
+                >
+                  🔲 הורד QR Code
+                </Button>
+              </div>
             </div>
           </div>
           <AppDownload variant="compact"/>

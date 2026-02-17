@@ -138,9 +138,9 @@ export default function TherapistServices() {
       )}
 
       <Dialog open={showForm} onOpenChange={resetForm}>
-        <DialogContent>
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
           <DialogHeader><DialogTitle>{editing ? "ערוך שירות" : "שירות חדש"}</DialogTitle></DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-4 pb-4">
             <div className="space-y-2">
               <Label>שם השירות</Label>
               <Input value={form.name} onChange={(e) => setForm({...form, name: e.target.value})}/>

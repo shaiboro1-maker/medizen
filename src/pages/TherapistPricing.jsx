@@ -177,7 +177,10 @@ export default function TherapistPricing() {
           <p className="text-gray-600 mb-6">
             הצוות שלנו כאן כדי לעזור לך למצוא את החבילה המושלמת עבורך
           </p>
-          <Button className="bg-[#7C9885] hover:bg-[#6A8573] px-8 py-6 text-lg">
+          <Button 
+            onClick={() => window.open('https://wa.me/972523753285', '_blank')}
+            className="bg-[#7C9885] hover:bg-[#6A8573] px-8 py-6 text-lg"
+          >
             צור קשר עם התמיכה
           </Button>
         </div>

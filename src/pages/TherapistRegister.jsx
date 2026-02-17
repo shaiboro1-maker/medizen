@@ -684,21 +684,6 @@ export default function TherapistRegister() {
 
         <div className="flex gap-4">
           <Button
-            variant="outline"
-            onClick={() => {
-              if (form.full_name) {
-                const slug = form.full_name.toLowerCase().replace(/\s+/g, '-') + '-preview';
-                window.open(createPageUrl(`MiniSite?slug=${slug}`), '_blank');
-              } else {
-                alert("נא למלא את השם המלא כדי לראות תצוגה מקדימה");
-              }
-            }}
-            className="flex-1 py-6 text-lg font-bold border-2 border-[#7C9885] text-[#7C9885] hover:bg-[#7C9885] hover:text-white"
-          >
-            👁️ צפייה במיני סייט
-          </Button>
-          
-          <Button
             onClick={() => {
               const newErrors = {};
               
@@ -719,7 +704,7 @@ export default function TherapistRegister() {
               createMutation.mutate(form);
             }}
             disabled={createMutation.isPending}
-            className="flex-1 bg-gradient-to-l from-[#7C9885] to-[#B8A393] hover:opacity-90 py-6 text-lg font-bold text-white disabled:opacity-50"
+            className="w-full bg-gradient-to-l from-[#7C9885] to-[#B8A393] hover:opacity-90 py-6 text-lg font-bold text-white disabled:opacity-50"
           >
             {createMutation.isPending ? "שולח..." : "סיום הרישום ושליחה לאישור ✅"}
           </Button>
