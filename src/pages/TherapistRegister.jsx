@@ -129,14 +129,23 @@ export default function TherapistRegister() {
       }
       
       return base44.entities.Therapist.create({
-        ...data,
+        full_name: data.full_name,
+        phone: data.phone,
+        bio: data.bio,
+        specializations: data.specializations.split(",").map(s => s.trim()).filter(Boolean),
+        categories: data.categories,
+        area: data.area,
+        city: data.city,
+        address: data.address,
+        years_experience: data.years_experience ? Number(data.years_experience) : undefined,
+        website: data.website,
+        social_links: data.social_links,
+        minisite_settings: data.minisite_settings,
         user_email: user.email,
         profile_image: imageUrl,
         cover_image: coverUrl,
         logo_url: logoUrl,
         gallery: galleryUrls,
-        specializations: data.specializations.split(",").map(s => s.trim()).filter(Boolean),
-        years_experience: data.years_experience ? Number(data.years_experience) : undefined,
         status: "pending",
         subscription_type: "free",
         unique_slug: data.full_name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now()
