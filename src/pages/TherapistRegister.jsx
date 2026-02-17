@@ -719,6 +719,7 @@ export default function TherapistRegister() {
         <p className="text-xs text-gray-500 text-center">
           לאחר האישור תקבל גישה לדשבורד מלא, מיני-סייט אישי, ואפליקציה ייעודית
         </p>
+        </div>
       </div>
     </div>
   );
