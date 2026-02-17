@@ -11,6 +11,9 @@ import { Upload, FileText, CheckCircle, Clock } from "lucide-react";
 const CONTENT_TYPES = [
   { id: "exercise", label: "תרגיל", emoji: "💪" },
   { id: "recipe", label: "מתכון", emoji: "🥗" },
+  { id: "inspiration", label: "משפט השראה", emoji: "✨" },
+  { id: "story", label: "סיפור", emoji: "📖" },
+  { id: "joke", label: "בדיחה", emoji: "😂" },
   { id: "suggestion", label: "הצעה", emoji: "💡" },
   { id: "tip", label: "טיפ בריאותי", emoji: "⭐" }
 ];

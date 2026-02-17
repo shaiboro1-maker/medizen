@@ -57,6 +57,7 @@ import AdminCRM from './pages/AdminCRM';
 import AdminCampaigns from './pages/AdminCampaigns';
 import AdminContent from './pages/AdminContent';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminInspirations from './pages/AdminInspirations';
 import AdminNotifications from './pages/AdminNotifications';
 import AdminOrders from './pages/AdminOrders';
 import AdminPayments from './pages/AdminPayments';
@@ -127,7 +128,6 @@ import TherapistServices from './pages/TherapistServices';
 import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
-import AdminInspirations from './pages/AdminInspirations';
 import __Layout from './Layout.jsx';
 
 
@@ -142,6 +142,7 @@ export const PAGES = {
     "AdminCampaigns": AdminCampaigns,
     "AdminContent": AdminContent,
     "AdminDashboard": AdminDashboard,
+    "AdminInspirations": AdminInspirations,
     "AdminNotifications": AdminNotifications,
     "AdminOrders": AdminOrders,
     "AdminPayments": AdminPayments,
@@ -212,7 +213,6 @@ export const PAGES = {
     "TherapistTeam": TherapistTeam,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
-    "AdminInspirations": AdminInspirations,
 }
 
 export const pagesConfig = {
