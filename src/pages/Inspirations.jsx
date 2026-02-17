@@ -8,11 +8,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "react-hot-toast";
 
 export default function Inspirations() {
   const [showUpload, setShowUpload] = useState(false);
-  const [form, setForm] = useState({ text: "", author: "" });
+  const [form, setForm] = useState({ text: "", author: "", category: "motivation" });
+  const [imageFile, setImageFile] = useState(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -24,8 +26,14 @@ export default function Inspirations() {
   const uploadMutation = useMutation({
     mutationFn: async (data) => {
       const user = await base44.auth.me();
+      let imageUrl = "";
+      if (imageFile) {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file: imageFile });
+        imageUrl = file_url;
+      }
       return base44.entities.Inspiration.create({
         ...data,
+        image_url: imageUrl,
         submitted_by: user.email,
         is_approved: false
       });
@@ -33,7 +41,8 @@ export default function Inspirations() {
     onSuccess: () => {
       toast.success("המשפט נשלח לאישור!");
       setShowUpload(false);
-      setForm({ text: "", author: "" });
+      setForm({ text: "", author: "", category: "motivation" });
+      setImageFile(null);
     },
   });
 
@@ -69,18 +78,23 @@ export default function Inspirations() {
             <div className="text-center py-8 text-gray-400">אין משפטים</div>
           ) : (
             inspirations.map((item) => (
-              <div key={item.id} className="bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl p-6 shadow-md">
-                <p className="text-lg italic text-gray-800 mb-3">"{item.text}"</p>
-                {item.author && (
-                  <p className="text-sm text-gray-600 mb-4">- {item.author}</p>
+              <div key={item.id} className="bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl overflow-hidden shadow-md">
+                {item.image_url && (
+                  <img src={item.image_url} alt="" className="w-full h-48 object-cover"/>
                 )}
-                <div className="flex gap-2">
-                  <Button size="sm" variant="outline" onClick={() => handleShare(item)}>
-                    <Share2 size={14} className="ml-1"/> שתף בוואטסאפ
-                  </Button>
-                  <Button size="sm" variant="ghost">
-                    <Heart size={14}/>
-                  </Button>
+                <div className="p-6">
+                  <p className="text-lg italic text-gray-800 mb-3">"{item.text}"</p>
+                  {item.author && (
+                    <p className="text-sm text-gray-600 mb-4">- {item.author}</p>
+                  )}
+                  <div className="flex gap-2">
+                    <Button size="sm" variant="outline" onClick={() => handleShare(item)}>
+                      <Share2 size={14} className="ml-1"/> שתף בוואטסאפ
+                    </Button>
+                    <Button size="sm" variant="ghost">
+                      <Heart size={14}/>
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))
@@ -111,12 +125,46 @@ export default function Inspirations() {
                 placeholder="שם המחבר"
               />
             </div>
+            <div className="space-y-2">
+              <Label>קטגוריה</Label>
+              <Select value={form.category} onValueChange={(v) => setForm({...form, category: v})}>
+                <SelectTrigger>
+                  <SelectValue/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="motivation">מוטיבציה</SelectItem>
+                  <SelectItem value="health">בריאות</SelectItem>
+                  <SelectItem value="happiness">אושר</SelectItem>
+                  <SelectItem value="success">הצלחה</SelectItem>
+                  <SelectItem value="peace">שלווה</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>תמונת רקע (אופציונלי)</Label>
+              {imageFile ? (
+                <div className="relative">
+                  <img src={URL.createObjectURL(imageFile)} alt="" className="w-full h-32 object-cover rounded-lg"/>
+                  <Button size="sm" variant="destructive" onClick={() => setImageFile(null)} className="absolute top-2 left-2">
+                    הסר
+                  </Button>
+                </div>
+              ) : (
+                <label className="block w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-teal-500">
+                  <div className="text-center">
+                    <Upload size={24} className="mx-auto text-gray-400 mb-2"/>
+                    <p className="text-sm text-gray-500">העלה תמונה</p>
+                  </div>
+                  <input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} className="hidden"/>
+                </label>
+              )}
+            </div>
             <Button 
               onClick={() => uploadMutation.mutate(form)}
               disabled={!form.text || uploadMutation.isPending}
               className="w-full bg-teal-600 hover:bg-teal-700"
             >
-              שלח לאישור
+              {uploadMutation.isPending ? "שולח..." : "שלח לאישור"}
             </Button>
           </div>
         </DialogContent>

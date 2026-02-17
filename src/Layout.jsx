@@ -68,7 +68,9 @@ export default function Layout({ children, currentPageName }) {
 
   const adminPages = [
     "AdminDashboard", "AdminTherapists", "AdminContent", 
-    "AdminProducts", "AdminOrders", "AdminBulletin", "AdminWebinars"
+    "AdminProducts", "AdminOrders", "AdminBulletin", "AdminWebinars",
+    "AdminUserContent", "AdminNotifications", "AdminWeeklyPush", "AdminPromotions",
+    "AdminCampaigns", "AdminCRM", "AdminInspirations"
   ];
   const isAdminPage = adminPages.includes(currentPageName);
 
@@ -119,6 +121,7 @@ export default function Layout({ children, currentPageName }) {
               <AdminNavLink to="AdminPromotions" icon={<Tag size={18}/>} label="מבצעים והנחות" current={currentPageName}/>
               <AdminNavLink to="AdminCampaigns" icon={<MessageCircle size={18}/>} label="קמפיינים שיווקיים" current={currentPageName}/>
               <AdminNavLink to="AdminCRM" icon={<Users size={18}/>} label="CRM מתקדם" current={currentPageName}/>
+              <AdminNavLink to="AdminInspirations" icon={<Sparkles size={18}/>} label="משפטי השראה" current={currentPageName}/>
             </nav>
             <div className="p-4 border-t">
               <Link to={createPageUrl("Landing")} className="text-sm text-gray-500 hover:text-teal-600">

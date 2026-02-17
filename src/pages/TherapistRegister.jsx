@@ -389,15 +389,25 @@ export default function TherapistRegister() {
           <div className="grid md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <Label className={errors.area ? "text-red-600" : ""}>אזור *</Label>
-              <Input 
+              <Select 
                 value={form.area} 
-                onChange={(e) => {
-                  setForm({...form, area: e.target.value});
+                onValueChange={(v) => {
+                  setForm({...form, area: v});
                   setErrors({...errors, area: false});
-                }} 
-                placeholder="מרכז / צפון / דרום"
-                className={errors.area ? "border-red-500 focus:ring-red-500" : ""}
-              />
+                }}
+              >
+                <SelectTrigger className={errors.area ? "border-red-500 focus:ring-red-500" : ""}>
+                  <SelectValue placeholder="בחר אזור"/>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="מרכז">מרכז</SelectItem>
+                  <SelectItem value="צפון">צפון</SelectItem>
+                  <SelectItem value="דרום">דרום</SelectItem>
+                  <SelectItem value="ירושלים והסביבה">ירושלים והסביבה</SelectItem>
+                  <SelectItem value="שרון">שרון</SelectItem>
+                  <SelectItem value="שפלה">שפלה</SelectItem>
+                </SelectContent>
+              </Select>
               {errors.area && <p className="text-xs text-red-600">⚠️ שדה חובה</p>}
             </div>
             <div className="space-y-2">
@@ -663,37 +673,53 @@ export default function TherapistRegister() {
           </div>
         </div>
 
-        <Button
-          onClick={() => {
-            const newErrors = {};
-            
-            if (!form.full_name) newErrors.full_name = true;
-            if (!form.phone) newErrors.phone = true;
-            if (form.categories.length === 0) newErrors.categories = true;
-            if (!form.specializations) newErrors.specializations = true;
-            if (!form.area) newErrors.area = true;
-            if (!form.city) newErrors.city = true;
-            
-            if (Object.keys(newErrors).length > 0) {
-              setErrors(newErrors);
-              window.scrollTo({ top: 200, behavior: 'smooth' });
-              alert("אנא מלא את כל השדות המסומנים באדום ⚠️");
-              return;
-            }
-            
-            createMutation.mutate(form);
-          }}
-          disabled={createMutation.isPending}
-          className="w-full bg-gradient-to-l from-[#7C9885] to-[#B8A393] hover:opacity-90 py-6 text-lg font-bold text-white disabled:opacity-50"
-        >
-          {createMutation.isPending ? "שולח..." : "סיום הרישום ושליחה לאישור ✅"}
-        </Button>
+        <div className="flex gap-4">
+          <Button
+            variant="outline"
+            onClick={() => {
+              if (form.full_name) {
+                const slug = form.full_name.toLowerCase().replace(/\s+/g, '-') + '-preview';
+                window.open(createPageUrl(`MiniSite?slug=${slug}`), '_blank');
+              } else {
+                alert("נא למלא את השם המלא כדי לראות תצוגה מקדימה");
+              }
+            }}
+            className="flex-1 py-6 text-lg font-bold border-2 border-[#7C9885] text-[#7C9885] hover:bg-[#7C9885] hover:text-white"
+          >
+            👁️ צפייה במיני סייט
+          </Button>
+          
+          <Button
+            onClick={() => {
+              const newErrors = {};
+              
+              if (!form.full_name) newErrors.full_name = true;
+              if (!form.phone) newErrors.phone = true;
+              if (form.categories.length === 0) newErrors.categories = true;
+              if (!form.specializations) newErrors.specializations = true;
+              if (!form.area) newErrors.area = true;
+              if (!form.city) newErrors.city = true;
+              
+              if (Object.keys(newErrors).length > 0) {
+                setErrors(newErrors);
+                window.scrollTo({ top: 200, behavior: 'smooth' });
+                alert("אנא מלא את כל השדות המסומנים באדום ⚠️");
+                return;
+              }
+              
+              createMutation.mutate(form);
+            }}
+            disabled={createMutation.isPending}
+            className="flex-1 bg-gradient-to-l from-[#7C9885] to-[#B8A393] hover:opacity-90 py-6 text-lg font-bold text-white disabled:opacity-50"
+          >
+            {createMutation.isPending ? "שולח..." : "סיום הרישום ושליחה לאישור ✅"}
+          </Button>
+        </div>
 
         <p className="text-xs text-gray-500 text-center">
           לאחר האישור תקבל גישה לדשבורד מלא, מיני-סייט אישי, ואפליקציה ייעודית
         </p>
       </div>
-    </div>
     </div>
   );
 }
