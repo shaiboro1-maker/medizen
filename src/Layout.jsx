@@ -271,17 +271,12 @@ export default function Layout({ children, currentPageName }) {
                     <TrendingUp size={14} className="ml-2"/> העוזר האישי
                   </DropdownMenuItem>
                   <DropdownMenuSeparator/>
-                  {isTherapist && (
-                    <DropdownMenuItem onClick={() => navigate(createPageUrl("TherapistDashboard"))}>
-                      <Shield size={14} className="ml-2"/> פאנל מטפל
+                  {(isTherapist || isAdmin) && (
+                    <DropdownMenuItem onClick={() => navigate(createPageUrl(isTherapist ? "TherapistDashboard" : "AdminDashboard"))}>
+                      <Shield size={14} className="ml-2"/> {isTherapist ? "פאנל מטפל" : "ניהול מערכת"}
                     </DropdownMenuItem>
                   )}
-                  {isAdmin && (
-                    <DropdownMenuItem onClick={() => navigate(createPageUrl("AdminDashboard"))}>
-                      <Shield size={14} className="ml-2"/> ניהול מערכת
-                    </DropdownMenuItem>
-                  )}
-                  {!isTherapist && (
+                  {!isTherapist && !isAdmin && (
                     <DropdownMenuItem onClick={() => navigate(createPageUrl("TherapistRegister"))}>
                       <User size={14} className="ml-2"/> הרשמה כמטפל
                     </DropdownMenuItem>

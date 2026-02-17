@@ -89,11 +89,18 @@ export default function TherapistRegister() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    base44.auth.me().then(u => {
+    base44.auth.me().then(async (u) => {
       setUser(u);
       setForm(prev => ({ ...prev, full_name: u.full_name || "" }));
+      
+      // Check if therapist already exists
+      const existingTherapists = await base44.entities.Therapist.filter({ user_email: u.email });
+      if (existingTherapists.length > 0) {
+        alert("נרשמת כבר למערכת!");
+        navigate(createPageUrl("TherapistDashboard"));
+      }
     }).catch(() => base44.auth.redirectToLogin());
-  }, []);
+  }, [navigate]);
 
   const createMutation = useMutation({
     mutationFn: async (data) => {

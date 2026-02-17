@@ -89,6 +89,7 @@ import Recipes from './pages/Recipes';
 import Shop from './pages/Shop';
 import SubmitContent from './pages/SubmitContent';
 import Support from './pages/Support';
+import ThankYou from './pages/ThankYou';
 import TherapistAIWriter from './pages/TherapistAIWriter';
 import TherapistApp from './pages/TherapistApp';
 import TherapistAppointments from './pages/TherapistAppointments';
@@ -126,7 +127,6 @@ import TherapistServices from './pages/TherapistServices';
 import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
-import ThankYou from './pages/ThankYou';
 import __Layout from './Layout.jsx';
 
 
@@ -173,6 +173,7 @@ export const PAGES = {
     "Shop": Shop,
     "SubmitContent": SubmitContent,
     "Support": Support,
+    "ThankYou": ThankYou,
     "TherapistAIWriter": TherapistAIWriter,
     "TherapistApp": TherapistApp,
     "TherapistAppointments": TherapistAppointments,
@@ -210,7 +211,6 @@ export const PAGES = {
     "TherapistTeam": TherapistTeam,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
-    "ThankYou": ThankYou,
 }
 
 export const pagesConfig = {
