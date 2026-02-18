@@ -22,8 +22,16 @@ export default function TherapistApp() {
   const [user, setUser] = useState(null);
   const [therapist, setTherapist] = useState(null);
   const [showHeaderEdit, setShowHeaderEdit] = useState(false);
-  const [headerForm, setHeaderForm] = useState({ card_background_style: "", logo_url: "", specializations: [] });
+  const [headerForm, setHeaderForm] = useState({ 
+    card_background_style: "", 
+    logo_url: "", 
+    specializations: [],
+    cover_image: "",
+    quick_actions_images: {}
+  });
   const [logoFile, setLogoFile] = useState(null);
+  const [coverFile, setCoverFile] = useState(null);
+  const [actionImages, setActionImages] = useState({});
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -47,7 +55,9 @@ export default function TherapistApp() {
         setHeaderForm({
           card_background_style: therapists[0].card_background_style || "",
           logo_url: therapists[0].logo_url || "",
-          specializations: therapists[0].specializations || []
+          specializations: therapists[0].specializations || [],
+          cover_image: therapists[0].cover_image || "",
+          quick_actions_images: therapists[0].quick_actions_images || {}
         });
       } catch (error) {
         console.error(error);
@@ -62,20 +72,41 @@ export default function TherapistApp() {
   const updateHeaderMutation = useMutation({
     mutationFn: async (data) => {
       let logoUrl = data.logo_url;
+      let coverUrl = data.cover_image;
+      let actionImagesUrls = { ...data.quick_actions_images };
+
       if (logoFile) {
         const { file_url } = await base44.integrations.Core.UploadFile({ file: logoFile });
         logoUrl = file_url;
       }
+      
+      if (coverFile) {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file: coverFile });
+        coverUrl = file_url;
+      }
+
+      // Upload action images
+      for (const [key, file] of Object.entries(actionImages)) {
+        if (file) {
+          const { file_url } = await base44.integrations.Core.UploadFile({ file });
+          actionImagesUrls[key] = file_url;
+        }
+      }
+
       return base44.entities.Therapist.update(therapist.id, {
         card_background_style: data.card_background_style,
         logo_url: logoUrl,
-        specializations: data.specializations
+        cover_image: coverUrl,
+        specializations: data.specializations,
+        quick_actions_images: actionImagesUrls
       });
     },
     onSuccess: (updated) => {
       setTherapist(updated);
       setShowHeaderEdit(false);
       setLogoFile(null);
+      setCoverFile(null);
+      setActionImages({});
     },
   });
 
@@ -145,13 +176,20 @@ export default function TherapistApp() {
     <div className="min-h-screen pb-20" style={{backgroundColor: '#F5F1E8'}}>
       {/* Header */}
       <div 
-        className="text-white px-4 pt-8 pb-6 rounded-b-3xl shadow-lg"
+        className="text-white px-4 pt-8 pb-6 rounded-b-3xl shadow-lg relative overflow-hidden"
         style={{
           backgroundColor: therapist.card_background_style ? undefined : '#7C9885',
-          backgroundImage: therapist.card_background_style?.includes('gradient') ? therapist.card_background_style.replace('bg-', 'linear-') : undefined
+          backgroundImage: therapist.cover_image 
+            ? `url(${therapist.cover_image})` 
+            : therapist.card_background_style?.includes('gradient') 
+              ? therapist.card_background_style.replace('bg-', 'linear-') 
+              : undefined,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
         }}
       >
-        <div className="flex items-center justify-between mb-4">
+        {therapist.cover_image && <div className="absolute inset-0 bg-black/40"/>}
+        <div className="flex items-center justify-between mb-4 relative z-10">
           <div className="flex items-center gap-3">
             {therapist.logo_url ? (
               <img src={therapist.logo_url} alt="Logo" className="h-12 w-auto"/>
@@ -177,7 +215,7 @@ export default function TherapistApp() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-2 mt-4">
+        <div className="grid grid-cols-4 gap-2 mt-4 relative z-10">
           <StatCard icon={<Calendar size={16}/>} value={stats?.todayAppointments || 0} label="היום"/>
           <StatCard icon={<Users size={16}/>} value={stats?.totalClients || 0} label="לקוחות"/>
           <StatCard icon={<DollarSign size={16}/>} value={`₪${stats?.monthlyRevenue || 0}`} label="הכנסות"/>
@@ -218,19 +256,35 @@ export default function TherapistApp() {
       <div className="px-4 mt-6">
         <h2 className="text-base font-bold mb-3 text-gray-800 text-right">פעולות מהירות</h2>
         <div className="grid grid-cols-3 gap-3">
-          {quickActions.map((action, i) => (
-            <Link key={i} to={createPageUrl(action.to)}>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.05 }}
-                className={`bg-gradient-to-br ${action.color} rounded-2xl p-3 text-white shadow-md hover:shadow-lg transition-all text-right`}
-              >
-                <div className="mb-2 flex justify-end">{action.icon}</div>
-                <p className="text-xs font-medium text-right">{action.label}</p>
-              </motion.div>
-            </Link>
-          ))}
+          {quickActions.map((action, i) => {
+            const actionImage = therapist.quick_actions_images?.[action.to];
+            return (
+              <Link key={i} to={createPageUrl(action.to)}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.05 }}
+                  className={`${actionImage ? 'bg-white' : `bg-gradient-to-br ${action.color}`} rounded-2xl p-3 shadow-md hover:shadow-lg transition-all text-right overflow-hidden relative`}
+                >
+                  {actionImage ? (
+                    <>
+                      <img src={actionImage} alt={action.label} className="absolute inset-0 w-full h-full object-cover"/>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"/>
+                      <div className="relative z-10">
+                        <div className="mb-2 flex justify-end text-white">{action.icon}</div>
+                        <p className="text-xs font-medium text-right text-white">{action.label}</p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="mb-2 flex justify-end text-white">{action.icon}</div>
+                      <p className="text-xs font-medium text-right text-white">{action.label}</p>
+                    </>
+                  )}
+                </motion.div>
+              </Link>
+            );
+          })}
         </div>
       </div>
 
@@ -271,11 +325,33 @@ export default function TherapistApp() {
 
       {/* Header Edit Dialog */}
       <Dialog open={showHeaderEdit} onOpenChange={setShowHeaderEdit}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>עריכת כותרת</DialogTitle>
+            <DialogTitle>עריכת עיצוב הדף</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>תמונת רקע כותרת (או בחר צבע למטה)</Label>
+              <div className="flex items-center gap-3">
+                <label className="flex-1 border-2 border-dashed rounded-lg p-4 cursor-pointer hover:bg-gray-50">
+                  <div className="flex flex-col items-center gap-2">
+                    <Upload size={20} className="text-gray-400"/>
+                    <span className="text-sm text-gray-500">
+                      {coverFile ? coverFile.name : "העלה תמונת רקע"}
+                    </span>
+                  </div>
+                  <input type="file" accept="image/*" className="hidden" onChange={(e) => setCoverFile(e.target.files[0])}/>
+                </label>
+                {(coverFile || headerForm.cover_image) && (
+                  <img 
+                    src={coverFile ? URL.createObjectURL(coverFile) : headerForm.cover_image} 
+                    alt="Cover" 
+                    className="w-24 h-24 object-cover rounded-lg"
+                  />
+                )}
+              </div>
+            </div>
+
             <div className="space-y-2">
               <Label>לוגו</Label>
               <div className="flex items-center gap-3">
@@ -308,7 +384,7 @@ export default function TherapistApp() {
             </div>
 
             <div className="space-y-2">
-              <Label>צבע רקע</Label>
+              <Label>צבע רקע (אם אין תמונה)</Label>
               <Select 
                 value={headerForm.card_background_style} 
                 onValueChange={(v) => setHeaderForm({...headerForm, card_background_style: v})}
@@ -347,6 +423,40 @@ export default function TherapistApp() {
                   </SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="border-t pt-4">
+              <Label className="mb-3 block font-bold">תמונות לכפתורי פעולות מהירות</Label>
+              <div className="space-y-3">
+                {quickActions.map((action) => (
+                  <div key={action.to} className="space-y-2">
+                    <Label className="text-sm">{action.label}</Label>
+                    <div className="flex items-center gap-3">
+                      <label className="flex-1 border-2 border-dashed rounded-lg p-3 cursor-pointer hover:bg-gray-50">
+                        <div className="flex items-center gap-2">
+                          <Upload size={16} className="text-gray-400"/>
+                          <span className="text-xs text-gray-500">
+                            {actionImages[action.to]?.name || "העלה תמונה"}
+                          </span>
+                        </div>
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          className="hidden" 
+                          onChange={(e) => setActionImages({...actionImages, [action.to]: e.target.files[0]})}
+                        />
+                      </label>
+                      {(actionImages[action.to] || headerForm.quick_actions_images?.[action.to]) && (
+                        <img 
+                          src={actionImages[action.to] ? URL.createObjectURL(actionImages[action.to]) : headerForm.quick_actions_images?.[action.to]} 
+                          alt={action.label}
+                          className="w-16 h-16 object-cover rounded-lg"
+                        />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <Button 
