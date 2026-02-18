@@ -6,8 +6,10 @@ import { useQuery } from "@tanstack/react-query";
 import { 
   Calendar, Users, MessageCircle, TrendingUp, 
   Settings, Globe, BookOpen, ShoppingBag, Video,
-  BarChart3, Clock, DollarSign, Star, MessageSquare
+  BarChart3, Clock, DollarSign, Star, MessageSquare,
+  FileText, CreditCard, UserPlus, Download, ArrowRight
 } from "lucide-react";
+import AppDownload from "../components/AppDownload";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 
@@ -89,21 +91,23 @@ export default function TherapistApp() {
   }
 
   const quickActions = [
-    { icon: <Calendar size={24}/>, label: "תורים", to: "TherapistAppointments", color: "from-[#7C9885] to-[#9CB4A4]" },
+    { icon: <UserPlus size={24}/>, label: "קביעת תור", to: "TherapistScheduleManager", color: "from-[#7C9885] to-[#9CB4A4]" },
     { icon: <Users size={24}/>, label: "לקוחות", to: "TherapistClients", color: "from-[#A8947D] to-[#B89968]" },
-    { icon: <MessageCircle size={24}/>, label: "צ'אט", to: "TherapistChat", color: "from-[#9CB4A4] to-[#A8947D]" },
-    { icon: <Globe size={24}/>, label: "מיני-סייט", to: "TherapistMiniSiteManager", color: "from-[#B89968] to-[#C9A876]" },
+    { icon: <CreditCard size={24}/>, label: "חשבוניות", to: "TherapistInvoices", color: "from-[#9CB4A4] to-[#A8947D]" },
+    { icon: <Globe size={24}/>, label: "מיני-סייט", to: "TherapistMiniSiteSettings", color: "from-[#B89968] to-[#C9A876]" },
   ];
 
   const features = [
-    { icon: <DollarSign size={20}/>, label: "פיננסים", to: "TherapistFinance" },
-    { icon: <MessageSquare size={20}/>, label: "בוט לידים", to: "TherapistLeadBot" },
-    { icon: <ShoppingBag size={20}/>, label: "חנות", to: "TherapistProducts" },
+    { icon: <Calendar size={20}/>, label: "יומן תורים", to: "TherapistAppointments" },
+    { icon: <MessageCircle size={20}/>, label: "צ'אט", to: "TherapistChat" },
+    { icon: <CreditCard size={20}/>, label: "תשלומים", to: "TherapistPayments" },
+    { icon: <ShoppingBag size={20}/>, label: "החנות שלי", to: "TherapistProducts" },
     { icon: <Video size={20}/>, label: "קורסים", to: "TherapistCourses" },
+    { icon: <BookOpen size={20}/>, label: "תוכן", to: "TherapistContent" },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50 to-emerald-50 pb-20">
+    <div className="min-h-screen pb-20" style={{backgroundColor: '#F5F1E8'}}>
       {/* Header */}
       <div className="bg-gradient-to-br from-[#7C9885] to-[#9CB4A4] text-white px-4 pt-8 pb-6 rounded-b-3xl shadow-lg">
         <div className="flex items-center justify-between mb-4">
@@ -117,12 +121,12 @@ export default function TherapistApp() {
                 </div>
               )}
             </div>
-            <div>
-              <h1 className="text-lg font-bold">{therapist.full_name}</h1>
-              <p className="text-teal-100 text-xs">{therapist.specializations?.[0]}</p>
+            <div className="flex-1 min-w-0">
+              <h1 className="text-lg font-bold truncate">{therapist.full_name}</h1>
+              <p className="text-teal-100 text-xs truncate">{therapist.specializations?.[0] || "מטפל"}</p>
             </div>
           </div>
-          <Link to={createPageUrl("TherapistDashboard")} className="text-white">
+          <Link to={createPageUrl("TherapistMiniSiteSettings")} className="text-white">
             <Settings size={20}/>
           </Link>
         </div>
@@ -204,31 +208,18 @@ export default function TherapistApp() {
         </div>
       </div>
 
-      {/* Mini-Site Preview */}
+      {/* Download App Card */}
       <div className="px-4 mt-6">
-        <div className="bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-4 border border-teal-100/50">
-          <div className="flex items-start justify-between mb-3">
-            <div>
-              <h3 className="font-semibold text-sm text-gray-900 mb-1">המיני-סייט שלך</h3>
-              <p className="text-xs text-gray-600">כרטיס ביקור דיגיטלי</p>
-            </div>
-            <Globe size={20} className="text-teal-600"/>
-          </div>
-          <Link to={createPageUrl("TherapistMiniSiteManager")}>
-            <button className="w-full bg-[#7C9885] text-white rounded-full py-2 text-sm font-medium hover:bg-[#9CB4A4] transition-colors">
-              נהל את המיני-סייט
-            </button>
-          </Link>
-        </div>
+        <AppDownload variant="compact"/>
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-[#F5F1E8]/95 backdrop-blur-lg border-t border-[#A8947D]/20 px-2 z-50 shadow-lg" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-gray-200 px-2 z-50 shadow-lg" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <div className="flex justify-around items-center h-14">
-          <NavItem icon={<BarChart3 size={20}/>} label="דשבורד" to="TherapistDashboard"/>
+          <NavItem icon={<BarChart3 size={20}/>} label="דשבורד" to="TherapistApp" active/>
           <NavItem icon={<Calendar size={20}/>} label="תורים" to="TherapistAppointments"/>
           <NavItem icon={<Users size={20}/>} label="לקוחות" to="TherapistClients"/>
-          <NavItem icon={<Globe size={20}/>} label="סייט" to="TherapistMiniSiteManager"/>
+          <NavItem icon={<Globe size={20}/>} label="סייט" to="TherapistMiniSiteSettings"/>
           <NavItem icon={<Settings size={20}/>} label="הגדרות" to="TherapistDashboard"/>
         </div>
       </nav>
