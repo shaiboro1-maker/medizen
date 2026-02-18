@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Star, MapPin, Phone, Globe, Calendar, MessageCircle, Mail, FileText } from "lucide-react";
+import { Star, MapPin, Phone, Globe, Calendar, MessageCircle, Mail, FileText, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import AppDownload from "../components/AppDownload";
@@ -28,7 +27,6 @@ export default function MiniSite() {
     enabled: !!slug,
   });
 
-  // Set document title and meta tags
   useEffect(() => {
     if (therapist) {
       const title = `${therapist.full_name} - ${therapist.specializations?.join(", ") || "מטפל מקצועי"} | MediZen`;
@@ -36,7 +34,6 @@ export default function MiniSite() {
       
       document.title = title;
       
-      // Update meta description
       let metaDesc = document.querySelector('meta[name="description"]');
       if (!metaDesc) {
         metaDesc = document.createElement('meta');
@@ -67,7 +64,7 @@ export default function MiniSite() {
 
   const { data: blogPosts = [] } = useQuery({
     queryKey: ["miniSiteBlog", therapist?.id],
-    queryFn: () => base44.entities.BlogPost.filter({ therapist_id: therapist.id, is_published: true }, "-created_date", 10),
+    queryFn: () => base44.entities.BlogPost?.filter({ therapist_id: therapist.id, is_published: true }, "-created_date", 10) || [],
     enabled: !!therapist,
   });
 
@@ -91,8 +88,8 @@ export default function MiniSite() {
     },
   });
 
-  if (isLoading) return <div className="text-center py-20">טוען...</div>;
-  if (!therapist) return <div className="text-center py-20">מטפל לא נמצא</div>;
+  if (isLoading) return <div className="text-center py-20 bg-[#F5F1E8] min-h-screen">טוען...</div>;
+  if (!therapist) return <div className="text-center py-20 bg-[#F5F1E8] min-h-screen">מטפל לא נמצא</div>;
 
   const settings = therapist.minisite_settings || {};
   const primaryColor = settings.primary_color || "#0F766E";
@@ -106,18 +103,27 @@ export default function MiniSite() {
   const showReviews = settings.show_reviews !== false;
 
   return (
-    <div className="min-h-screen bg-gray-50" style={{ fontFamily }}>
+    <div className="min-h-screen" style={{ fontFamily, backgroundColor: '#F5F1E8' }}>
       <style>{`
         :root {
           --primary-color: ${primaryColor};
           --secondary-color: ${secondaryColor};
         }
       `}</style>
-      {/* Hero Section with Cover */}
+      
+      {/* Hero Section */}
       <div className="relative h-80 overflow-hidden" style={{ background: `linear-gradient(to bottom left, ${primaryColor}, ${secondaryColor})` }}>
         {therapist.cover_image && (
           <img src={therapist.cover_image} alt="" className="w-full h-full object-cover opacity-40"/>
         )}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => window.history.back()}
+          className="absolute top-4 right-4 bg-white/90 hover:bg-white z-10"
+        >
+          <ArrowRight size={20}/>
+        </Button>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white">
             {therapist.logo_url && (
@@ -134,9 +140,8 @@ export default function MiniSite() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 -mt-16 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 -mt-16 relative z-10 pb-12">
         
-        {/* Professional Title & Tagline - כרטיס ביקור */}
         {therapist.therapeutic_approach && (
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 text-center border-4 border-teal-100">
             <p className="text-xl md:text-2xl font-semibold text-gray-800 italic">
@@ -145,14 +150,18 @@ export default function MiniSite() {
           </div>
         )}
 
-        {/* Video Intro */}
         {therapist.video_intro_url && (
           <div className="mb-8">
             <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl">
-              <iframe src={therapist.video_intro_url} className="w-full h-full" allowFullScreen/>
+              <iframe src={therapist.video_intro_url} className="w-full h-full" allowFullScreen title="intro"/>
             </div>
           </div>
         )}
+
+        {/* Download App */}
+        <div className="mb-6">
+          <AppDownload variant="compact"/>
+        </div>
 
         {/* CTA Buttons */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
@@ -170,16 +179,15 @@ export default function MiniSite() {
           </div>
         </div>
 
-        {/* Bio & Credentials */}
+        {/* Bio */}
         {therapist.bio && (
-          <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mb-8">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
               <div className="w-2 h-8 bg-teal-600 rounded-full"></div>
               אודות והכשרה מקצועית
             </h2>
             <p className="text-gray-700 leading-relaxed whitespace-pre-line text-lg mb-6">{therapist.bio}</p>
             
-            {/* Years of Experience */}
             {therapist.years_experience && (
               <div className="bg-teal-50 rounded-xl p-4 mb-4">
                 <div className="flex items-center gap-3">
@@ -194,7 +202,6 @@ export default function MiniSite() {
               </div>
             )}
 
-            {/* Certifications */}
             {therapist.certifications && therapist.certifications.length > 0 && (
               <div className="mb-6">
                 <h3 className="font-bold text-lg mb-3">הסמכות ותעודות</h3>
@@ -212,7 +219,6 @@ export default function MiniSite() {
               </div>
             )}
 
-            {/* Specialties */}
             {therapist.specializations && therapist.specializations.length > 0 && (
               <div className="mb-6">
                 <h3 className="font-bold text-lg mb-3">תחומי התמחות</h3>
@@ -226,7 +232,6 @@ export default function MiniSite() {
               </div>
             )}
 
-            {/* Contact Info */}
             <div className="flex flex-wrap gap-4 mt-6 pt-6 border-t border-gray-200">
               {therapist.city && therapist.address && (
                 <a 
@@ -254,7 +259,7 @@ export default function MiniSite() {
 
         {/* Gallery */}
         {showGallery && therapist.gallery?.length > 0 && (
-          <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mb-8">
             <h2 className="text-2xl font-bold mb-4">גלריה</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {therapist.gallery.map((url, i) => (
@@ -271,9 +276,9 @@ export default function MiniSite() {
           </div>
         )}
 
-        {/* Pricing & Services */}
+        {/* Services */}
         {showServices && services.length > 0 && (
-        <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mb-8">
           <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
             <div className="w-2 h-8 bg-amber-500 rounded-full"></div>
             מחירון וטיפולים
@@ -305,7 +310,7 @@ export default function MiniSite() {
                 </div>
                 {s.treatment_series && s.treatment_series.length > 0 && (
                   <div className="mt-4 pt-4 border-t border-gray-100">
-                    <p className="text-sm font-semibold text-gray-700 mb-2">📦 סדרות טיפול מיוחדות:</p>
+                    <p className="text-sm font-semibold text-gray-700 mb-2">📦 סדרות טיפול:</p>
                     {s.treatment_series.map((series, i) => (
                       <div key={i} className="flex justify-between items-center text-sm py-2 px-3 bg-amber-50 rounded-lg mb-2">
                         <span>{series.name} ({series.sessions} טיפולים)</span>
@@ -317,24 +322,12 @@ export default function MiniSite() {
               </div>
             ))}
           </div>
-
-          {/* Cancellation Policy */}
-          {therapist.cancellation_policy && (
-            <div className="mt-6 p-4 bg-gray-50 rounded-xl">
-              <h3 className="font-bold text-sm mb-2">📋 מדיניות ביטולים</h3>
-              <p className="text-sm text-gray-600">
-                {therapist.cancellation_policy.allow_cancellation 
-                  ? `ניתן לבטל תור עד ${therapist.cancellation_policy.hours_before} שעות מראש${therapist.cancellation_policy.cancellation_fee ? ` (דמי ביטול: ₪${therapist.cancellation_policy.cancellation_fee})` : " ללא חיוב"}`
-                  : "אין אפשרות לבטל תור לאחר קביעה"}
-              </p>
-            </div>
-          )}
         </div>
         )}
 
         {/* Courses */}
         {showCourses && courses.length > 0 && (
-          <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mb-8">
             <h2 className="text-2xl font-bold mb-6">קורסים דיגיטליים</h2>
             <div className="grid md:grid-cols-2 gap-6">
               {courses.map(c => (
@@ -351,7 +344,7 @@ export default function MiniSite() {
                     <p className="text-sm text-white/80 mb-3">{c.lessons?.length} שיעורים · {c.total_duration_minutes} דק׳</p>
                     <div className="flex justify-between items-center">
                       <span className="font-bold text-white text-2xl">₪{c.price}</span>
-                      <Button size="sm" className="bg-white/90 hover:bg-white text-[#7C9885]">רכישה</Button>
+                      <Button size="sm" className="bg-white/90 hover:bg-white text-teal-700">רכישה</Button>
                     </div>
                   </div>
                 </div>
@@ -360,9 +353,9 @@ export default function MiniSite() {
           </div>
         )}
 
-        {/* Blog Posts */}
+        {/* Blog */}
         {showBlog && blogPosts.length > 0 && (
-          <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mb-8">
             <h2 className="text-2xl font-bold mb-6">
               <FileText size={24} className="inline ml-2"/>
               המאמרים שלי
@@ -401,10 +394,10 @@ export default function MiniSite() {
                     />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-5">
-                    <Badge variant="secondary" className="mb-2 bg-white/90 text-[#7C9885] w-fit">{post.category || "כללי"}</Badge>
+                    <Badge variant="secondary" className="mb-2 bg-white/90 text-teal-700 w-fit">{post.category || "כללי"}</Badge>
                     <h3 className="font-bold text-xl text-white mb-2">{post.title}</h3>
                     <p className="text-sm text-white/80 mb-3 line-clamp-2">{post.excerpt}</p>
-                    <Button size="sm" className="bg-white/90 hover:bg-white text-[#7C9885] w-fit">קרא עוד</Button>
+                    <Button size="sm" className="bg-white/90 hover:bg-white text-teal-700 w-fit">קרא עוד</Button>
                   </div>
                 </div>
               ))}
@@ -414,7 +407,7 @@ export default function MiniSite() {
 
         {/* Reviews */}
         {showReviews && reviews.length > 0 && (
-          <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mb-8">
             <h2 className="text-2xl font-bold mb-6">ביקורות ({reviews.length})</h2>
             <div className="space-y-4">
               {reviews.map(r => (
@@ -440,7 +433,7 @@ export default function MiniSite() {
         )}
 
         {/* Contact Form */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mb-8">
           <h2 className="text-2xl font-bold mb-6">
             <Mail size={24} className="inline ml-2"/>
             צור קשר
@@ -486,11 +479,6 @@ export default function MiniSite() {
               <Mail size={16} className="ml-2"/> {submitContactForm.isPending ? "שולח..." : "שלח הודעה"}
             </Button>
           </div>
-        </div>
-
-        {/* App Download CTA */}
-        <div className="mb-8">
-          <AppDownload variant="compact"/>
         </div>
       </div>
     </div>
