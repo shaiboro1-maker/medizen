@@ -91,10 +91,12 @@ export default function TherapistApp() {
   }
 
   const quickActions = [
-    { icon: <UserPlus size={24}/>, label: "קביעת תור", to: "TherapistScheduleManager", color: "from-[#7C9885] to-[#9CB4A4]" },
-    { icon: <Users size={24}/>, label: "לקוחות", to: "TherapistClients", color: "from-[#A8947D] to-[#B89968]" },
-    { icon: <CreditCard size={24}/>, label: "חשבוניות", to: "TherapistInvoices", color: "from-[#9CB4A4] to-[#A8947D]" },
-    { icon: <Globe size={24}/>, label: "מיני-סייט", to: "TherapistMiniSiteSettings", color: "from-[#B89968] to-[#C9A876]" },
+    { icon: <Users size={24}/>, label: "לקוחות", to: "TherapistClients", color: "from-[#7C9885] to-[#9CB4A4]" },
+    { icon: <Calendar size={24}/>, label: "קביעת תורים", to: "TherapistCalendar", color: "from-[#A8947D] to-[#B89968]" },
+    { icon: <Globe size={24}/>, label: "מיני-סייט", to: "TherapistMiniSiteSettings", color: "from-[#9CB4A4] to-[#A8947D]" },
+    { icon: <FileText size={24}/>, label: "חשבוניות", to: "TherapistInvoices", color: "from-[#B89968] to-[#C9A876]" },
+    { icon: <CreditCard size={24}/>, label: "סליקה", to: "TherapistPayments", color: "from-[#9CB4A4] to-[#A8947D]" },
+    { icon: <BarChart3 size={24}/>, label: "דשבורד", to: "TherapistDashboard", color: "from-[#7C9885] to-[#9CB4A4]" },
   ];
 
   const features = [
@@ -109,21 +111,31 @@ export default function TherapistApp() {
   return (
     <div className="min-h-screen pb-20" style={{backgroundColor: '#F5F1E8'}}>
       {/* Header */}
-      <div className="bg-gradient-to-br from-[#7C9885] to-[#9CB4A4] text-white px-4 pt-8 pb-6 rounded-b-3xl shadow-lg">
+      <div 
+        className="text-white px-4 pt-8 pb-6 rounded-b-3xl shadow-lg"
+        style={{
+          backgroundColor: therapist.card_background_style ? undefined : '#7C9885',
+          backgroundImage: therapist.card_background_style?.includes('gradient') ? therapist.card_background_style.replace('bg-', 'linear-') : undefined
+        }}
+      >
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-white/20 overflow-hidden border-2 border-white/30">
-              {therapist.profile_image ? (
-                <img src={therapist.profile_image} alt={therapist.full_name} className="w-full h-full object-cover"/>
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-lg font-bold">
-                  {therapist.full_name?.[0]}
-                </div>
-              )}
-            </div>
+            {therapist.logo_url ? (
+              <img src={therapist.logo_url} alt="Logo" className="h-12 w-auto"/>
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-white/20 overflow-hidden border-2 border-white/30">
+                {therapist.profile_image ? (
+                  <img src={therapist.profile_image} alt={therapist.full_name} className="w-full h-full object-cover"/>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-lg font-bold">
+                    {therapist.full_name?.[0]}
+                  </div>
+                )}
+              </div>
+            )}
             <div className="flex-1 min-w-0">
               <h1 className="text-lg font-bold truncate">{therapist.full_name}</h1>
-              <p className="text-teal-100 text-xs truncate">{therapist.specializations?.[0] || "מטפל"}</p>
+              <p className="text-white/80 text-xs truncate">{therapist.specializations?.[0] || "מטפל מקצועי"}</p>
             </div>
           </div>
           <Link to={createPageUrl("TherapistMiniSiteSettings")} className="text-white">
@@ -171,18 +183,18 @@ export default function TherapistApp() {
 
       {/* Quick Actions */}
       <div className="px-4 mt-6">
-        <h2 className="text-base font-bold mb-3 text-gray-800">פעולות מהירות</h2>
-        <div className="grid grid-cols-2 gap-3">
+        <h2 className="text-base font-bold mb-3 text-gray-800 text-right">פעולות מהירות</h2>
+        <div className="grid grid-cols-3 gap-3">
           {quickActions.map((action, i) => (
             <Link key={i} to={createPageUrl(action.to)}>
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.05 }}
-                className={`bg-gradient-to-br ${action.color} rounded-3xl p-4 text-white shadow-md hover:shadow-lg transition-all`}
+                className={`bg-gradient-to-br ${action.color} rounded-2xl p-3 text-white shadow-md hover:shadow-lg transition-all text-right`}
               >
-                <div className="mb-2">{action.icon}</div>
-                <p className="text-sm font-medium">{action.label}</p>
+                <div className="mb-2 flex justify-end">{action.icon}</div>
+                <p className="text-xs font-medium text-right">{action.label}</p>
               </motion.div>
             </Link>
           ))}

@@ -128,6 +128,7 @@ import Webinars from './pages/Webinars';
 import MiniSite from './pages/MiniSite';
 import TherapistProducts from './pages/TherapistProducts';
 import TherapistDashboard from './pages/TherapistDashboard';
+import TherapistCalendar from './pages/TherapistCalendar';
 import __Layout from './Layout.jsx';
 
 
@@ -213,6 +214,7 @@ export const PAGES = {
     "MiniSite": MiniSite,
     "TherapistProducts": TherapistProducts,
     "TherapistDashboard": TherapistDashboard,
+    "TherapistCalendar": TherapistCalendar,
 }
 
 export const pagesConfig = {

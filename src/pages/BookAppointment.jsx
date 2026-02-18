@@ -170,28 +170,28 @@ export default function BookAppointment() {
         {/* Step 2: Select Date & Time */}
         {step === 2 && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <h2 className="text-xl font-bold mb-4 text-[#7C9885]">בחר תאריך ושעה</h2>
+            <h2 className="text-lg font-bold mb-3 text-[#7C9885]">בחר תאריך ושעה</h2>
             
-            <div className="bg-white rounded-2xl p-5 mb-4">
-              <Label className="mb-2 block">תאריך</Label>
+            <div className="bg-white rounded-xl p-4 mb-3">
+              <Label className="mb-2 block text-sm">תאריך</Label>
               <input 
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
                 min={new Date().toISOString().split('T')[0]}
-                className="w-full p-3 border border-gray-300 rounded-lg"
+                className="w-full p-2 border border-gray-300 rounded-lg text-sm"
               />
             </div>
 
             {selectedDate && (
-              <div className="bg-white rounded-2xl p-5">
-                <Label className="mb-3 block">שעה פנויה</Label>
-                <div className="grid grid-cols-3 gap-2">
+              <div className="bg-white rounded-xl p-4 mb-20">
+                <Label className="mb-2 block text-sm">שעה פנויה</Label>
+                <div className="grid grid-cols-4 gap-2">
                   {getAvailableTimes().map(time => (
                     <button
                       key={time}
                       onClick={() => setSelectedTime(time)}
-                      className={`p-3 rounded-lg border-2 font-medium transition-all ${
+                      className={`p-2 rounded-lg border-2 font-medium transition-all text-sm ${
                         selectedTime === time
                           ? 'border-[#7C9885] bg-[#7C9885] text-white'
                           : 'border-gray-200 hover:border-[#7C9885]'
@@ -202,18 +202,20 @@ export default function BookAppointment() {
                   ))}
                 </div>
                 {getAvailableTimes().length === 0 && (
-                  <p className="text-center text-gray-500 py-4">אין שעות פנויות בתאריך זה</p>
+                  <p className="text-center text-gray-500 py-4 text-sm">אין שעות פנויות בתאריך זה</p>
                 )}
               </div>
             )}
 
             {selectedTime && (
-              <Button 
-                onClick={() => setStep(3)}
-                className="w-full mt-4 bg-gradient-to-l from-[#7C9885] to-[#9CB4A4] py-6"
-              >
-                המשך לפרטים אישיים
-              </Button>
+              <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg">
+                <Button 
+                  onClick={() => setStep(3)}
+                  className="w-full bg-gradient-to-l from-[#7C9885] to-[#9CB4A4] py-4"
+                >
+                  המשך לפרטים אישיים
+                </Button>
+              </div>
             )}
           </motion.div>
         )}
