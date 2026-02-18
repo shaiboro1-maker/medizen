@@ -1,38 +1,40 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Calendar, Clock, Check, ArrowRight, ArrowLeft } from "lucide-react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { ArrowRight, Calendar, Clock, User, Mail, Phone, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { motion, AnimatePresence } from "framer-motion";
-import moment from "moment";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { motion } from "framer-motion";
 
-const DAYS_HEB = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
+const DAYS = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
 
 export default function BookAppointment() {
   const navigate = useNavigate();
-  const urlParams = new URLSearchParams(window.location.search);
-  const therapistId = urlParams.get("therapist");
-  const serviceId = urlParams.get("service");
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const therapistId = searchParams.get('therapist_id');
 
-  const [step, setStep] = useState(serviceId ? 2 : 1);
-  const [selectedService, setSelectedService] = useState(serviceId || null);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [notes, setNotes] = useState("");
-  const [user, setUser] = useState(null);
-  const [bookingComplete, setBookingComplete] = useState(false);
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(() => {});
-  }, []);
+  const [step, setStep] = useState(1);
+  const [selectedService, setSelectedService] = useState(null);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
+  const [form, setForm] = useState({
+    client_name: "",
+    client_email: "",
+    client_phone: "",
+    notes: ""
+  });
 
   const { data: therapist } = useQuery({
     queryKey: ["therapist", therapistId],
-    queryFn: () => base44.entities.Therapist.filter({ id: therapistId }),
-    select: (data) => data[0],
+    queryFn: async () => {
+      const therapists = await base44.entities.Therapist.filter({ id: therapistId });
+      return therapists[0];
+    },
     enabled: !!therapistId,
   });
 
@@ -48,163 +50,116 @@ export default function BookAppointment() {
     enabled: !!therapistId,
   });
 
-  const { data: existingAppointments = [] } = useQuery({
-    queryKey: ["existingAppointments", therapistId],
-    queryFn: () => base44.entities.Appointment.filter({ therapist_id: therapistId, status: "confirmed" }),
-    enabled: !!therapistId,
+  const { data: appointments = [] } = useQuery({
+    queryKey: ["appointments", therapistId, selectedDate],
+    queryFn: () => base44.entities.Appointment.filter({ 
+      therapist_id: therapistId,
+      date: selectedDate 
+    }),
+    enabled: !!therapistId && !!selectedDate,
   });
 
-  const service = services.find(s => s.id === selectedService);
+  const createAppointmentMutation = useMutation({
+    mutationFn: (data) => base44.entities.Appointment.create(data),
+    onSuccess: () => {
+      setStep(4);
+    },
+  });
 
-  // Generate next 14 days with available slots
-  const availableDays = useMemo(() => {
-    const days = [];
-    for (let i = 1; i <= 14; i++) {
-      const date = moment().add(i, "days");
-      const dayOfWeek = date.day();
-      const dayAvailability = availability.filter(a => a.day_of_week === dayOfWeek);
-      if (dayAvailability.length > 0) {
-        days.push({ date: date.format("YYYY-MM-DD"), dayOfWeek, label: DAYS_HEB[dayOfWeek], dateLabel: date.format("DD/MM") });
-      }
-    }
-    return days;
-  }, [availability]);
+  const getAvailableTimes = () => {
+    if (!selectedDate || !availability.length) return [];
 
-  // Generate time slots for selected date
-  const timeSlots = useMemo(() => {
-    if (!selectedDate || !service) return [];
-    const date = moment(selectedDate);
-    const dayOfWeek = date.day();
+    const date = new Date(selectedDate);
+    const dayOfWeek = date.getDay();
     const dayAvailability = availability.filter(a => a.day_of_week === dayOfWeek);
-    
-    const slots = [];
-    dayAvailability.forEach(avail => {
-      const start = moment(selectedDate + " " + avail.start_time, "YYYY-MM-DD HH:mm");
-      const end = moment(selectedDate + " " + avail.end_time, "YYYY-MM-DD HH:mm");
+
+    const times = [];
+    dayAvailability.forEach(slot => {
+      const [startHour] = slot.start_time.split(':').map(Number);
+      const [endHour] = slot.end_time.split(':').map(Number);
       
-      while (start.clone().add(service.duration_minutes, "minutes").isSameOrBefore(end)) {
-        const timeStr = start.format("HH:mm");
-        const isBooked = existingAppointments.some(
-          a => a.date === selectedDate && a.time === timeStr
-        );
+      for (let hour = startHour; hour < endHour; hour++) {
+        const timeSlot = `${String(hour).padStart(2, '0')}:00`;
+        const isBooked = appointments.some(apt => apt.time === timeSlot && apt.status !== "cancelled");
         if (!isBooked) {
-          slots.push(timeStr);
+          times.push(timeSlot);
         }
-        start.add(service.duration_minutes, "minutes");
       }
     });
-    return slots;
-  }, [selectedDate, service, availability, existingAppointments]);
 
-  const bookMutation = useMutation({
-    mutationFn: (data) => base44.entities.Appointment.create(data),
-    onMutate: async (newAppointment) => {
-      // Cancel outgoing refetches
-      await queryClient.cancelQueries({ queryKey: ["existingAppointments", therapistId] });
-      
-      // Snapshot previous value
-      const previousAppointments = queryClient.getQueryData(["existingAppointments", therapistId]);
-      
-      // Optimistically update
-      queryClient.setQueryData(["existingAppointments", therapistId], (old = []) => [
-        ...old,
-        {
-          id: `temp-${Date.now()}`,
-          ...newAppointment,
-          created_date: new Date().toISOString()
-        }
-      ]);
-      
-      return { previousAppointments };
-    },
-    onError: (err, newAppointment, context) => {
-      // Rollback on error
-      queryClient.setQueryData(["existingAppointments", therapistId], context.previousAppointments);
-    },
-    onSuccess: () => {
-      setBookingComplete(true);
-      queryClient.invalidateQueries({ queryKey: ["existingAppointments"] });
-    },
-  });
+    return times.sort();
+  };
 
-  const handleBook = async () => {
-    if (!user) {
-      base44.auth.redirectToLogin(window.location.href);
-      return;
-    }
-    bookMutation.mutate({
+  const handleSubmit = () => {
+    createAppointmentMutation.mutate({
       therapist_id: therapistId,
       therapist_name: therapist?.full_name,
-      client_email: user.email,
-      client_name: user.full_name,
-      service_id: selectedService,
-      service_name: service?.name,
+      client_name: form.client_name,
+      client_email: form.client_email,
+      service_id: selectedService.id,
+      service_name: selectedService.name,
       date: selectedDate,
       time: selectedTime,
-      duration_minutes: service?.duration_minutes,
-      price: service?.price,
-      status: "confirmed",
-      notes,
+      duration_minutes: selectedService.duration_minutes,
+      price: selectedService.price,
+      status: "pending",
+      notes: form.notes
     });
   };
 
-  if (bookingComplete) {
+  if (!therapist) {
     return (
-      <div className="max-w-lg mx-auto px-4 py-20 text-center">
-        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-          <Check size={40} className="text-green-600"/>
-        </motion.div>
-        <h1 className="text-2xl font-bold mb-3">התור נקבע בהצלחה!</h1>
-        <p className="text-gray-500 mb-2">{service?.name} אצל {therapist?.full_name}</p>
-        <p className="text-gray-500 mb-8">{moment(selectedDate).format("DD/MM/YYYY")} בשעה {selectedTime}</p>
-        <Button onClick={() => window.location.href = createPageUrl("MyAppointments")} className="bg-[#7C9885] hover:bg-[#9CB4A4] rounded-full">
-          צפה בתורים שלי
-        </Button>
+      <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#F5F1E8'}}>
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-[#7C9885] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">טוען...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8 min-h-screen" style={{backgroundColor: '#F5F1E8'}}>
-      <Button variant="ghost" onClick={() => navigate(-1)} className="mb-4">
-        <ArrowLeft size={16} className="ml-2"/> חזור
-      </Button>
-      <h1 className="text-2xl font-bold mb-2">קביעת תור</h1>
-      {therapist && <p className="text-gray-500 mb-8">אצל {therapist.full_name}</p>}
-
-      {/* Steps indicator */}
-      <div className="flex items-center gap-3 mb-10">
-        {[1, 2, 3, 4].map((s) => (
-          <div key={s} className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
-              step >= s ? "bg-[#7C9885] text-white" : "bg-gray-100 text-gray-400"
-            }`}>
-              {step > s ? <Check size={14}/> : s}
-            </div>
-            {s < 4 && <div className={`w-8 h-0.5 ${step > s ? "bg-[#7C9885]" : "bg-gray-200"}`}/>}
+    <div className="min-h-screen" style={{backgroundColor: '#F5F1E8'}}>
+      {/* Header */}
+      <div className="bg-gradient-to-br from-[#7C9885] to-[#9CB4A4] text-white p-4 rounded-b-3xl shadow-lg">
+        <div className="flex items-center gap-3 mb-4">
+          <Button variant="ghost" onClick={() => step > 1 ? setStep(step - 1) : navigate(-1)} size="icon" className="text-white">
+            <ArrowRight size={20}/>
+          </Button>
+          <div className="flex-1">
+            <h1 className="text-xl font-bold">קביעת תור</h1>
+            <p className="text-sm text-teal-100">{therapist.full_name}</p>
           </div>
-        ))}
+        </div>
+
+        {/* Progress */}
+        <div className="flex gap-2">
+          {[1, 2, 3].map(i => (
+            <div 
+              key={i}
+              className={`h-1 flex-1 rounded-full ${step >= i ? 'bg-white' : 'bg-white/30'}`}
+            />
+          ))}
+        </div>
       </div>
 
-      <AnimatePresence mode="wait">
+      <div className="p-4 max-w-2xl mx-auto">
         {/* Step 1: Select Service */}
         {step === 1 && (
-          <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-            <h2 className="text-lg font-bold mb-4">בחר טיפול</h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <h2 className="text-xl font-bold mb-4 text-[#7C9885]">בחר שירות</h2>
             <div className="space-y-3">
-              {services.map((s) => (
+              {services.map(service => (
                 <button
-                  key={s.id}
-                  onClick={() => { setSelectedService(s.id); setStep(2); }}
-                  className={`w-full text-right bg-white rounded-2xl border p-5 hover:border-[#A8947D] transition-all ${
-                    selectedService === s.id ? "border-[#7C9885] ring-2 ring-[#F5F1E8]" : "border-gray-100"
-                  }`}
+                  key={service.id}
+                  onClick={() => { setSelectedService(service); setStep(2); }}
+                  className="w-full bg-white rounded-2xl p-4 border-2 border-gray-100 hover:border-[#7C9885] transition-all text-right"
                 >
-                  <h3 className="font-bold">{s.name}</h3>
-                  <p className="text-sm text-gray-500 mt-1">{s.description}</p>
-                  <div className="flex gap-4 mt-3 text-sm text-gray-400">
-                    <span><Clock size={12} className="inline ml-1"/>{s.duration_minutes} דקות</span>
-                    <span className="font-semibold text-teal-700">₪{s.price}</span>
+                  <h3 className="font-bold text-lg mb-1">{service.name}</h3>
+                  <p className="text-sm text-gray-600 mb-2">{service.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#7C9885] font-bold text-lg">₪{service.price}</span>
+                    <span className="text-sm text-gray-500">{service.duration_minutes} דקות</span>
                   </div>
                 </button>
               ))}
@@ -212,105 +167,152 @@ export default function BookAppointment() {
           </motion.div>
         )}
 
-        {/* Step 2: Select Date */}
+        {/* Step 2: Select Date & Time */}
         {step === 2 && (
-          <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-            <h2 className="text-lg font-bold mb-4">בחר תאריך</h2>
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-              {availableDays.map((day) => (
-                <button
-                  key={day.date}
-                  onClick={() => { setSelectedDate(day.date); setStep(3); }}
-                  className={`rounded-2xl border p-4 text-center hover:border-[#A8947D] transition-all ${
-                    selectedDate === day.date ? "border-[#7C9885] bg-[#F5F1E8]" : "border-gray-100 bg-white"
-                  }`}
-                >
-                  <div className="text-sm font-medium text-gray-500">יום {day.label}</div>
-                  <div className="text-lg font-bold mt-1">{day.dateLabel}</div>
-                </button>
-              ))}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <h2 className="text-xl font-bold mb-4 text-[#7C9885]">בחר תאריך ושעה</h2>
+            
+            <div className="bg-white rounded-2xl p-5 mb-4">
+              <Label className="mb-2 block">תאריך</Label>
+              <input 
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                min={new Date().toISOString().split('T')[0]}
+                className="w-full p-3 border border-gray-300 rounded-lg"
+              />
             </div>
-            <Button variant="ghost" onClick={() => setStep(1)} className="mt-6">
-              <ArrowRight size={14} className="ml-2"/> חזרה
-            </Button>
-          </motion.div>
-        )}
 
-        {/* Step 3: Select Time */}
-        {step === 3 && (
-          <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-            <h2 className="text-lg font-bold mb-4">בחר שעה</h2>
-            {timeSlots.length === 0 ? (
-              <p className="text-gray-400 text-center py-8">אין שעות פנויות ביום זה</p>
-            ) : (
-              <div className="grid grid-cols-4 sm:grid-cols-6 gap-3">
-                {timeSlots.map((time) => (
-                  <button
-                    key={time}
-                    className={`rounded-xl border p-3 text-center font-medium hover:border-[#A8947D] transition-all ${
-                      selectedTime === time ? "border-[#7C9885] bg-[#F5F1E8] text-[#7C9885]" : "border-gray-100 bg-white"
-                    }`}
-                  >
-                    {time}
-                  </button>
-                ))}
+            {selectedDate && (
+              <div className="bg-white rounded-2xl p-5">
+                <Label className="mb-3 block">שעה פנויה</Label>
+                <div className="grid grid-cols-3 gap-2">
+                  {getAvailableTimes().map(time => (
+                    <button
+                      key={time}
+                      onClick={() => setSelectedTime(time)}
+                      className={`p-3 rounded-lg border-2 font-medium transition-all ${
+                        selectedTime === time
+                          ? 'border-[#7C9885] bg-[#7C9885] text-white'
+                          : 'border-gray-200 hover:border-[#7C9885]'
+                      }`}
+                    >
+                      {time}
+                    </button>
+                  ))}
+                </div>
+                {getAvailableTimes().length === 0 && (
+                  <p className="text-center text-gray-500 py-4">אין שעות פנויות בתאריך זה</p>
+                )}
               </div>
             )}
-            <Button variant="ghost" onClick={() => setStep(2)} className="mt-6">
-              <ArrowRight size={14} className="ml-2"/> חזרה
+
+            {selectedTime && (
+              <Button 
+                onClick={() => setStep(3)}
+                className="w-full mt-4 bg-gradient-to-l from-[#7C9885] to-[#9CB4A4] py-6"
+              >
+                המשך לפרטים אישיים
+              </Button>
+            )}
+          </motion.div>
+        )}
+
+        {/* Step 3: Personal Details */}
+        {step === 3 && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <h2 className="text-xl font-bold mb-4 text-[#7C9885]">פרטים אישיים</h2>
+            
+            <div className="bg-white rounded-2xl p-5 space-y-4">
+              <div className="space-y-2">
+                <Label>שם מלא</Label>
+                <Input
+                  value={form.client_name}
+                  onChange={(e) => setForm({...form, client_name: e.target.value})}
+                  placeholder="שם מלא"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>אימייל</Label>
+                <Input
+                  type="email"
+                  value={form.client_email}
+                  onChange={(e) => setForm({...form, client_email: e.target.value})}
+                  placeholder="email@example.com"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>טלפון</Label>
+                <Input
+                  value={form.client_phone}
+                  onChange={(e) => setForm({...form, client_phone: e.target.value})}
+                  placeholder="050-1234567"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>הערות (אופציונלי)</Label>
+                <Textarea
+                  value={form.notes}
+                  onChange={(e) => setForm({...form, notes: e.target.value})}
+                  placeholder="הערות נוספות"
+                  rows={3}
+                />
+              </div>
+
+              <Button
+                onClick={handleSubmit}
+                disabled={!form.client_name || !form.client_email || createAppointmentMutation.isPending}
+                className="w-full bg-gradient-to-l from-[#7C9885] to-[#9CB4A4] py-6"
+              >
+                {createAppointmentMutation.isPending ? "מזמין..." : "אשר תור"}
+              </Button>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Step 4: Success */}
+        {step === 4 && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }} 
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center py-12"
+          >
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle size={40} className="text-green-600"/>
+            </div>
+            <h2 className="text-2xl font-bold mb-2 text-[#7C9885]">התור נקבע בהצלחה!</h2>
+            <p className="text-gray-600 mb-6">פרטי התור נשלחו אליך במייל</p>
+            
+            <div className="bg-white rounded-2xl p-5 text-right mb-6">
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">שירות:</span>
+                  <span className="font-bold">{selectedService?.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">תאריך:</span>
+                  <span className="font-bold">{selectedDate}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">שעה:</span>
+                  <span className="font-bold">{selectedTime}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">מחיר:</span>
+                  <span className="font-bold text-[#7C9885]">₪{selectedService?.price}</span>
+                </div>
+              </div>
+            </div>
+
+            <Button onClick={() => navigate(-1)} className="w-full bg-gradient-to-l from-[#7C9885] to-[#9CB4A4]">
+              חזרה
             </Button>
           </motion.div>
         )}
-
-        {/* Step 4: Confirm */}
-        {step === 4 && (
-          <motion.div key="step4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-            <h2 className="text-lg font-bold mb-4">אישור תור</h2>
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4 mb-6">
-              <div className="flex justify-between">
-                <span className="text-gray-500">טיפול</span>
-                <span className="font-medium">{service?.name}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">תאריך</span>
-                <span className="font-medium">{moment(selectedDate).format("DD/MM/YYYY")}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">שעה</span>
-                <span className="font-medium">{selectedTime}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">משך</span>
-                <span className="font-medium">{service?.duration_minutes} דקות</span>
-              </div>
-              <div className="border-t pt-4 flex justify-between">
-                <span className="text-gray-500">מחיר</span>
-                <span className="text-xl font-bold text-teal-700">₪{service?.price}</span>
-              </div>
-            </div>
-
-            <Textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              placeholder="הערות (אופציונלי)..."
-              className="mb-6"
-            />
-
-            <div className="flex gap-3">
-              <Button variant="outline" onClick={() => setStep(3)} className="flex-1">
-                <ArrowRight size={14} className="ml-2"/> חזרה
-              </Button>
-              <Button 
-                onClick={handleBook} 
-                disabled={bookMutation.isPending}
-                className="flex-1 bg-[#7C9885] hover:bg-[#9CB4A4] rounded-full"
-              >
-                {bookMutation.isPending ? "שולח..." : "אשר תור"}
-              </Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </div>
     </div>
   );
 }
