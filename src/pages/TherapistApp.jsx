@@ -16,6 +16,9 @@ import { motion } from "framer-motion";
 export default function TherapistApp() {
   const [user, setUser] = useState(null);
   const [therapist, setTherapist] = useState(null);
+  const [showHeaderEdit, setShowHeaderEdit] = useState(false);
+  const [headerForm, setHeaderForm] = useState({ card_background_style: "", logo_url: "", specializations: [] });
+  const [logoFile, setLogoFile] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -45,6 +48,26 @@ export default function TherapistApp() {
     };
     init();
   }, [navigate]);
+
+  const updateHeaderMutation = useMutation({
+    mutationFn: async (data) => {
+      let logoUrl = data.logo_url;
+      if (logoFile) {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file: logoFile });
+        logoUrl = file_url;
+      }
+      return base44.entities.Therapist.update(therapist.id, {
+        card_background_style: data.card_background_style,
+        logo_url: logoUrl,
+        specializations: data.specializations
+      });
+    },
+    onSuccess: (updated) => {
+      setTherapist(updated);
+      setShowHeaderEdit(false);
+      setLogoFile(null);
+    },
+  });
 
   const { data: todayAppointments = [] } = useQuery({
     queryKey: ["today-appointments", therapist?.id],
@@ -138,9 +161,9 @@ export default function TherapistApp() {
               <p className="text-white/80 text-xs truncate">{therapist.specializations?.[0] || "מטפל מקצועי"}</p>
             </div>
           </div>
-          <Link to={createPageUrl("TherapistMiniSiteSettings")} className="text-white">
+          <Button variant="ghost" size="icon" onClick={() => setShowHeaderEdit(true)} className="text-white">
             <Settings size={20}/>
-          </Link>
+          </Button>
         </div>
 
         {/* Stats */}
@@ -235,9 +258,106 @@ export default function TherapistApp() {
           <NavItem icon={<Settings size={20}/>} label="הגדרות" to="TherapistDashboard"/>
         </div>
       </nav>
+
+      {/* Header Edit Dialog */}
+      <Dialog open={showHeaderEdit} onOpenChange={setShowHeaderEdit}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>עריכת כותרת</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>לוגו</Label>
+              <div className="flex items-center gap-3">
+                <label className="flex-1 border-2 border-dashed rounded-lg p-4 cursor-pointer hover:bg-gray-50">
+                  <div className="flex flex-col items-center gap-2">
+                    <Upload size={20} className="text-gray-400"/>
+                    <span className="text-sm text-gray-500">
+                      {logoFile ? logoFile.name : "העלה לוגו"}
+                    </span>
+                  </div>
+                  <input type="file" accept="image/*" className="hidden" onChange={(e) => setLogoFile(e.target.files[0])}/>
+                </label>
+                {(logoFile || headerForm.logo_url) && (
+                  <img 
+                    src={logoFile ? URL.createObjectURL(logoFile) : headerForm.logo_url} 
+                    alt="Logo" 
+                    className="h-16 object-contain"
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>תת כותרת / התמחות</Label>
+              <Input
+                value={headerForm.specializations[0] || ""}
+                onChange={(e) => setHeaderForm({...headerForm, specializations: [e.target.value]})}
+                placeholder="מטפל מקצועי"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>צבע רקע</Label>
+              <Select 
+                value={headerForm.card_background_style} 
+                onValueChange={(v) => setHeaderForm({...headerForm, card_background_style: v})}
+              >
+                <SelectTrigger><SelectValue placeholder="בחר צבע"/></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="bg-gradient-to-br from-teal-400 via-emerald-400 to-cyan-400">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded bg-gradient-to-br from-teal-400 via-emerald-400 to-cyan-400"/>
+                      טורקיז
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="bg-gradient-to-br from-blue-400 via-sky-400 to-cyan-400">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded bg-gradient-to-br from-blue-400 via-sky-400 to-cyan-400"/>
+                      כחול
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="bg-gradient-to-br from-violet-400 via-purple-400 to-fuchsia-400">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded bg-gradient-to-br from-violet-400 via-purple-400 to-fuchsia-400"/>
+                      סגול
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="bg-gradient-to-br from-rose-400 via-pink-400 to-fuchsia-400">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded bg-gradient-to-br from-rose-400 via-pink-400 to-fuchsia-400"/>
+                      ורוד
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="bg-gradient-to-br from-amber-400 via-orange-400 to-red-400">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded bg-gradient-to-br from-amber-400 via-orange-400 to-red-400"/>
+                      כתום
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <Button 
+              onClick={() => updateHeaderMutation.mutate(headerForm)}
+              disabled={updateHeaderMutation.isPending}
+              className="w-full bg-gradient-to-l from-[#7C9885] to-[#9CB4A4]"
+            >
+              {updateHeaderMutation.isPending ? "שומר..." : "שמור שינויים"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useMutation } from "@tanstack/react-query";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 function StatCard({ icon, value, label }) {
   return (

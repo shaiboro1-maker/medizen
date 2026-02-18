@@ -39,6 +39,15 @@ export default function MiniSite() {
     enabled: !!therapist,
   });
 
+  const { data: therapistContent = [] } = useQuery({
+    queryKey: ["therapistContent", therapist?.id],
+    queryFn: async () => {
+      const allContent = await base44.entities.UserContent.filter({ user_email: therapist.user_email, status: "approved" });
+      return allContent;
+    },
+    enabled: !!therapist,
+  });
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: '#F5F1E8'}}>
@@ -214,6 +223,36 @@ export default function MiniSite() {
             <div className="grid grid-cols-3 gap-2">
               {therapist.gallery.map((img, i) => (
                 <img key={i} src={img} alt={`Gallery ${i + 1}`} className="w-full aspect-square object-cover rounded-lg"/>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Therapist Content */}
+        {therapistContent.length > 0 && (
+          <div className="bg-white rounded-2xl p-5 mb-4">
+            <h2 className="text-lg font-bold mb-3" style={{color: primaryColor}}>תכנים מומלצים</h2>
+            <div className="space-y-3">
+              {therapistContent.map(content => (
+                <div key={content.id} className="border-2 border-gray-100 rounded-xl p-4 hover:border-gray-200 transition-colors">
+                  <div className="flex items-start gap-3">
+                    {content.image_url && (
+                      <img src={content.image_url} alt={content.title} className="w-20 h-20 object-cover rounded-lg"/>
+                    )}
+                    <div className="flex-1">
+                      <h3 className="font-bold mb-1">{content.title}</h3>
+                      <p className="text-sm text-gray-600 line-clamp-2 mb-2">{content.description || content.content}</p>
+                      <span className="text-xs px-2 py-1 rounded-full bg-gray-100" style={{color: primaryColor}}>
+                        {content.content_type === "exercise" && "💪 תרגיל"}
+                        {content.content_type === "recipe" && "🥗 מתכון"}
+                        {content.content_type === "inspiration" && "✨ השראה"}
+                        {content.content_type === "story" && "📖 סיפור"}
+                        {content.content_type === "joke" && "😂 בדיחה"}
+                        {content.content_type === "tip" && "⭐ טיפ"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
