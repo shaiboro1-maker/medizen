@@ -21,9 +21,16 @@ import { motion } from "framer-motion";
 export default function TherapistApp() {
   const [user, setUser] = useState(null);
   const [therapist, setTherapist] = useState(null);
-  const [showHeaderEdit, setShowHeaderEdit] = useState(false);
-  const [headerForm, setHeaderForm] = useState({ card_background_style: "", logo_url: "", specializations: [] });
+  const [showManagePage, setShowManagePage] = useState(false);
+  const [pageForm, setPageForm] = useState({ 
+    card_background_style: "", 
+    logo_url: "", 
+    specializations: [],
+    tagline: "",
+    app_quick_actions: []
+  });
   const [logoFile, setLogoFile] = useState(null);
+  const [actionImages, setActionImages] = useState({});
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -44,10 +51,12 @@ export default function TherapistApp() {
           return;
         }
         setTherapist(therapists[0]);
-        setHeaderForm({
+        setPageForm({
           card_background_style: therapists[0].card_background_style || "",
           logo_url: therapists[0].logo_url || "",
-          specializations: therapists[0].specializations || []
+          specializations: therapists[0].specializations || [],
+          tagline: therapists[0].tagline || "מטפל מקצועי",
+          app_quick_actions: therapists[0].app_quick_actions || []
         });
       } catch (error) {
         console.error(error);
@@ -59,23 +68,38 @@ export default function TherapistApp() {
     init();
   }, [navigate]);
 
-  const updateHeaderMutation = useMutation({
+  const updatePageMutation = useMutation({
     mutationFn: async (data) => {
       let logoUrl = data.logo_url;
       if (logoFile) {
         const { file_url } = await base44.integrations.Core.UploadFile({ file: logoFile });
         logoUrl = file_url;
       }
+
+      // Upload action images
+      const actionsWithImages = await Promise.all(
+        data.app_quick_actions.map(async (action, idx) => {
+          if (actionImages[idx]) {
+            const { file_url } = await base44.integrations.Core.UploadFile({ file: actionImages[idx] });
+            return { ...action, image: file_url };
+          }
+          return action;
+        })
+      );
+
       return base44.entities.Therapist.update(therapist.id, {
         card_background_style: data.card_background_style,
         logo_url: logoUrl,
-        specializations: data.specializations
+        specializations: data.specializations,
+        tagline: data.tagline,
+        app_quick_actions: actionsWithImages
       });
     },
     onSuccess: (updated) => {
       setTherapist(updated);
-      setShowHeaderEdit(false);
+      setShowManagePage(false);
       setLogoFile(null);
+      setActionImages({});
     },
   });
 
@@ -123,13 +147,13 @@ export default function TherapistApp() {
     </div>;
   }
 
-  const quickActions = [
-    { icon: <Users size={24}/>, label: "לקוחות", to: "TherapistClients", color: "from-[#7C9885] to-[#9CB4A4]" },
-    { icon: <Calendar size={24}/>, label: "קביעת תורים", to: "TherapistCalendar", color: "from-[#A8947D] to-[#B89968]" },
-    { icon: <Globe size={24}/>, label: "מיני-סייט", to: "TherapistMiniSiteSettings", color: "from-[#9CB4A4] to-[#A8947D]" },
-    { icon: <FileText size={24}/>, label: "חשבוניות", to: "TherapistInvoices", color: "from-[#B89968] to-[#C9A876]" },
-    { icon: <CreditCard size={24}/>, label: "סליקה", to: "TherapistPayments", color: "from-[#9CB4A4] to-[#A8947D]" },
-    { icon: <BarChart3 size={24}/>, label: "דשבורד", to: "TherapistDashboard", color: "from-[#7C9885] to-[#9CB4A4]" },
+  const quickActions = therapist?.app_quick_actions || [
+    { label: "לקוחות", to: "TherapistClients", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400" },
+    { label: "קביעת תורים", to: "TherapistCalendar", image: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=400" },
+    { label: "מיני-סייט", to: "TherapistMiniSiteSettings", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400" },
+    { label: "חשבוניות", to: "TherapistInvoices", image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400" },
+    { label: "סליקה", to: "TherapistPayments", image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400" },
+    { label: "דשבורד", to: "TherapistDashboard", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400" },
   ];
 
   const features = [
@@ -168,10 +192,10 @@ export default function TherapistApp() {
             )}
             <div className="flex-1 min-w-0">
               <h1 className="text-lg font-bold truncate">{therapist.full_name}</h1>
-              <p className="text-white/80 text-xs truncate">{therapist.specializations?.[0] || "מטפל מקצועי"}</p>
+              <p className="text-white/80 text-xs truncate">{therapist.tagline || therapist.specializations?.[0] || "מטפל מקצועי"}</p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" onClick={() => setShowHeaderEdit(true)} className="text-white">
+          <Button variant="ghost" size="icon" onClick={() => setShowManagePage(true)} className="text-white">
             <Settings size={20}/>
           </Button>
         </div>
@@ -224,10 +248,14 @@ export default function TherapistApp() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.05 }}
-                className={`bg-gradient-to-br ${action.color} rounded-2xl p-3 text-white shadow-md hover:shadow-lg transition-all text-right`}
+                className="rounded-2xl shadow-md hover:shadow-lg transition-all overflow-hidden relative"
               >
-                <div className="mb-2 flex justify-end">{action.icon}</div>
-                <p className="text-xs font-medium text-right">{action.label}</p>
+                {action.image && (
+                  <img src={action.image} alt={action.label} className="w-full h-24 object-cover"/>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-3">
+                  <p className="text-xs font-bold text-white">{action.label}</p>
+                </div>
               </motion.div>
             </Link>
           ))}
@@ -269,92 +297,144 @@ export default function TherapistApp() {
         </div>
       </nav>
 
-      {/* Header Edit Dialog */}
-      <Dialog open={showHeaderEdit} onOpenChange={setShowHeaderEdit}>
-        <DialogContent className="max-w-lg">
+      {/* Manage Page Dialog */}
+      <Dialog open={showManagePage} onOpenChange={setShowManagePage}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>עריכת כותרת</DialogTitle>
+            <DialogTitle>ניהול דף האפליקציה</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label>לוגו</Label>
-              <div className="flex items-center gap-3">
-                <label className="flex-1 border-2 border-dashed rounded-lg p-4 cursor-pointer hover:bg-gray-50">
-                  <div className="flex flex-col items-center gap-2">
-                    <Upload size={20} className="text-gray-400"/>
-                    <span className="text-sm text-gray-500">
-                      {logoFile ? logoFile.name : "העלה לוגו"}
-                    </span>
-                  </div>
-                  <input type="file" accept="image/*" className="hidden" onChange={(e) => setLogoFile(e.target.files[0])}/>
-                </label>
-                {(logoFile || headerForm.logo_url) && (
-                  <img 
-                    src={logoFile ? URL.createObjectURL(logoFile) : headerForm.logo_url} 
-                    alt="Logo" 
-                    className="h-16 object-contain"
-                  />
-                )}
+          <div className="space-y-6">
+            {/* Header Section */}
+            <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+              <h3 className="font-bold text-sm">כותרת עליונה</h3>
+              
+              <div className="space-y-2">
+                <Label>לוגו</Label>
+                <div className="flex items-center gap-3">
+                  <label className="flex-1 border-2 border-dashed rounded-lg p-4 cursor-pointer hover:bg-gray-50">
+                    <div className="flex flex-col items-center gap-2">
+                      <Upload size={20} className="text-gray-400"/>
+                      <span className="text-sm text-gray-500">
+                        {logoFile ? logoFile.name : "העלה לוגו"}
+                      </span>
+                    </div>
+                    <input type="file" accept="image/*" className="hidden" onChange={(e) => setLogoFile(e.target.files[0])}/>
+                  </label>
+                  {(logoFile || pageForm.logo_url) && (
+                    <img 
+                      src={logoFile ? URL.createObjectURL(logoFile) : pageForm.logo_url} 
+                      alt="Logo" 
+                      className="h-16 object-contain"
+                    />
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label>משפט תיאור</Label>
+                <Input
+                  value={pageForm.tagline}
+                  onChange={(e) => setPageForm({...pageForm, tagline: e.target.value})}
+                  placeholder="מטפל מקצועי עם ניסיון של 10 שנים"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>צבע רקע</Label>
+                <Select 
+                  value={pageForm.card_background_style} 
+                  onValueChange={(v) => setPageForm({...pageForm, card_background_style: v})}
+                >
+                  <SelectTrigger><SelectValue placeholder="בחר צבע"/></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="bg-gradient-to-br from-teal-400 via-emerald-400 to-cyan-400">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded bg-gradient-to-br from-teal-400 via-emerald-400 to-cyan-400"/>
+                        טורקיז
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="bg-gradient-to-br from-blue-400 via-sky-400 to-cyan-400">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded bg-gradient-to-br from-blue-400 via-sky-400 to-cyan-400"/>
+                        כחול
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="bg-gradient-to-br from-violet-400 via-purple-400 to-fuchsia-400">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded bg-gradient-to-br from-violet-400 via-purple-400 to-fuchsia-400"/>
+                        סגול
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="bg-gradient-to-br from-rose-400 via-pink-400 to-fuchsia-400">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded bg-gradient-to-br from-rose-400 via-pink-400 to-fuchsia-400"/>
+                        ורוד
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="bg-gradient-to-br from-amber-400 via-orange-400 to-red-400">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded bg-gradient-to-br from-amber-400 via-orange-400 to-red-400"/>
+                        כתום
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label>תת כותרת / התמחות</Label>
-              <Input
-                value={headerForm.specializations[0] || ""}
-                onChange={(e) => setHeaderForm({...headerForm, specializations: [e.target.value]})}
-                placeholder="מטפל מקצועי"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label>צבע רקע</Label>
-              <Select 
-                value={headerForm.card_background_style} 
-                onValueChange={(v) => setHeaderForm({...headerForm, card_background_style: v})}
-              >
-                <SelectTrigger><SelectValue placeholder="בחר צבע"/></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="bg-gradient-to-br from-teal-400 via-emerald-400 to-cyan-400">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded bg-gradient-to-br from-teal-400 via-emerald-400 to-cyan-400"/>
-                      טורקיז
+            {/* Quick Actions Section */}
+            <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+              <h3 className="font-bold text-sm">כפתורי פעולה מהירה</h3>
+              <p className="text-xs text-gray-600">העלה תמונות מותאמות אישית לכל כפתור</p>
+              
+              <div className="space-y-3">
+                {(pageForm.app_quick_actions.length > 0 ? pageForm.app_quick_actions : quickActions).map((action, idx) => (
+                  <div key={idx} className="flex items-center gap-3 p-3 bg-white rounded-lg">
+                    <label className="cursor-pointer">
+                      <div className="w-20 h-20 border-2 border-dashed rounded-lg overflow-hidden hover:bg-gray-50 flex items-center justify-center">
+                        {actionImages[idx] ? (
+                          <img src={URL.createObjectURL(actionImages[idx])} alt="" className="w-full h-full object-cover"/>
+                        ) : action.image ? (
+                          <img src={action.image} alt="" className="w-full h-full object-cover"/>
+                        ) : (
+                          <Upload size={16} className="text-gray-400"/>
+                        )}
+                      </div>
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        onChange={(e) => {
+                          setActionImages({...actionImages, [idx]: e.target.files[0]});
+                          const updatedActions = [...(pageForm.app_quick_actions.length > 0 ? pageForm.app_quick_actions : quickActions)];
+                          if (!pageForm.app_quick_actions.length) {
+                            setPageForm({...pageForm, app_quick_actions: updatedActions});
+                          }
+                        }}
+                      />
+                    </label>
+                    <div className="flex-1">
+                      <Input
+                        value={action.label}
+                        onChange={(e) => {
+                          const updatedActions = [...(pageForm.app_quick_actions.length > 0 ? pageForm.app_quick_actions : quickActions)];
+                          updatedActions[idx] = {...updatedActions[idx], label: e.target.value};
+                          setPageForm({...pageForm, app_quick_actions: updatedActions});
+                        }}
+                        placeholder="שם הכפתור"
+                      />
                     </div>
-                  </SelectItem>
-                  <SelectItem value="bg-gradient-to-br from-blue-400 via-sky-400 to-cyan-400">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded bg-gradient-to-br from-blue-400 via-sky-400 to-cyan-400"/>
-                      כחול
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="bg-gradient-to-br from-violet-400 via-purple-400 to-fuchsia-400">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded bg-gradient-to-br from-violet-400 via-purple-400 to-fuchsia-400"/>
-                      סגול
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="bg-gradient-to-br from-rose-400 via-pink-400 to-fuchsia-400">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded bg-gradient-to-br from-rose-400 via-pink-400 to-fuchsia-400"/>
-                      ורוד
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="bg-gradient-to-br from-amber-400 via-orange-400 to-red-400">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded bg-gradient-to-br from-amber-400 via-orange-400 to-red-400"/>
-                      כתום
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <Button 
-              onClick={() => updateHeaderMutation.mutate(headerForm)}
-              disabled={updateHeaderMutation.isPending}
+              onClick={() => updatePageMutation.mutate(pageForm)}
+              disabled={updatePageMutation.isPending}
               className="w-full bg-gradient-to-l from-[#7C9885] to-[#9CB4A4]"
             >
-              {updateHeaderMutation.isPending ? "שומר..." : "שמור שינויים"}
+              {updatePageMutation.isPending ? "שומר..." : "שמור שינויים"}
             </Button>
           </div>
         </DialogContent>
