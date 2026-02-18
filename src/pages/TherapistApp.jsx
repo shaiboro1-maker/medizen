@@ -2,15 +2,20 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { 
   Calendar, Users, MessageCircle, TrendingUp, 
   Settings, Globe, BookOpen, ShoppingBag, Video,
   BarChart3, Clock, DollarSign, Star, MessageSquare,
-  FileText, CreditCard, UserPlus, Download, ArrowRight
+  FileText, CreditCard, UserPlus, Download, ArrowRight, Upload
 } from "lucide-react";
 import AppDownload from "../components/AppDownload";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 
 export default function TherapistApp() {
@@ -39,6 +44,11 @@ export default function TherapistApp() {
           return;
         }
         setTherapist(therapists[0]);
+        setHeaderForm({
+          card_background_style: therapists[0].card_background_style || "",
+          logo_url: therapists[0].logo_url || "",
+          specializations: therapists[0].specializations || []
+        });
       } catch (error) {
         console.error(error);
         navigate(createPageUrl("Landing"));
@@ -352,12 +362,6 @@ export default function TherapistApp() {
     </div>
   );
 }
-
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useMutation } from "@tanstack/react-query";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 
 function StatCard({ icon, value, label }) {
   return (
