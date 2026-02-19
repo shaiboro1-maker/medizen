@@ -68,7 +68,7 @@ export default function TherapistProfile() {
             <img src={therapist.profile_image} alt="" className="w-full h-full object-cover opacity-30"/>
           ) : null}
           {therapist.logo_url && (
-            <div className="absolute top-6 left-6">
+            <div className="absolute top-6 right-6">
               <img src={therapist.logo_url} alt="לוגו" className="w-16 h-16 md:w-20 md:h-20 object-contain bg-white/95 rounded-xl p-2 shadow-lg"/>
             </div>
           )}
