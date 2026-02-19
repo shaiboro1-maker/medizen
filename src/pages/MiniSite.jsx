@@ -97,15 +97,28 @@ export default function MiniSite() {
   return (
     <div className="min-h-screen" style={{backgroundColor: '#F5F1E8', fontFamily}}>
       {/* Cover Image */}
-      {therapist.cover_image && (
-        <div className="relative h-64 overflow-hidden">
-          <img src={therapist.cover_image} alt="Cover" className="w-full h-full object-cover"/>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"/>
-        </div>
-      )}
+      <div className="relative h-64 overflow-hidden">
+        {therapist.cover_image ? (
+          <>
+            <img src={therapist.cover_image} alt="Cover" className="w-full h-full object-cover"/>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"/>
+          </>
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-teal-400 via-emerald-400 to-cyan-400"/>
+        )}
+        
+        {/* Logo in top right corner */}
+        {therapist.logo_url && (
+          <div className="absolute top-4 right-4">
+            <div className="bg-white/95 rounded-xl p-2 shadow-lg">
+              <img src={therapist.logo_url} alt="לוגו" className="w-16 h-16 object-contain"/>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Profile Header */}
-      <div className="relative px-4 pb-6" style={{marginTop: therapist.cover_image ? '-4rem' : '2rem'}}>
+      <div className="relative px-4 pb-6" style={{marginTop: '-4rem'}}>
         <div className="flex items-end gap-4 mb-4">
           {therapist.profile_image && (
             <div className="w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden" style={{backgroundColor: primaryColor}}>
@@ -143,12 +156,7 @@ export default function MiniSite() {
           </Button>
         </div>
 
-        {/* Logo */}
-        {therapist.logo_url && (
-          <div className="flex justify-center mb-6">
-            <img src={therapist.logo_url} alt="Logo" className="h-16"/>
-          </div>
-        )}
+
 
         {/* About */}
         {therapist.bio && (
@@ -312,16 +320,29 @@ export default function MiniSite() {
       </div>
 
       {/* Fixed Bottom CTA */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg">
-        <Button 
-          onClick={() => navigate(createPageUrl(`BookAppointment?therapist_id=${therapist.id}`))}
-          className="w-full text-white font-bold py-6 text-lg"
-          style={{backgroundColor: primaryColor}}
-        >
-          קבע תור עכשיו
-          <ChevronLeft size={20} className="mr-2"/>
-        </Button>
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg z-50">
+        <div className="flex gap-2">
+          <Button 
+            onClick={() => navigate(createPageUrl(`BookAppointment?therapist_id=${therapist.id}`))}
+            className="flex-1 text-white font-bold py-6 text-lg"
+            style={{backgroundColor: primaryColor}}
+          >
+            קבע תור עכשיו
+            <ChevronLeft size={20} className="mr-2"/>
+          </Button>
+          <Button 
+            onClick={handleShare}
+            variant="outline"
+            size="icon"
+            className="py-6 px-4"
+          >
+            <Share2 size={20}/>
+          </Button>
+        </div>
       </div>
+      
+      {/* Spacer for fixed bottom */}
+      <div className="h-24"></div>
     </div>
   );
 }
