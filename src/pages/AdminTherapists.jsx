@@ -56,6 +56,7 @@ export default function AdminTherapists() {
   const pending = therapists.filter(t => t.status === "pending");
   const approved = therapists.filter(t => t.status === "approved");
   const suspended = therapists.filter(t => t.status === "suspended");
+  const featured = therapists.filter(t => t.is_featured === true);
 
   const handleManageTherapist = (therapist) => {
     setSelectedTherapist(therapist);
@@ -89,17 +90,18 @@ export default function AdminTherapists() {
           <TabsTrigger value="pending">ממתינים ({pending.length})</TabsTrigger>
           <TabsTrigger value="approved">פעילים ({approved.length})</TabsTrigger>
           <TabsTrigger value="suspended">מושעים ({suspended.length})</TabsTrigger>
+          <TabsTrigger value="featured">מומלצים ({featured.length})</TabsTrigger>
         </TabsList>
 
-        {["pending", "approved", "suspended"].map(status => (
+        {["pending", "approved", "suspended", "featured"].map(status => (
           <TabsContent key={status} value={status}>
-            {(status === "pending" ? pending : status === "approved" ? approved : suspended).length === 0 ? (
+            {(status === "pending" ? pending : status === "approved" ? approved : status === "suspended" ? suspended : featured).length === 0 ? (
               <div className="bg-white rounded-xl border border-[#E5DDD3] p-12 text-center">
                 <p className="text-[#A8947D]">אין מטפלים</p>
               </div>
             ) : (
               <div className="space-y-3">
-                {(status === "pending" ? pending : status === "approved" ? approved : suspended).map(t => (
+                {(status === "pending" ? pending : status === "approved" ? approved : status === "suspended" ? suspended : featured).map(t => (
                   <div key={t.id} className="bg-white rounded-xl border border-[#E5DDD3] p-5">
                     <div className="flex justify-between items-start">
                       <div className="flex items-start gap-3">
