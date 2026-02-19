@@ -97,15 +97,20 @@ export default function MiniSite() {
   return (
     <div className="min-h-screen" style={{backgroundColor: '#F5F1E8', fontFamily}}>
       {/* Cover Image */}
-      {therapist.cover_image && (
-        <div className="relative h-64 overflow-hidden">
+      <div className="relative h-64 overflow-hidden" style={{backgroundColor: primaryColor}}>
+        {therapist.cover_image && (
           <img src={therapist.cover_image} alt="Cover" className="w-full h-full object-cover"/>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"/>
-        </div>
-      )}
+        )}
+        {therapist.logo_url && (
+          <div className="absolute top-6 right-6">
+            <img src={therapist.logo_url} alt="לוגו" className="w-16 h-16 md:w-20 md:h-20 object-contain bg-white/95 rounded-xl p-2 shadow-lg"/>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"/>
+      </div>
 
       {/* Profile Header */}
-      <div className="relative px-4 pb-6" style={{marginTop: therapist.cover_image ? '-4rem' : '2rem'}}>
+      <div className="relative px-4 pb-6" style={{marginTop: '-4rem'}}>
         <div className="flex items-end gap-4 mb-4">
           {therapist.profile_image && (
             <div className="w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden" style={{backgroundColor: primaryColor}}>
@@ -143,12 +148,7 @@ export default function MiniSite() {
           </Button>
         </div>
 
-        {/* Logo */}
-        {therapist.logo_url && (
-          <div className="flex justify-center mb-6">
-            <img src={therapist.logo_url} alt="Logo" className="h-16"/>
-          </div>
-        )}
+
 
         {/* About */}
         {therapist.bio && (
