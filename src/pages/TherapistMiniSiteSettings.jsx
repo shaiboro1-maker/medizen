@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
@@ -138,7 +137,7 @@ export default function TherapistMiniSiteSettings() {
         }
       }
       
-      return base44.entities.Therapist.update(therapist.id, {
+      const updatedData = await base44.entities.Therapist.update(therapist.id, {
         ...form,
         profile_image: imageUrl,
         cover_image: coverUrl,
@@ -146,9 +145,14 @@ export default function TherapistMiniSiteSettings() {
         gallery: galleryUrls,
         minisite_settings: settings
       });
+      
+      return updatedData;
     },
-    onSuccess: () => {
+    onSuccess: (updatedData) => {
+      setTherapist(updatedData);
       queryClient.invalidateQueries({ queryKey: ["therapist"] });
+      queryClient.invalidateQueries({ queryKey: ["adminTherapists"] });
+      queryClient.invalidateQueries({ queryKey: ["featuredTherapists"] });
       setProfileImage(null);
       setCoverImage(null);
       setLogoImage(null);
@@ -159,7 +163,13 @@ export default function TherapistMiniSiteSettings() {
 
   const handlePreview = () => {
     if (therapist?.unique_slug) {
-      window.open(createPageUrl(`MiniSite?slug=${therapist.unique_slug}`), "_blank");
+      const url = `${window.location.origin}${createPageUrl(`MiniSite?slug=${therapist.unique_slug}`)}`;
+      window.open(url, "_blank");
+    } else if (therapist?.id) {
+      const url = `${window.location.origin}${createPageUrl(`TherapistProfile?id=${therapist.id}`)}`;
+      window.open(url, "_blank");
+    } else {
+      alert("אין מיני-סייט או פרופיל זמין לתצוגה מקדימה");
     }
   };
 
