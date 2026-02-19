@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Check, X, User, ArrowRight, CreditCard, Layout, UserCog, XCircle } from "lucide-react";
+import { Check, X, User, ArrowRight, CreditCard, Layout, UserCog, XCircle, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { useNavigate } from "react-router-dom";
 
 const STATUS_COLORS = {
@@ -203,6 +204,23 @@ export default function AdminTherapists() {
                       })}
                     />
                   </div>
+                </div>
+              </div>
+
+              {/* Featured Therapist Management */}
+              <div className="bg-orange-50 rounded-lg p-4">
+                <h3 className="font-bold mb-3 flex items-center gap-2">
+                  <Star size={16}/> מטפל מומלץ
+                </h3>
+                <div className="flex items-center justify-between">
+                  <Label>הצג מטפל זה כמומלץ בדף הבית</Label>
+                  <Switch
+                    checked={selectedTherapist.is_featured || false}
+                    onCheckedChange={(checked) => updateMutation.mutate({
+                      id: selectedTherapist.id,
+                      data: { is_featured: checked }
+                    })}
+                  />
                 </div>
               </div>
 
