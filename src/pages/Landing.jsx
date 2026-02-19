@@ -421,11 +421,18 @@ function TherapistCard({ therapist }) {
       className="bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden border border-teal-100/50 hover:shadow-2xl transition-all hover:-translate-y-2 hover:border-teal-300"
     >
       <div className={`h-40 ${selectedBg} flex items-center justify-center relative overflow-hidden`}>
-        {therapist.profile_image ? (
+        {therapist.cover_image ? (
+          <img src={therapist.cover_image} alt={therapist.full_name} className="w-full h-full object-cover"/>
+        ) : therapist.profile_image ? (
           <img src={therapist.profile_image} alt={therapist.full_name} className="w-full h-full object-cover"/>
         ) : (
           <div className="w-20 h-20 rounded-full bg-white/30 backdrop-blur-md flex items-center justify-center text-3xl text-white font-bold shadow-lg">
             {therapist.full_name?.[0]}
+          </div>
+        )}
+        {therapist.logo_url && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <img src={therapist.logo_url} alt="לוגו" className="w-20 h-20 object-contain bg-white/90 rounded-2xl p-2 shadow-lg"/>
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>

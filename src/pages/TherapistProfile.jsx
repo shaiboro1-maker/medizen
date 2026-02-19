@@ -62,8 +62,15 @@ export default function TherapistProfile() {
       {/* Header */}
       <div className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm mb-8">
         <div className="h-48 md:h-64 bg-gradient-to-bl from-[#7C9885] to-[#9CB4A4] relative">
-          {therapist.profile_image && (
+          {therapist.cover_image ? (
+            <img src={therapist.cover_image} alt="" className="w-full h-full object-cover"/>
+          ) : therapist.profile_image ? (
             <img src={therapist.profile_image} alt="" className="w-full h-full object-cover opacity-30"/>
+          ) : null}
+          {therapist.logo_url && (
+            <div className="absolute top-6 left-6">
+              <img src={therapist.logo_url} alt="לוגו" className="w-16 h-16 md:w-20 md:h-20 object-contain bg-white/95 rounded-xl p-2 shadow-lg"/>
+            </div>
           )}
           <div className="absolute bottom-0 right-0 left-0 p-6 flex items-end gap-5">
             <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-white border-4 border-white shadow-lg overflow-hidden flex-shrink-0">
