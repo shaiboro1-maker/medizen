@@ -150,7 +150,12 @@ export default function AdminDashboard() {
 
   const { data: userContent = [] } = useQuery({
     queryKey: ["pendingUserContent"],
-    queryFn: () => base44.entities.UserContent.filter({ is_approved: false }),
+    queryFn: () => base44.entities.UserContent.filter({ status: "pending" }),
+  });
+
+  const { data: inspirations = [] } = useQuery({
+    queryKey: ["adminInspirations"],
+    queryFn: () => base44.entities.Inspiration.list("-created_date"),
   });
 
   const approvedTherapists = therapists.filter(t => t.status === "approved").length;
@@ -228,6 +233,16 @@ export default function AdminDashboard() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminPodcasts"] }),
   });
 
+  const deleteInspirationMutation = useMutation({
+    mutationFn: (id) => base44.entities.Inspiration.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminInspirations"] }),
+  });
+
+  const deleteUserContentMutation = useMutation({
+    mutationFn: (id) => base44.entities.UserContent.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["pendingUserContent"] }),
+  });
+
   const createMutation = useMutation({
     mutationFn: async (data) => {
       if (contentType === "exercise") return base44.entities.Exercise.create(data);
@@ -236,6 +251,9 @@ export default function AdminDashboard() {
       if (contentType === "bulletin") return base44.entities.BulletinPost.create(data);
       if (contentType === "webinar") return base44.entities.Webinar.create(data);
       if (contentType === "podcast") return base44.entities.Podcast.create(data);
+      if (contentType === "inspiration") return base44.entities.Inspiration.create(data);
+      if (contentType === "joke") return base44.entities.UserContent.create({...data, content_type: "joke", status: "approved"});
+      if (contentType === "story") return base44.entities.UserContent.create({...data, content_type: "story", status: "approved"});
     },
     onSuccess: () => {
       queryClient.invalidateQueries();
@@ -507,9 +525,11 @@ export default function AdminDashboard() {
       <div className="mb-8">
         <h2 className="text-xl font-bold mb-4 text-[#7C9885]">ניהול תוכן</h2>
         <Tabs defaultValue="exercises" className="space-y-4">
-          <TabsList className="bg-white rounded-xl p-1 border border-[#E5DDD3]">
+          <TabsList className="bg-white rounded-xl p-1 border border-[#E5DDD3] flex-wrap">
             <TabsTrigger value="exercises">תרגילים ({exercises.length})</TabsTrigger>
             <TabsTrigger value="recipes">מתכונים ({recipes.length})</TabsTrigger>
+            <TabsTrigger value="inspirations">השראות ({inspirations.length})</TabsTrigger>
+            <TabsTrigger value="userContent">תוכן משתמשים ({userContent.length})</TabsTrigger>
             <TabsTrigger value="music">מוזיקה ({music.length})</TabsTrigger>
             <TabsTrigger value="bulletin">לוח מודעות ({bulletinPosts.length})</TabsTrigger>
             <TabsTrigger value="webinars">וובינרים ({webinars.length})</TabsTrigger>
@@ -657,6 +677,63 @@ export default function AdminDashboard() {
                 />
               ))}
               <Link to={createPageUrl("AdminContent")}>
+                <Button variant="outline" className="w-full">ראה הכל</Button>
+              </Link>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="inspirations">
+            <div className="space-y-3">
+              {inspirations.slice(0, 10).map(i => (
+                <ContentCard
+                  key={i.id}
+                  title={i.text?.substring(0, 60) + "..."}
+                  subtitle={`${i.category} · ${i.author || "אנונימי"}`}
+                  image={i.image_url}
+                  isApproved={i.is_approved}
+                  onDelete={() => deleteInspirationMutation.mutate(i.id)}
+                  onEdit={() => {
+                    setEditingContent({ ...i, type: 'inspiration' });
+                    setFormData({ ...i, title: i.text?.substring(0, 50) });
+                    setShowUploadDialog(true);
+                  }}
+                  onToggleStatus={() => {
+                    base44.entities.Inspiration.update(i.id, { is_approved: !i.is_approved }).then(() => {
+                      queryClient.invalidateQueries({ queryKey: ["adminInspirations"] });
+                    });
+                  }}
+                />
+              ))}
+              <Link to={createPageUrl("AdminInspirations")}>
+                <Button variant="outline" className="w-full">ראה הכל</Button>
+              </Link>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="userContent">
+            <div className="space-y-3">
+              {userContent.slice(0, 10).map(c => (
+                <ContentCard
+                  key={c.id}
+                  title={c.title}
+                  subtitle={`${c.content_type} · ${c.user_email}`}
+                  image={c.image_url}
+                  isApproved={c.status === "approved"}
+                  onDelete={() => deleteUserContentMutation.mutate(c.id)}
+                  onEdit={() => {
+                    setEditingContent({ ...c, type: 'userContent' });
+                    setFormData(c);
+                    setShowUploadDialog(true);
+                  }}
+                  onToggleStatus={() => {
+                    const newStatus = c.status === "approved" ? "rejected" : "approved";
+                    base44.entities.UserContent.update(c.id, { status: newStatus }).then(() => {
+                      queryClient.invalidateQueries({ queryKey: ["pendingUserContent"] });
+                    });
+                  }}
+                />
+              ))}
+              <Link to={createPageUrl("AdminUserContent")}>
                 <Button variant="outline" className="w-full">ראה הכל</Button>
               </Link>
             </div>
@@ -842,6 +919,9 @@ export default function AdminDashboard() {
                 <SelectContent>
                   <SelectItem value="exercise">תרגיל</SelectItem>
                   <SelectItem value="recipe">מתכון</SelectItem>
+                  <SelectItem value="inspiration">משפט השראה</SelectItem>
+                  <SelectItem value="joke">בדיחה</SelectItem>
+                  <SelectItem value="story">סיפור</SelectItem>
                   <SelectItem value="music">מוזיקה</SelectItem>
                   <SelectItem value="bulletin">לוח מודעות</SelectItem>
                   <SelectItem value="webinar">וובינר</SelectItem>
@@ -850,42 +930,84 @@ export default function AdminDashboard() {
               </Select>
             </div>
 
-            <div>
-              <Label>כותרת</Label>
-              <Input
-                value={formData.title}
-                onChange={(e) => setFormData({...formData, title: e.target.value})}
-                required
-              />
-            </div>
+            {contentType === "inspiration" ? (
+              <>
+                <div>
+                  <Label>טקסט משפט ההשראה</Label>
+                  <Textarea
+                    value={formData.content || formData.text}
+                    onChange={(e) => setFormData({...formData, content: e.target.value, text: e.target.value})}
+                    required
+                    rows={3}
+                  />
+                </div>
+                <div>
+                  <Label>מחבר (אופציונלי)</Label>
+                  <Input
+                    value={formData.author || ""}
+                    onChange={(e) => setFormData({...formData, author: e.target.value})}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <Label>כותרת</Label>
+                  <Input
+                    value={formData.title}
+                    onChange={(e) => setFormData({...formData, title: e.target.value})}
+                    required
+                  />
+                </div>
 
-            <div>
-              <Label>תיאור</Label>
-              <Textarea
-                value={formData.description}
-                onChange={(e) => setFormData({...formData, description: e.target.value})}
-              />
-            </div>
+                <div>
+                  <Label>תיאור</Label>
+                  <Textarea
+                    value={formData.description}
+                    onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  />
+                </div>
+              </>
+            )}
 
-            {contentType === "bulletin" && (
+            {(contentType === "bulletin" || contentType === "joke" || contentType === "story") && (
               <div>
                 <Label>תוכן</Label>
                 <Textarea
                   value={formData.content}
                   onChange={(e) => setFormData({...formData, content: e.target.value})}
                   rows={5}
+                  required
                 />
               </div>
             )}
 
-            <div>
-              <Label>קטגוריה</Label>
-              <Input
-                value={formData.category}
-                onChange={(e) => setFormData({...formData, category: e.target.value})}
-                required
-              />
-            </div>
+            {contentType === "inspiration" ? (
+              <div>
+                <Label>קטגוריה</Label>
+                <Select value={formData.category} onValueChange={(v) => setFormData({...formData, category: v})}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="בחר קטגוריה"/>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="motivation">מוטיבציה</SelectItem>
+                    <SelectItem value="health">בריאות</SelectItem>
+                    <SelectItem value="happiness">אושר</SelectItem>
+                    <SelectItem value="success">הצלחה</SelectItem>
+                    <SelectItem value="peace">שלווה</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            ) : contentType !== "joke" && contentType !== "story" && (
+              <div>
+                <Label>קטגוריה</Label>
+                <Input
+                  value={formData.category}
+                  onChange={(e) => setFormData({...formData, category: e.target.value})}
+                  required
+                />
+              </div>
+            )}
 
             {(contentType === "exercise" || contentType === "webinar" || contentType === "podcast") && (
               <div>

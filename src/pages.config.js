@@ -55,7 +55,6 @@ import AdminApprovals from './pages/AdminApprovals';
 import AdminBulletin from './pages/AdminBulletin';
 import AdminCRM from './pages/AdminCRM';
 import AdminCampaigns from './pages/AdminCampaigns';
-import AdminContent from './pages/AdminContent';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminInspirations from './pages/AdminInspirations';
 import AdminNotifications from './pages/AdminNotifications';
@@ -78,6 +77,7 @@ import HealthNews from './pages/HealthNews';
 import HealthTracker from './pages/HealthTracker';
 import Inspirations from './pages/Inspirations';
 import Landing from './pages/Landing';
+import MiniSite from './pages/MiniSite';
 import Music from './pages/Music';
 import MyAccount from './pages/MyAccount';
 import MyAppointments from './pages/MyAppointments';
@@ -128,7 +128,7 @@ import TherapistServices from './pages/TherapistServices';
 import TherapistTeam from './pages/TherapistTeam';
 import TherapistWebinars from './pages/TherapistWebinars';
 import Webinars from './pages/Webinars';
-import MiniSite from './pages/MiniSite';
+import AdminContent from './pages/AdminContent';
 import __Layout from './Layout.jsx';
 
 
@@ -141,7 +141,6 @@ export const PAGES = {
     "AdminBulletin": AdminBulletin,
     "AdminCRM": AdminCRM,
     "AdminCampaigns": AdminCampaigns,
-    "AdminContent": AdminContent,
     "AdminDashboard": AdminDashboard,
     "AdminInspirations": AdminInspirations,
     "AdminNotifications": AdminNotifications,
@@ -164,6 +163,7 @@ export const PAGES = {
     "HealthTracker": HealthTracker,
     "Inspirations": Inspirations,
     "Landing": Landing,
+    "MiniSite": MiniSite,
     "Music": Music,
     "MyAccount": MyAccount,
     "MyAppointments": MyAppointments,
@@ -214,7 +214,7 @@ export const PAGES = {
     "TherapistTeam": TherapistTeam,
     "TherapistWebinars": TherapistWebinars,
     "Webinars": Webinars,
-    "MiniSite": MiniSite,
+    "AdminContent": AdminContent,
 }
 
 export const pagesConfig = {
