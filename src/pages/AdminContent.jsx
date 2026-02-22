@@ -21,7 +21,6 @@ export default function AdminContent() {
     title: "",
     description: "",
     category: "",
-    content: "",
     video_url: "",
     thumbnail_url: "",
     audio_url: "",
@@ -63,11 +62,6 @@ export default function AdminContent() {
     queryFn: () => base44.entities.Podcast.list("-created_date"),
   });
 
-  const { data: userContent = [] } = useQuery({
-    queryKey: ["adminUserContent"],
-    queryFn: () => base44.entities.UserContent.filter({ status: "approved" }),
-  });
-
   const deleteExMutation = useMutation({
     mutationFn: (id) => base44.entities.Exercise.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminExercises"] }),
@@ -98,11 +92,6 @@ export default function AdminContent() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminPodcasts"] }),
   });
 
-  const deleteUserContentMutation = useMutation({
-    mutationFn: (id) => base44.entities.UserContent.delete(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["adminUserContent"] }),
-  });
-
   const createMutation = useMutation({
     mutationFn: async (data) => {
       if (contentType === "exercise") return base44.entities.Exercise.create(data);
@@ -111,9 +100,6 @@ export default function AdminContent() {
       if (contentType === "bulletin") return base44.entities.BulletinPost.create(data);
       if (contentType === "webinar") return base44.entities.Webinar.create(data);
       if (contentType === "podcast") return base44.entities.Podcast.create(data);
-      if (contentType === "inspiration") return base44.entities.UserContent.create({ ...data, content_type: "inspiration", status: "approved" });
-      if (contentType === "joke") return base44.entities.UserContent.create({ ...data, content_type: "joke", status: "approved" });
-      if (contentType === "story") return base44.entities.UserContent.create({ ...data, content_type: "story", status: "approved" });
     },
     onSuccess: () => {
       queryClient.invalidateQueries();
@@ -141,7 +127,6 @@ export default function AdminContent() {
       title: "",
       description: "",
       category: "",
-      content: "",
       video_url: "",
       thumbnail_url: "",
       audio_url: "",
@@ -185,9 +170,6 @@ export default function AdminContent() {
           <TabsTrigger value="bulletin">לוח מודעות ({bulletinPosts.length})</TabsTrigger>
           <TabsTrigger value="webinars">וובינרים ({webinars.length})</TabsTrigger>
           <TabsTrigger value="podcasts">פודקאסטים ({podcasts.length})</TabsTrigger>
-          <TabsTrigger value="inspirations">השראות ({userContent.filter(c => c.content_type === "inspiration").length})</TabsTrigger>
-          <TabsTrigger value="jokes">בדיחות ({userContent.filter(c => c.content_type === "joke").length})</TabsTrigger>
-          <TabsTrigger value="stories">סיפורים ({userContent.filter(c => c.content_type === "story").length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="exercises">
@@ -273,48 +255,6 @@ export default function AdminContent() {
             ))}
           </div>
         </TabsContent>
-
-        <TabsContent value="inspirations">
-          <div className="space-y-3">
-            {userContent.filter(c => c.content_type === "inspiration").map(c => (
-              <ContentCard
-                key={c.id}
-                title={c.title}
-                subtitle={`${c.user_email}`}
-                image={c.image_url}
-                onDelete={() => deleteUserContentMutation.mutate(c.id)}
-              />
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="jokes">
-          <div className="space-y-3">
-            {userContent.filter(c => c.content_type === "joke").map(c => (
-              <ContentCard
-                key={c.id}
-                title={c.title}
-                subtitle={`${c.user_email}`}
-                image={c.image_url}
-                onDelete={() => deleteUserContentMutation.mutate(c.id)}
-              />
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="stories">
-          <div className="space-y-3">
-            {userContent.filter(c => c.content_type === "story").map(c => (
-              <ContentCard
-                key={c.id}
-                title={c.title}
-                subtitle={`${c.user_email}`}
-                image={c.image_url}
-                onDelete={() => deleteUserContentMutation.mutate(c.id)}
-              />
-            ))}
-          </div>
-        </TabsContent>
       </Tabs>
 
       {/* Create Dialog */}
@@ -337,9 +277,6 @@ export default function AdminContent() {
                   <SelectItem value="bulletin">לוח מודעות</SelectItem>
                   <SelectItem value="webinar">וובינר</SelectItem>
                   <SelectItem value="podcast">פודקאסט</SelectItem>
-                  <SelectItem value="inspiration">משפט השראה</SelectItem>
-                  <SelectItem value="joke">בדיחה</SelectItem>
-                  <SelectItem value="story">סיפור</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -361,28 +298,14 @@ export default function AdminContent() {
               />
             </div>
 
-            {(contentType === "inspiration" || contentType === "joke" || contentType === "story") && (
-              <div>
-                <Label>תוכן</Label>
-                <Textarea
-                  value={formData.content}
-                  onChange={(e) => setFormData({...formData, content: e.target.value})}
-                  rows={6}
-                  required
-                />
-              </div>
-            )}
-
-            {!["inspiration", "joke", "story"].includes(contentType) && (
-              <div>
-                <Label>קטגוריה</Label>
-                <Input
-                  value={formData.category}
-                  onChange={(e) => setFormData({...formData, category: e.target.value})}
-                  required
-                />
-              </div>
-            )}
+            <div>
+              <Label>קטגוריה</Label>
+              <Input
+                value={formData.category}
+                onChange={(e) => setFormData({...formData, category: e.target.value})}
+                required
+              />
+            </div>
 
             {(contentType === "exercise" || contentType === "webinar" || contentType === "podcast") && (
               <div>
@@ -392,7 +315,7 @@ export default function AdminContent() {
               </div>
             )}
 
-            {(contentType === "exercise" || contentType === "recipe" || contentType === "music" || contentType === "bulletin" || contentType === "webinar" || contentType === "podcast" || contentType === "inspiration" || contentType === "joke" || contentType === "story") && (
+            {(contentType === "exercise" || contentType === "recipe" || contentType === "music" || contentType === "bulletin" || contentType === "webinar" || contentType === "podcast") && (
               <div>
                 <Label>העלאת תמונה</Label>
                 <input 
