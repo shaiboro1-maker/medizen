@@ -1,0 +1,56 @@
+{
+  "name": "AIRecommendation",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "recommendation_type": {
+      "type": "string",
+      "enum": [
+        "exercise",
+        "recipe",
+        "music",
+        "therapist",
+        "product",
+        "general"
+      ],
+      "description": "\u05e1\u05d5\u05d2 \u05d4\u05d4\u05de\u05dc\u05e6\u05d4"
+    },
+    "item_id": {
+      "type": "string",
+      "description": "\u05de\u05d6\u05d4\u05d4 \u05d4\u05e4\u05e8\u05d9\u05d8 \u05d4\u05de\u05d5\u05de\u05dc\u05e5"
+    },
+    "item_title": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string",
+      "description": "\u05d4\u05e1\u05d1\u05e8 \u05dc\u05d4\u05de\u05dc\u05e6\u05d4"
+    },
+    "confidence_score": {
+      "type": "number",
+      "description": "\u05e8\u05de\u05ea \u05d4\u05d1\u05d9\u05d8\u05d7\u05d5\u05df \u05d1\u05d4\u05de\u05dc\u05e6\u05d4 (0-100)"
+    },
+    "based_on": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "\u05e2\u05dc \u05e1\u05de\u05da \u05de\u05d4 \u05e0\u05d9\u05ea\u05e0\u05d4 \u05d4\u05d4\u05de\u05dc\u05e6\u05d4"
+    },
+    "was_clicked": {
+      "type": "boolean",
+      "default": false
+    },
+    "was_completed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "user_email",
+    "recommendation_type",
+    "item_id"
+  ]
+}

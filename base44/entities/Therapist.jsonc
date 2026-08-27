@@ -1,0 +1,417 @@
+{
+  "name": "Therapist",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of the user account linked to this therapist"
+    },
+    "full_name": {
+      "type": "string",
+      "description": "Full name of the therapist"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "profile_image": {
+      "type": "string",
+      "description": "URL of profile image"
+    },
+    "logo_url": {
+      "type": "string",
+      "description": "\u05dc\u05d5\u05d2\u05d5 \u05e9\u05dc \u05d4\u05de\u05d8\u05e4\u05dc"
+    },
+    "cover_image": {
+      "type": "string",
+      "description": "\u05ea\u05de\u05d5\u05e0\u05ea \u05e8\u05e7\u05e2"
+    },
+    "card_background_style": {
+      "type": "string",
+      "enum": [
+        "bg-gradient-to-br from-teal-400 via-emerald-400 to-cyan-400",
+        "bg-gradient-to-br from-blue-400 via-sky-400 to-cyan-400",
+        "bg-gradient-to-br from-violet-400 via-purple-400 to-fuchsia-400",
+        "bg-gradient-to-br from-rose-400 via-pink-400 to-fuchsia-400",
+        "bg-gradient-to-br from-amber-400 via-orange-400 to-red-400",
+        "bg-gradient-to-br from-lime-400 via-green-400 to-emerald-400"
+      ],
+      "description": "\u05e1\u05d2\u05e0\u05d5\u05df \u05e8\u05e7\u05e2 \u05dc\u05db\u05e8\u05d8\u05d9\u05e1 \u05d4\u05d1\u05d9\u05e7\u05d5\u05e8 \u05e9\u05dc \u05d4\u05de\u05d8\u05e4\u05dc"
+    },
+    "tagline": {
+      "type": "string",
+      "description": "\u05de\u05e9\u05e4\u05d8 \u05ea\u05d9\u05d0\u05d5\u05e8 \u05e7\u05e6\u05e8 \u05de\u05ea\u05d7\u05ea \u05dc\u05e9\u05dd \u05d4\u05de\u05d8\u05e4\u05dc"
+    },
+    "app_quick_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "\u05db\u05e4\u05ea\u05d5\u05e8\u05d9 \u05e4\u05e2\u05d5\u05dc\u05d4 \u05de\u05d4\u05d9\u05e8\u05d4 \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d9\u05ea \u05d4\u05de\u05d8\u05e4\u05dc"
+    },
+    "gallery": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "\u05d2\u05dc\u05e8\u05d9\u05d9\u05ea \u05ea\u05de\u05d5\u05e0\u05d5\u05ea"
+    },
+    "video_intro_url": {
+      "type": "string",
+      "description": "\u05e1\u05e8\u05d8\u05d5\u05df \u05d4\u05d9\u05db\u05e8\u05d5\u05ea"
+    },
+    "video_testimonials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "client_name": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "\u05e1\u05e8\u05d8\u05d5\u05e0\u05d9 \u05d4\u05de\u05dc\u05e6\u05d5\u05ea \u05de\u05dc\u05e7\u05d5\u05d7\u05d5\u05ea"
+    },
+    "bio": {
+      "type": "string",
+      "description": "About the therapist"
+    },
+    "therapeutic_approach": {
+      "type": "string",
+      "description": "\u05d4\u05d2\u05d9\u05e9\u05d4 \u05d4\u05d8\u05d9\u05e4\u05d5\u05dc\u05d9\u05ea \u05e9\u05dc \u05d4\u05de\u05d8\u05e4\u05dc"
+    },
+    "specializations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of specialization areas"
+    },
+    "area": {
+      "type": "string",
+      "description": "Geographic area"
+    },
+    "city": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "number",
+      "default": 0
+    },
+    "review_count": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "suspended"
+      ],
+      "default": "pending"
+    },
+    "subscription_type": {
+      "type": "string",
+      "enum": [
+        "free",
+        "basic",
+        "premium"
+      ],
+      "default": "free"
+    },
+    "subscription_expires": {
+      "type": "string",
+      "format": "date"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "acupuncture",
+          "physio",
+          "cosmetics",
+          "nutrition",
+          "naturopathy",
+          "tuina",
+          "shiatsu",
+          "reflexology",
+          "osteopathy",
+          "sports",
+          "massage",
+          "body_mind",
+          "chiropractic",
+          "hair",
+          "pemf",
+          "insoles",
+          "shockwave",
+          "occupational",
+          "social_work",
+          "pedicure",
+          "combined",
+          "other"
+        ]
+      },
+      "description": "Professional categories"
+    },
+    "years_experience": {
+      "type": "number"
+    },
+    "certifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "institution": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "certificate_url": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "\u05ea\u05e2\u05d5\u05d3\u05d5\u05ea \u05d5\u05d4\u05e1\u05de\u05db\u05d5\u05ea"
+    },
+    "website": {
+      "type": "string"
+    },
+    "social_links": {
+      "type": "object",
+      "properties": {
+        "instagram": {
+          "type": "string"
+        },
+        "facebook": {
+          "type": "string"
+        },
+        "whatsapp": {
+          "type": "string"
+        },
+        "tiktok": {
+          "type": "string"
+        },
+        "google_business": {
+          "type": "string"
+        }
+      }
+    },
+    "review_integrations": {
+      "type": "object",
+      "properties": {
+        "facebook_enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "google_enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "instagram_enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "tiktok_enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "website_enabled": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "description": "\u05d7\u05d9\u05d1\u05d5\u05e8\u05d9\u05dd \u05dc\u05e4\u05dc\u05d8\u05e4\u05d5\u05e8\u05de\u05d5\u05ea \u05d1\u05d9\u05e7\u05d5\u05e8\u05d5\u05ea"
+    },
+    "unique_slug": {
+      "type": "string",
+      "description": "\u05e7\u05d9\u05e9\u05d5\u05e8 \u05d9\u05d9\u05d7\u05d5\u05d3\u05d9 \u05dc\u05de\u05d9\u05e0\u05d9-\u05e1\u05d9\u05d9\u05d8"
+    },
+    "contact_form_fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "email",
+              "phone",
+              "textarea",
+              "select"
+            ]
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "description": "\u05e9\u05d3\u05d5\u05ea \u05de\u05d5\u05ea\u05d0\u05de\u05d9\u05dd \u05d0\u05d9\u05e9\u05d9\u05ea \u05dc\u05d8\u05d5\u05e4\u05e1 \u05d9\u05e6\u05d9\u05e8\u05ea \u05d4\u05e7\u05e9\u05e8"
+    },
+    "minisite_settings": {
+      "type": "object",
+      "properties": {
+        "primary_color": {
+          "type": "string",
+          "default": "#0F766E"
+        },
+        "secondary_color": {
+          "type": "string",
+          "default": "#F59E0B"
+        },
+        "font_family": {
+          "type": "string",
+          "enum": [
+            "Heebo",
+            "Assistant",
+            "Rubik",
+            "Alef"
+          ],
+          "default": "Heebo"
+        },
+        "layout": {
+          "type": "string",
+          "enum": [
+            "default",
+            "modern",
+            "minimal"
+          ],
+          "default": "default"
+        },
+        "show_gallery": {
+          "type": "boolean",
+          "default": true
+        },
+        "show_services": {
+          "type": "boolean",
+          "default": true
+        },
+        "show_courses": {
+          "type": "boolean",
+          "default": true
+        },
+        "show_blog": {
+          "type": "boolean",
+          "default": true
+        },
+        "show_reviews": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "description": "\u05d4\u05d2\u05d3\u05e8\u05d5\u05ea \u05e2\u05d9\u05e6\u05d5\u05d1 \u05dc\u05de\u05d9\u05e0\u05d9-\u05e1\u05d9\u05d9\u05d8"
+    },
+    "lead_bot_settings": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "bot_name": {
+          "type": "string",
+          "default": "\u05e2\u05d5\u05d6\u05e8 \u05d5\u05d9\u05e8\u05d8\u05d5\u05d0\u05dc\u05d9"
+        },
+        "welcome_message": {
+          "type": "string",
+          "default": "\u05e9\u05dc\u05d5\u05dd! \u05d0\u05d9\u05da \u05d0\u05d5\u05db\u05dc \u05dc\u05e2\u05d6\u05d5\u05e8 \u05dc\u05da \u05d4\u05d9\u05d5\u05dd?"
+        },
+        "training_data": {
+          "type": "string",
+          "description": "\u05e0\u05ea\u05d5\u05e0\u05d9 \u05d0\u05d9\u05de\u05d5\u05df \u05dc\u05d1\u05d5\u05d8 - \u05de\u05d9\u05d3\u05e2 \u05e2\u05dc \u05d4\u05de\u05d8\u05e4\u05dc, \u05e9\u05d9\u05e8\u05d5\u05ea\u05d9\u05dd, \u05de\u05d7\u05d9\u05e8\u05d9\u05dd \u05d5\u05db\u05d5'"
+        },
+        "auto_response_delay": {
+          "type": "number",
+          "default": 2,
+          "description": "\u05d4\u05e9\u05d4\u05d9\u05d4 \u05d1\u05e9\u05e0\u05d9\u05d5\u05ea \u05dc\u05e4\u05e0\u05d9 \u05ea\u05d2\u05d5\u05d1\u05d4 \u05d0\u05d5\u05d8\u05d5\u05de\u05d8\u05d9\u05ea"
+        }
+      },
+      "description": "\u05d4\u05d2\u05d3\u05e8\u05d5\u05ea \u05d1\u05d5\u05d8 \u05d7\u05d9\u05de\u05d5\u05dd \u05dc\u05d9\u05d3\u05d9\u05dd"
+    },
+    "appointment_reminders": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "hours_before": {
+          "type": "number",
+          "default": 24,
+          "description": "\u05db\u05de\u05d4 \u05e9\u05e2\u05d5\u05ea \u05dc\u05e4\u05e0\u05d9 \u05d4\u05ea\u05d5\u05e8 \u05dc\u05e9\u05dc\u05d5\u05d7 \u05ea\u05d6\u05db\u05d5\u05e8\u05ea"
+        }
+      },
+      "description": "\u05d4\u05d2\u05d3\u05e8\u05d5\u05ea \u05ea\u05d6\u05db\u05d5\u05e8\u05d5\u05ea \u05dc\u05ea\u05d5\u05e8\u05d9\u05dd"
+    },
+    "cancellation_policy": {
+      "type": "object",
+      "properties": {
+        "allow_cancellation": {
+          "type": "boolean",
+          "default": true
+        },
+        "hours_before": {
+          "type": "number",
+          "default": 24,
+          "description": "\u05db\u05de\u05d4 \u05e9\u05e2\u05d5\u05ea \u05de\u05e8\u05d0\u05e9 \u05e0\u05d9\u05ea\u05df \u05dc\u05d1\u05d8\u05dc \u05ea\u05d5\u05e8"
+        },
+        "cancellation_fee": {
+          "type": "number",
+          "default": 0,
+          "description": "\u05e2\u05dc\u05d5\u05ea \u05d1\u05d9\u05d8\u05d5\u05dc (\u05d0\u05d5\u05e4\u05e6\u05d9\u05d5\u05e0\u05dc\u05d9)"
+        }
+      },
+      "description": "\u05de\u05d3\u05d9\u05e0\u05d9\u05d5\u05ea \u05d1\u05d9\u05d8\u05d5\u05dc \u05ea\u05d5\u05e8\u05d9\u05dd"
+    },
+    "google_calendar_connected": {
+      "type": "boolean",
+      "default": false,
+      "description": "\u05d4\u05d0\u05dd \u05de\u05d7\u05d5\u05d1\u05e8 \u05dc-Google Calendar"
+    }
+  },
+  "required": [
+    "full_name",
+    "user_email"
+  ]
+}

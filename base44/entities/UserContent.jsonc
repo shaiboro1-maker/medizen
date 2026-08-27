@@ -1,0 +1,57 @@
+{
+  "name": "UserContent",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email of user who submitted content"
+    },
+    "content_type": {
+      "type": "string",
+      "enum": [
+        "exercise",
+        "recipe",
+        "suggestion",
+        "tip",
+        "inspiration",
+        "joke",
+        "story"
+      ],
+      "description": "Type of content"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string",
+      "description": "Main content text"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "video_url": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "default": "pending"
+    },
+    "admin_notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_email",
+    "content_type",
+    "title",
+    "content"
+  ]
+}

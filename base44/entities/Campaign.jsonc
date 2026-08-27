@@ -1,0 +1,95 @@
+{
+  "name": "Campaign",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "\u05e9\u05dd \u05d4\u05e7\u05de\u05e4\u05d9\u05d9\u05df"
+    },
+    "description": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "email",
+        "push",
+        "both"
+      ],
+      "description": "\u05e1\u05d5\u05d2 \u05d4\u05e7\u05de\u05e4\u05d9\u05d9\u05df"
+    },
+    "target_segment_id": {
+      "type": "string",
+      "description": "\u05de\u05d6\u05d4\u05d4 \u05e4\u05d9\u05dc\u05d5\u05d7 \u05dc\u05e7\u05d5\u05d7\u05d5\u05ea"
+    },
+    "target_emails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "\u05e8\u05e9\u05d9\u05de\u05ea \u05de\u05d9\u05d9\u05dc\u05d9\u05dd \u05e1\u05e4\u05e6\u05d9\u05e4\u05d9\u05ea"
+    },
+    "subject": {
+      "type": "string",
+      "description": "\u05e0\u05d5\u05e9\u05d0 \u05d4\u05d0\u05d9\u05de\u05d9\u05d9\u05dc/\u05d4\u05ea\u05e8\u05d0\u05d4"
+    },
+    "message": {
+      "type": "string",
+      "description": "\u05ea\u05d5\u05db\u05df \u05d4\u05d4\u05d5\u05d3\u05e2\u05d4"
+    },
+    "call_to_action": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "link": {
+          "type": "string"
+        }
+      }
+    },
+    "promotion_id": {
+      "type": "string",
+      "description": "\u05e7\u05d9\u05e9\u05d5\u05e8 \u05dc\u05de\u05d1\u05e6\u05e2"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "scheduled",
+        "sent",
+        "cancelled"
+      ],
+      "default": "draft"
+    },
+    "sent_count": {
+      "type": "number",
+      "default": 0
+    },
+    "opened_count": {
+      "type": "number",
+      "default": 0
+    },
+    "clicked_count": {
+      "type": "number",
+      "default": 0
+    },
+    "converted_count": {
+      "type": "number",
+      "default": 0
+    },
+    "created_by": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "type",
+    "subject",
+    "message"
+  ]
+}

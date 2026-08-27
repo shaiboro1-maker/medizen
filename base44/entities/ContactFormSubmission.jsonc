@@ -1,0 +1,40 @@
+{
+  "name": "ContactFormSubmission",
+  "type": "object",
+  "properties": {
+    "therapist_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "custom_fields": {
+      "type": "object",
+      "description": "Additional custom fields and their values"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "read",
+        "replied"
+      ],
+      "default": "new"
+    }
+  },
+  "required": [
+    "therapist_id",
+    "name",
+    "email",
+    "message"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "profile_image": {
+      "type": "string",
+      "description": "URL of user profile image"
+    },
+    "bio": {
+      "type": "string",
+      "description": "User bio"
+    },
+    "preferences": {
+      "type": "object",
+      "properties": {
+        "notifications_enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "email_notifications": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    }
+  },
+  "required": [
+    "profile_image",
+    "bio",
+    "preferences"
+  ]
+}

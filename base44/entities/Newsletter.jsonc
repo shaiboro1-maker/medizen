@@ -1,0 +1,54 @@
+{
+  "name": "Newsletter",
+  "type": "object",
+  "properties": {
+    "therapist_id": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string",
+      "description": "\u05ea\u05d5\u05db\u05df \u05d4\u05e0\u05d9\u05d5\u05d6\u05dc\u05d8\u05e8 (HTML)"
+    },
+    "recipients_filter": {
+      "type": "string",
+      "enum": [
+        "all_clients",
+        "active_clients",
+        "custom"
+      ],
+      "description": "\u05dc\u05de\u05d9 \u05dc\u05e9\u05dc\u05d5\u05d7"
+    },
+    "recipient_emails": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "\u05e8\u05e9\u05d9\u05de\u05ea \u05d0\u05d9\u05de\u05d9\u05d9\u05dc\u05d9\u05dd \u05d9\u05d3\u05e0\u05d9\u05ea (\u05d0\u05dd custom)"
+    },
+    "sent_count": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "sent"
+      ],
+      "default": "draft"
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "therapist_id",
+    "subject",
+    "content",
+    "recipients_filter"
+  ]
+}

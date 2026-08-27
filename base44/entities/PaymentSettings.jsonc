@@ -1,0 +1,76 @@
+{
+  "name": "PaymentSettings",
+  "type": "object",
+  "properties": {
+    "therapist_id": {
+      "type": "string",
+      "description": "ID \u05e9\u05dc \u05d4\u05de\u05d8\u05e4\u05dc"
+    },
+    "enable_online_payment": {
+      "type": "boolean",
+      "default": false,
+      "description": "\u05d0\u05e4\u05e9\u05e8 \u05ea\u05e9\u05dc\u05d5\u05dd \u05de\u05e7\u05d5\u05d5\u05df"
+    },
+    "payment_provider": {
+      "type": "string",
+      "enum": [
+        "stripe",
+        "tranzila",
+        "paypal",
+        "bit",
+        "none"
+      ],
+      "default": "none"
+    },
+    "merchant_id": {
+      "type": "string",
+      "description": "\u05de\u05e1\u05e4\u05e8 \u05d1\u05d9\u05ea \u05e2\u05e1\u05e7"
+    },
+    "api_key": {
+      "type": "string",
+      "description": "\u05de\u05e4\u05ea\u05d7 API"
+    },
+    "prepayment_required": {
+      "type": "boolean",
+      "default": false,
+      "description": "\u05d2\u05d1\u05d9\u05d4 \u05de\u05e8\u05d0\u05e9 \u05d7\u05d5\u05d1\u05d4"
+    },
+    "prepayment_percentage": {
+      "type": "number",
+      "default": 100,
+      "description": "\u05d0\u05d7\u05d5\u05d6 \u05dc\u05ea\u05e9\u05dc\u05d5\u05dd \u05de\u05e8\u05d0\u05e9"
+    },
+    "app_exclusive_discount": {
+      "type": "number",
+      "default": 0,
+      "description": "\u05d4\u05e0\u05d7\u05d4 \u05d1\u05dc\u05e2\u05d3\u05d9\u05ea \u05d1\u05d0\u05e4\u05dc\u05d9\u05e7\u05e6\u05d9\u05d4 (%)"
+    },
+    "default_discount": {
+      "type": "number",
+      "default": 0,
+      "description": "\u05d4\u05e0\u05d7\u05d4 \u05e7\u05d1\u05d5\u05e2\u05d4 \u05dc\u05de\u05d8\u05e4\u05dc (%)"
+    },
+    "auto_invoice": {
+      "type": "boolean",
+      "default": false,
+      "description": "\u05d9\u05e6\u05d9\u05e8\u05ea \u05d7\u05e9\u05d1\u05d5\u05e0\u05d9\u05ea \u05d0\u05d5\u05d8\u05d5\u05de\u05d8\u05d9\u05ea"
+    },
+    "invoice_prefix": {
+      "type": "string",
+      "default": "INV",
+      "description": "\u05e7\u05d9\u05d3\u05d5\u05de\u05ea \u05d7\u05e9\u05d1\u05d5\u05e0\u05d9\u05ea"
+    },
+    "tax_rate": {
+      "type": "number",
+      "default": 17,
+      "description": "\u05d0\u05d7\u05d5\u05d6 \u05de\u05e2\"\u05de"
+    },
+    "business_number": {
+      "type": "string",
+      "description": "\u05de\u05e1\u05e4\u05e8 \u05e2\u05d5\u05e1\u05e7 \u05de\u05d5\u05e8\u05e9\u05d4/\u05d7.\u05e8"
+    }
+  },
+  "required": [
+    "therapist_id"
+  ]
+}

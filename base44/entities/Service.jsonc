@@ -1,0 +1,72 @@
+{
+  "name": "Service",
+  "type": "object",
+  "properties": {
+    "therapist_id": {
+      "type": "string",
+      "description": "ID of the therapist offering this service"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "duration_minutes": {
+      "type": "number"
+    },
+    "price": {
+      "type": "number"
+    },
+    "deposit_required": {
+      "type": "boolean",
+      "default": false,
+      "description": "\u05d4\u05d0\u05dd \u05e0\u05d3\u05e8\u05e9 \u05ea\u05e9\u05dc\u05d5\u05dd \u05d3\u05de\u05d9 \u05e8\u05e6\u05d9\u05e0\u05d5\u05ea"
+    },
+    "deposit_amount": {
+      "type": "number",
+      "default": 100,
+      "description": "\u05e1\u05db\u05d5\u05dd \u05d3\u05de\u05d9 \u05e8\u05e6\u05d9\u05e0\u05d5\u05ea \u05dc\u05d0\u05d1\u05d7\u05d5\u05df \u05e8\u05d0\u05e9\u05d5\u05df"
+    },
+    "home_visit_available": {
+      "type": "boolean",
+      "default": false,
+      "description": "\u05d4\u05d0\u05dd \u05d6\u05de\u05d9\u05df \u05d1\u05d9\u05e7\u05d5\u05e8 \u05d1\u05d9\u05ea"
+    },
+    "home_visit_price": {
+      "type": "number",
+      "description": "\u05de\u05d7\u05d9\u05e8 \u05d1\u05d9\u05e7\u05d5\u05e8 \u05d1\u05d9\u05ea"
+    },
+    "treatment_series": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "sessions": {
+            "type": "number"
+          },
+          "total_price": {
+            "type": "number"
+          },
+          "discount_percentage": {
+            "type": "number"
+          }
+        }
+      },
+      "description": "\u05e1\u05d3\u05e8\u05d5\u05ea \u05d8\u05d9\u05e4\u05d5\u05dc - \u05de\u05e1\u05e4\u05e8 \u05d8\u05d9\u05e4\u05d5\u05dc\u05d9\u05dd \u05d1\u05de\u05d7\u05d9\u05e8 \u05de\u05d9\u05d5\u05d7\u05d3"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "therapist_id",
+    "name",
+    "price",
+    "duration_minutes"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "name": "Notification",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Email \u05e9\u05dc \u05d4\u05de\u05e9\u05ea\u05de\u05e9 \u05d4\u05de\u05e7\u05d1\u05dc"
+    },
+    "recipient_email": {
+      "type": "string",
+      "description": "Email \u05e9\u05dc \u05d4\u05e0\u05de\u05e2\u05df"
+    },
+    "title": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "webinar",
+        "content",
+        "exercise",
+        "appointment",
+        "promotion",
+        "therapist"
+      ],
+      "description": "\u05e1\u05d5\u05d2 \u05d4\u05d4\u05ea\u05e8\u05d0\u05d4"
+    },
+    "link_url": {
+      "type": "string",
+      "description": "\u05e7\u05d9\u05e9\u05d5\u05e8 \u05dc\u05e0\u05d9\u05d5\u05d5\u05d8 \u05d1\u05dc\u05d7\u05d9\u05e6\u05d4"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false
+    },
+    "image_url": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "message",
+    "type"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "Inspiration",
+  "type": "object",
+  "properties": {
+    "text": {
+      "type": "string",
+      "description": "\u05de\u05e9\u05e4\u05d8 \u05d4\u05e9\u05e8\u05d0\u05d4"
+    },
+    "author": {
+      "type": "string",
+      "description": "\u05de\u05d7\u05d1\u05e8 \u05d4\u05de\u05e9\u05e4\u05d8"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "motivation",
+        "health",
+        "happiness",
+        "success",
+        "peace"
+      ],
+      "default": "motivation"
+    },
+    "is_approved": {
+      "type": "boolean",
+      "default": false
+    },
+    "submitted_by": {
+      "type": "string",
+      "description": "\u05de\u05d9 \u05d4\u05e2\u05dc\u05d4 \u05d0\u05ea \u05d4\u05de\u05e9\u05e4\u05d8"
+    }
+  },
+  "required": [
+    "text"
+  ]
+}

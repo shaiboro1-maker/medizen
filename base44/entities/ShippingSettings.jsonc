@@ -1,0 +1,36 @@
+{
+  "name": "ShippingSettings",
+  "type": "object",
+  "properties": {
+    "method_name": {
+      "type": "string",
+      "description": "\u05e9\u05dd \u05e9\u05d9\u05d8\u05ea \u05d4\u05de\u05e9\u05dc\u05d5\u05d7"
+    },
+    "price": {
+      "type": "number"
+    },
+    "free_shipping_threshold": {
+      "type": "number",
+      "description": "\u05de\u05e9\u05dc\u05d5\u05d7 \u05d7\u05d9\u05e0\u05dd \u05de\u05e2\u05dc \u05e1\u05db\u05d5\u05dd"
+    },
+    "estimated_days": {
+      "type": "string",
+      "description": "\u05d6\u05de\u05df \u05d0\u05e1\u05e4\u05e7\u05d4 \u05de\u05e9\u05d5\u05e2\u05e8"
+    },
+    "areas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "\u05d0\u05d6\u05d5\u05e8\u05d9 \u05d7\u05dc\u05d5\u05e7\u05d4"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "method_name",
+    "price"
+  ]
+}

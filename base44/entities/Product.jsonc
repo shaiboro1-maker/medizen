@@ -1,0 +1,53 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "insoles",
+        "massage_tools",
+        "supplements",
+        "formulas",
+        "equipment",
+        "oils",
+        "cosmetics",
+        "sports_equipment",
+        "therapeutic_jewelry",
+        "websites",
+        "other"
+      ]
+    },
+    "price": {
+      "type": "number"
+    },
+    "sale_price": {
+      "type": "number"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "stock": {
+      "type": "number",
+      "default": 0
+    },
+    "therapist_id": {
+      "type": "string",
+      "description": "If sold by a specific therapist"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "price"
+  ]
+}

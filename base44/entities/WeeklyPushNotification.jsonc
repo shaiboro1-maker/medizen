@@ -1,0 +1,65 @@
+{
+  "name": "WeeklyPushNotification",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "\u05db\u05d5\u05ea\u05e8\u05ea \u05d4\u05d4\u05d5\u05d3\u05e2\u05d4"
+    },
+    "message": {
+      "type": "string",
+      "description": "\u05ea\u05d5\u05db\u05df \u05d4\u05d4\u05d5\u05d3\u05e2\u05d4"
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "\u05de\u05ea\u05d9 \u05dc\u05e9\u05dc\u05d5\u05d7"
+    },
+    "content_highlights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "therapist",
+              "recipe",
+              "exercise",
+              "article",
+              "product"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "\u05ea\u05d5\u05db\u05df \u05de\u05d5\u05d3\u05d2\u05e9 \u05de\u05d4\u05e9\u05d1\u05d5\u05e2"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "scheduled",
+        "sent"
+      ],
+      "default": "draft"
+    },
+    "sent_count": {
+      "type": "number",
+      "default": 0
+    },
+    "click_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title",
+    "message"
+  ]
+}

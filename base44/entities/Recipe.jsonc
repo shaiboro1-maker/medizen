@@ -1,0 +1,51 @@
+{
+  "name": "Recipe",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "anti_inflammatory",
+        "energy",
+        "sleep",
+        "weight_loss",
+        "muscle",
+        "skin",
+        "immunity",
+        "general"
+      ]
+    },
+    "ingredients": {
+      "type": "string"
+    },
+    "instructions": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "prep_time_minutes": {
+      "type": "number"
+    },
+    "therapist_id": {
+      "type": "string"
+    },
+    "therapist_name": {
+      "type": "string"
+    },
+    "is_approved": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ]
+}

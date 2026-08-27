@@ -1,0 +1,25 @@
+{
+  "name": "Review",
+  "type": "object",
+  "properties": {
+    "therapist_id": {
+      "type": "string"
+    },
+    "client_email": {
+      "type": "string"
+    },
+    "client_name": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "number"
+    },
+    "text": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "therapist_id",
+    "rating"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "name": "Favorite",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "item_type": {
+      "type": "string",
+      "enum": [
+        "therapist",
+        "exercise",
+        "recipe",
+        "product",
+        "podcast",
+        "webinar"
+      ]
+    },
+    "item_id": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_email",
+    "item_type",
+    "item_id"
+  ]
+}

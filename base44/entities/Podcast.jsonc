@@ -1,0 +1,40 @@
+{
+  "name": "Podcast",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "series_name": {
+      "type": "string"
+    },
+    "episode_number": {
+      "type": "number"
+    },
+    "audio_url": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "therapist_id": {
+      "type": "string"
+    },
+    "therapist_name": {
+      "type": "string"
+    },
+    "duration_minutes": {
+      "type": "number"
+    },
+    "play_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "name": "BlogPost",
+  "type": "object",
+  "properties": {
+    "therapist_id": {
+      "type": "string",
+      "description": "ID of the therapist who created the post"
+    },
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string",
+      "description": "HTML content of the blog post"
+    },
+    "excerpt": {
+      "type": "string",
+      "description": "Short summary for preview"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true
+    },
+    "views": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "therapist_id",
+    "title",
+    "content"
+  ]
+}

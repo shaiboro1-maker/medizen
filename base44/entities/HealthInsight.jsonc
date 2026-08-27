@@ -1,0 +1,76 @@
+{
+  "name": "HealthInsight",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "period": {
+      "type": "string",
+      "enum": [
+        "weekly",
+        "monthly"
+      ],
+      "description": "\u05ea\u05e7\u05d5\u05e4\u05ea \u05d4\u05e1\u05d9\u05db\u05d5\u05dd"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "insights": {
+      "type": "object",
+      "properties": {
+        "mood_trend": {
+          "type": "string",
+          "description": "\u05de\u05d2\u05de\u05ea \u05de\u05e6\u05d1 \u05e8\u05d5\u05d7"
+        },
+        "pain_trend": {
+          "type": "string",
+          "description": "\u05de\u05d2\u05de\u05ea \u05db\u05d0\u05d1"
+        },
+        "energy_trend": {
+          "type": "string",
+          "description": "\u05de\u05d2\u05de\u05ea \u05d0\u05e0\u05e8\u05d2\u05d9\u05d4"
+        },
+        "avg_mood_score": {
+          "type": "number"
+        },
+        "avg_pain_level": {
+          "type": "number"
+        },
+        "avg_energy_level": {
+          "type": "number"
+        },
+        "diary_entries_count": {
+          "type": "number"
+        },
+        "appointments_count": {
+          "type": "number"
+        },
+        "most_active_day": {
+          "type": "string"
+        },
+        "recommendations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ai_summary": {
+      "type": "string",
+      "description": "\u05e1\u05d9\u05db\u05d5\u05dd AI \u05e9\u05dc \u05d4\u05ea\u05e7\u05d5\u05e4\u05d4"
+    }
+  },
+  "required": [
+    "user_email",
+    "period",
+    "start_date",
+    "end_date"
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "name": "Course",
+  "type": "object",
+  "properties": {
+    "therapist_id": {
+      "type": "string",
+      "description": "ID \u05e9\u05dc \u05d4\u05de\u05d8\u05e4\u05dc \u05e9\u05d9\u05e6\u05e8 \u05d0\u05ea \u05d4\u05e7\u05d5\u05e8\u05e1"
+    },
+    "therapist_name": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "price": {
+      "type": "number"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "video_intro_url": {
+      "type": "string"
+    },
+    "lessons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "video_url": {
+            "type": "string"
+          },
+          "pdf_url": {
+            "type": "string"
+          },
+          "duration_minutes": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "total_duration_minutes": {
+      "type": "number"
+    },
+    "category": {
+      "type": "string"
+    },
+    "enrolled_count": {
+      "type": "number",
+      "default": 0
+    },
+    "rating": {
+      "type": "number",
+      "default": 0
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "therapist_id",
+    "title",
+    "price"
+  ]
+}

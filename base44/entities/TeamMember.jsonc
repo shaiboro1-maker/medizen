@@ -1,0 +1,36 @@
+{
+  "name": "TeamMember",
+  "type": "object",
+  "properties": {
+    "therapist_id": {
+      "type": "string",
+      "description": "ID of the therapist/clinic owner"
+    },
+    "email": {
+      "type": "string"
+    },
+    "full_name": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "secretary",
+        "marketing",
+        "sales",
+        "retention"
+      ],
+      "description": "Team member role"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "therapist_id",
+    "email",
+    "full_name",
+    "role"
+  ]
+}
